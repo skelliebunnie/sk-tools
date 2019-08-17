@@ -1,0 +1,18 @@
+// SETTINGS
+$coreColors: (
+	'primary': #F4EEB4, // #348aa7
+	'secondary': #942668, // #bce784; #5E5E5E
+	'tertiary': #E2DDD1, // #fcdfa6; #d2d2d2
+	'accent': #B4D12B, // #d36135; #cde7b0
+	'alert': #F68357,
+	'active': #00a0e0,
+	'neutral': #414150,
+) !default;
+
+@import "color/functions";
+@import "color/mixins";
+
+// quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
+// rangeType = adaptive | static | tintshade | default
+@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $staticDepth: 9);
+

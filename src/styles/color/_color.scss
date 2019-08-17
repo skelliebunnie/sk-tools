@@ -1,0 +1,17 @@
+/*
+	COLORS -- NOW DEFINED IN SETTINGS!!
+	* Palette defined in SETTINGS file
+	* Remember to update @include palette in SETTINGS if you change the color names in the map, or if you switch to using an alternate naming scheme! Otherwise the mixin won't be able to find the colors and you'll get an error.
+*/
+
+// $coreColors: (
+// 	primary: #4f759b,
+// 	secondary: #5d5179,
+// 	tertiary: #571f4e,
+// 	accent: #a2faa3,
+// 	accent2: #92c9b1,
+// 	neutral: #333,
+// );
+
+// @import "functions"; // NOW IMPORTED INTO SETTINGS
+// @import "mixins"; // NOW IMPORTED INTO SETTINGS

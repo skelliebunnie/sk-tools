@@ -1,7 +1,7 @@
 // do NOT enclose in (document).ready !!
 // and do NOT call these functions from this file!!
 function findObjByProperty(arr, value) {
-
+    value = jQuery.trim(value);
 	var obj = arr.filter( index => ( index.name.toLowerCase() === `${value.toLowerCase()}` ) );
 
 	if( obj.length === 0 ) {
@@ -13,10 +13,12 @@ function findObjByProperty(arr, value) {
 }
 
 function ucFirst(value) {
+    value = jQuery.trim(value);
 	return value.substr(0,1).toUpperCase()+value.substr(1);
 }
 
 function lcFirst(value) {
+    value = jQuery.trim(value);
 	return value.substr(0,1).toLowerCase()+value.substr(1);
 }
 

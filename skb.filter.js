@@ -1,5 +1,7 @@
 jQuery(document).ready( function($) {
 
+	$("#skb-filter-container").append("Hello?");
+
 	var selected_filter = 'all';
 	var singular = ucFirst($("#skb-filter-container").data("singular"));
 	var plural = ucFirst($("#skb-filter-container").data("plural"));
@@ -10,32 +12,28 @@ jQuery(document).ready( function($) {
 	createFilters();
 
 	// CLEANUP SOME JUNK THAT THE AIRPRESS PLUGIN ADDS
-	$(".skb-filter-item").each(function() {
-		if( $(this).siblings("p").html() === "" ) {
-			$(this).siblings("p").remove();
-		}
+	// $(".skb-filter-item").each(function() {
+	// 	console.log( $(this).parent() );
 
-		$(".skb-filter-link").each(function() {
-			if($(this).html() == "" ) {
-				$(this).parent("p").remove();
-			}
-
-			/** uncomment this if you're getting empty, unecessary paragraphs added **/
-			// $(this).children("p").each(function() {
-			// 	if( $(this).prop("classList").length === 0 && $(this).html() === "" ) {
-			// 		$(this).remove();
-			// 	}
-			// });
-		});
-	});
+	// 	if( $(this).parent().attr("id") === "skb-filter-target" ) {
+	// 		$(this).remove();
+	// 	}
+	// });
 
 	// WHEN CLICKING ON A FILTER
 	$(".skb-filter").click(function() {
 		var tag = $(this).data("filter");
-		console.log(tag);
 
-		if( selected_filter === "all" ) {
+		if( selected_filter === "all" || (selected_filter !== "all" && selected_filter !== tag ) ) {
 			selected_filter = tag;
+
+			$(this).addClass('skb-active-filter');
+
+			if( selected_filter !== "all" ) {
+				$(".skb-filter").each(function() { $(this).removeClass('skb-active-filter'); });
+
+				$(this).addClass('skb-active-filter');
+			}
 
 			handleFilter( $(this) );
 
@@ -44,6 +42,24 @@ jQuery(document).ready( function($) {
 			$("#skb-filter-notice").remove();
 
 			$(".skb-filter-item").each(function() { $(this).show(); });
+
+		}
+
+		console.log(selected_filter);
+
+		$(".skb-filter-list").hide();
+	});
+
+	$(".skb-filter-title").click(function() {
+		var target = $(this).data("filtertype");
+
+		if( $(this).siblings(".skb-filter-list").is(":visible") ) {
+			$(".skb-filter-list").each(function() { $(this).hide(); });
+
+		} else {
+			$(this).parent().siblings(".skb-wrapper").children(".skb-filter-list").hide();
+			$(this).siblings(".skb-filter-list").show();
+
 		}
 	});
 
@@ -56,11 +72,17 @@ jQuery(document).ready( function($) {
 		// add the filters to the container
 		$.each(keys, function(i, key) {
 			if( filters_list[key].length !== 0 ) {
-				$("#skb-filter-container").append(`<span class='skb-filter-title' data-filtertype='${key}'>${key}</span><ul class='skb-filter-list hidden' data-filtertype='${key}'></ul>`);
+				$("#skb-filter-container").append(`<section id='skb-wrapper-${key}' class='skb-wrapper'><span class='skb-filter-title' data-filtertype='${key}'>${key}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul></section>`);
 
 				$.each( filters_list[key], function(i, obj) {
+					if( obj.name !== "" && obj.name !== " " ) {
 						$(`.skb-filter-list[data-filtertype='${key}']`).append(`<li class='skb-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='skb-filter-count'>${obj.count}</span></li>`);
+					}
 				});
+			}
+
+			if( $(`.skb-filter-list[data-filtertype='${key}'`).length > 0 ) {
+				$(`.skb-filter-list[data-filtertype='${key}'`).hide();
 			}
 		});
 	}
@@ -77,13 +99,13 @@ jQuery(document).ready( function($) {
 		$.each(data_list, function(i, data) {
 			$.each(data, function(key, value) {
 				key = lcFirst(key);
-				value = ucFirst(value);
+				value = lcFirst(value);
 
 				if( !( key in filters_list ) ) {
 					filters_list[key] = [];
 				}
 
-				if(value !== "" && value !== ",,,") {
+				if( value !== "" ) {
 
 					if( value.indexOf(',') === -1 ) {
 
@@ -101,7 +123,7 @@ jQuery(document).ready( function($) {
 						var colors = value.split(",");
 
 						$.each(colors, function(i,color) {
-							color = ucFirst(color);
+							color = lcFirst(color);
 
 							var color_obj = { "name": color, "count": 1 };
 
@@ -124,42 +146,55 @@ jQuery(document).ready( function($) {
 
 	function handleFilter(el) {
 		var filter_tag = el.data("filter");
-		var target_type = el.data("filtertype");
+		var target_type = (el.data("filtertype")).toLowerCase();
 		var count = el.children(".skb-filter-count").text();
 
 		$("#skb-filter-notice").remove();
 
-		$(".skb-filter-item").each(function() {
-			var item = $(this);
-			var match = $(this).data(target_type);
+		if( selected_filter !== "all" ) {
+			$(".skb-filter-item").each(function() {
+				var item = $(this);
+				var match = $(this).data(target_type);
 
-			$(this).addClass("skb-active-filter");
+				$(this).addClass("skb-active-filter");
 
-			if( match.indexOf(', ') !== -1 ) {
-				match = match.split(", ");
+				if( match.indexOf(', ') !== -1 ) {
+					match = match.split(", ");
 
-			} else if( match.indexOf(',' !== -1) )  {
-				match = match.split(",");
-			}
+				} else if( match.indexOf(',' !== -1) )  {
+					match = match.split(",");
+				}
 
-			if( !inArrayCaseInsensitive(match, filter_tag) ) {					
-				item.hide();
+				if( inArrayCaseInsensitive(match, filter_tag) ) {					
+					item.show();
+					item.parent("p").show();
 
-			} else {
-				item.show();
+				} else {
+					item.hide();
+					item.parent("p").hide();
 
-			}
+				}
 
-		});
+			});
 
-		$("#skb-filter-container").append(`<p id='skb-filter-notice'>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong> (${count}) <i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+
+		} else {
+			$('.skb-filter-item').each(function() {
+				$(this).show();
+			});
+
+		}
 
 		$("#skb-remove-filter").click(function() {
 			selected_filter = "all";
 
 			$(".skb-filter-item").each(function() {
 				$(this).show();
+				$(this).parent("p").show();
 			});
+
+			$(".skb-active-filter").removeClass('skb-active-filter');
 
 			$("#skb-filter-notice").remove();
 		});
@@ -175,8 +210,8 @@ jQuery(document).ready( function($) {
 				$(this).removeClass('filter-title-active');
 			});
 
-			$(".skb-filter").each(function() { 
-				if( !$(this).hasClass('hidden') ) { $(this).addClass('hidden'); }
+			$(".skb-filter-list").each(function() { 
+				if( $(this).is(':visible') ) { $(this).hide(); }
 
 			});
 		}

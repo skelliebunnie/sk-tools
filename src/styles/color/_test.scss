@@ -1,0 +1,69 @@
+@import "round-dec", "pow",
+				"luminance";
+
+$coreColors: (
+	'green': #90A959,
+	'blue': #6494AA,
+	'yellow': #E9B872,
+	'red': #A63D40,
+	'neutral': #151515,
+) !default;
+
+@function rangeStatic($map) {
+	$r: (); $range: ();
+
+	$values: map-values($map);
+	$names: map-keys($map);
+	$c1: null; $c2: null; $c3: null; $c4: null;
+	$c5: null; $c6: null; $c7: null;
+
+	@for $i from 1 through length($names) {
+
+		$color: nth($values,$i);
+		$name: nth($names,$i);
+
+		$darkest: 8.2352941176%;
+		$darker: 22.7450980392%;
+		$dark: 37.2549019608%;
+		$mid: 52.1568627451%;
+		$light: 66.6666666667%;
+		$lighter: 81.1764705882%;
+		$lightest: 88.2352941176%;
+
+		$c1: change-color($color, $lightness: $lightest); 
+		$c2: change-color($color, $lightness: $lighter);
+		$c3: change-color($color, $lightness: $light); 
+		$c4: change-color($color, $lightness: $mid);
+		$c5: change-color($color, $lightness: $dark); 
+		$c6: change-color($color, $lightness: $darker);
+		$c7: change-color($color, $lightness: $darkest);
+
+		$r: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c2,
+			unquote("#{$name}")-300: $c3,
+			unquote("#{$name}")-400: $c4,
+			unquote("#{$name}")-500: $c5,
+			unquote("#{$name}")-600: $c6,
+			unquote("#{$name}")-700: $c7
+		);
+
+		$range: map-merge($range, $r);
+	}
+
+	@return $range;
+}
+
+$test: rangeStatic($coreColors);
+
+$n: 1;
+@each $name,$color in $test {
+
+	.color p:nth-child(#{$n}) {
+		background-color: $color;
+		height: 30px;
+		width: 100px;
+	}
+
+	$n: $n + 1;
+}
