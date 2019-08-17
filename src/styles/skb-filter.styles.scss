@@ -1,11 +1,58 @@
+@import "colors";
+
 #skb-filter-container {
 	display: flex;
 	flex-flow: column nowrap;
+	color: map-get($colors, 'shadow');
 
 	.skb-filter-title {
 		text-align: center;
 		font-size: large;
 		font-weight: bold;
 		text-transform: capitalize;
+		background-color: map-get($colors, "shade");
+		color: map-get($colors, "cloud");
 	}
+
+	.skb-filter-list {
+		flex: 1;
+		list-style-type: none;
+		display: flex;
+		flex-flow: column nowrap;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		background-color: map-get($colors, "cloud");
+	}
+
+	.skb-filter-list + .skb-filter-title {
+		margin-top: 1rem;
+	}
+
+	.skb-filter {
+		flex: 1;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.4rem 0.5rem;
+		line-height: 1.2rem;
+
+		&:hover,
+		&:focus {
+			background-color: map-get($colors, "mist");
+			cursor: pointer;
+		}
+	}
+
+	.skb-filter-count {
+		font-size: 0.9rem;
+		background-color: #ccc;
+		border-radius: 0.15rem;
+		padding: 2px 0;
+		flex: 1 0 10%;
+		max-width: 2.5rem;
+		text-align: center;
+	}
+
 }
