@@ -1,8 +1,8 @@
 jQuery(document).ready( function($) {
 
 	var selected_filter = 'all';
-	var singular = ucFirst($("#filter-container").data("singular"));
-	var plural = ucFirst($("#filter-container").data("plural"));
+	var singular = ucFirst($("#skb-filter-container").data("singular"));
+	var plural = ucFirst($("#skb-filter-container").data("plural"));
 
 	var data_list = []; var filters_list = [];
 
@@ -49,14 +49,14 @@ jQuery(document).ready( function($) {
 
 	function createFilters() {
 
-		$("#filter-container").empty(); // empty out the container
+		$("#skb-filter-container").empty(); // empty out the container
 
 		var keys = Object.keys(filters_list);
 
 		// add the filters to the container
 		$.each(keys, function(i, key) {
 			if( filters_list[key].length !== 0 ) {
-				$("#filter-container").append(`<span class='skb-filter-title' data-filtertype='${key}'>${key}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul>`);
+				$("#skb-filter-container").append(`<span class='skb-filter-title' data-filtertype='${key}'>${key}</span><ul class='skb-filter-list hidden' data-filtertype='${key}'></ul>`);
 
 				$.each( filters_list[key], function(i, obj) {
 						$(`.skb-filter-list[data-filtertype='${key}']`).append(`<li class='skb-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='skb-filter-count'>${obj.count}</span></li>`);
@@ -152,7 +152,7 @@ jQuery(document).ready( function($) {
 
 		});
 
-		$("#filter-container").append(`<p id='skb-filter-notice'>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong> (${count}) <i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+		$("#skb-filter-container").append(`<p id='skb-filter-notice'>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong> (${count}) <i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		$("#skb-remove-filter").click(function() {
 			selected_filter = "all";

@@ -1,0 +1,38 @@
+{
+  "name": "skb-tools",
+  "version": "1.0.0",
+  "main": "gulp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skelliebunnie/skb-tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skelliebunnie/skb-tools/issues"
+  },
+  "homepage": "https://github.com/skelliebunnie/skb-tools#readme",
+  "dependencies": {
+    "autoprefixer": "^9.1.2",
+    "browser-sync": "latest",
+    "debug": "latest",
+    "gulp": "^4.x.x",
+    "gulp-concat": "latest",
+    "gulp-image": "latest",
+    "gulp-newer": "latest",
+    "gulp-postcss": "latest",
+    "gulp-rename": "latest",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "gulp-wait": "latest"
+  },
+  "devDependencies": {
+    "gulp-jshint": "latest",
+    "jshint": "latest"
+  },
+  "description": ""
+}

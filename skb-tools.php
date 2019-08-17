@@ -17,7 +17,9 @@ define( 'SKB_SITE_URL', get_site_url() .'/' );
 define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
 function skb_styles() {
-	wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css'); 
+	wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
+
+	wp_register_style('skb-filters-style', SKB_ROOTURL ."dist/css/skb-filter.styles.css");
 }
 add_action( 'wp_enqueue_scripts', 'skb_styles' );
 add_action( 'admin_enqueue_scripts', 'skb_styles' );
@@ -30,6 +32,7 @@ add_action( 'wp_enqueue_scripts', 'skb_scripts' );
 add_action( 'admin_enqueue_scripts', 'skb_scripts' );
 
 function skb_filter_shortcode($atts) {
+	wp_enqueue_style('skb-filters-style');
 
 	$a = shortcode_atts( array(
 		'singular' 	=> 'butterfly',
@@ -39,7 +42,7 @@ function skb_filter_shortcode($atts) {
 	wp_enqueue_script('skb-filter-script');
 	ob_start();
 ?>
-	<div id="filter-container" data-singular="<?php echo $a['singular']; ?>" data-plural="<?php echo $a['singular']; ?>"></div>
+	<div id="skb-filter-container" data-singular="<?php echo $a['singular']; ?>" data-plural="<?php echo $a['singular']; ?>"></div>
 <?php
 	 return ob_get_clean();
 }

@@ -1,0 +1,15 @@
+#skb-filter-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap; }
+  #skb-filter-container .skb-filter-title {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    text-transform: capitalize; }
+
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNrYi1maWx0ZXIuc3R5bGVzLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDQyxvQkFBYTtFQUFiLG9CQUFhO0VBQWIsYUFBYTtFQUNiLDRCQUF3QjtFQUF4Qiw2QkFBd0I7TUFBeEIsNEJBQXdCO1VBQXhCLHdCQUF3QixFQUFBO0VBRnpCO0lBS0Usa0JBQWtCO0lBQ2xCLGdCQUFnQjtJQUNoQixpQkFBaUI7SUFDakIsMEJBQTBCLEVBQUEiLCJmaWxlIjoic2tiLWZpbHRlci5zdHlsZXMuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI3NrYi1maWx0ZXItY29udGFpbmVyIHtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1mbG93OiBjb2x1bW4gbm93cmFwO1xuXG5cdC5za2ItZmlsdGVyLXRpdGxlIHtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0Zm9udC1zaXplOiBsYXJnZTtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHR0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcblx0fVxufSJdfQ== */
