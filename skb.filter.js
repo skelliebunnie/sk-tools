@@ -31,45 +31,20 @@ jQuery(document).ready( function($) {
 
 	// WHEN CLICKING ON A FILTER
 	$(".skb-filter").click(function() {
-		// clean up
-		$("#skb-filter-notice").remove();
+		var tag = $(this).data("filter");
+		console.log(tag);
 
-		var target_type = $(this).data("filtertype");
-		var filter_tag = $(this).data("filter");
-		var count = $(this).children(".skb-filter-count").text();
+		if( selected_filter === "all" ) {
+			selected_filter = tag;
 
-		$(".skb-filter-item").each(function() {
-			var item = $(this);
-			var match = $(this).data(target_type);
+			handleFilter( $(this) );
 
-			if( match.indexOf(', ') !== -1 ) {
-				match = match.split(", ");
-
-			} else if( match.indexOf(',' !== -1) )  {
-				match = match.split(",");
-			}
-
-			if( !inArrayCaseInsensitive(match, filter_tag) ) {					
-				item.hide();
-
-			} else {
-				item.show();
-
-			}
-
-		});
-
-		$("#filter-container").append(`<p id='skb-filter-notice'>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong> (${count}) <i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
-
-		$("#skb-remove-filter").click(function() {
-			selected_filter = "all";
-
-			$(".skb-filter-item").each(function() {
-				$(this).show();
-			});
-
+		} else if( selected_filter === tag ) {
+			$(this).removeClass("skb-active-filter");
 			$("#skb-filter-notice").remove();
-		});
+
+			$(".skb-filter-item").each(function() { $(this).show(); });
+		}
 	});
 
 	function createFilters() {
@@ -144,6 +119,49 @@ jQuery(document).ready( function($) {
 				}
 
 			});
+		});
+	}
+
+	function handleFilter(el) {
+		var filter_tag = el.data("filter");
+		var target_type = el.data("filtertype");
+		var count = el.children(".skb-filter-count").text();
+
+		$("#skb-filter-notice").remove();
+
+		$(".skb-filter-item").each(function() {
+			var item = $(this);
+			var match = $(this).data(target_type);
+
+			$(this).addClass("skb-active-filter");
+
+			if( match.indexOf(', ') !== -1 ) {
+				match = match.split(", ");
+
+			} else if( match.indexOf(',' !== -1) )  {
+				match = match.split(",");
+			}
+
+			if( !inArrayCaseInsensitive(match, filter_tag) ) {					
+				item.hide();
+
+			} else {
+				item.show();
+
+			}
+
+		});
+
+		$("#filter-container").append(`<p id='skb-filter-notice'>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong> (${count}) <i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+
+		$("#skb-remove-filter").click(function() {
+			selected_filter = "all";
+
+			$(".skb-filter-item").each(function() {
+				$(this).show();
+			});
+
+			$("#skb-filter-notice").remove();
 		});
 	}
 
