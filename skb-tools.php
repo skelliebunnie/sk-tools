@@ -34,15 +34,18 @@ add_action( 'admin_enqueue_scripts', 'skb_scripts' );
 function skb_filter_shortcode($atts) {
 	wp_enqueue_style('skb-filters-style');
 
+	// types are: 
+	//	* default ( 1 filter at a time )
+	//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
+	// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 	$a = shortcode_atts( array(
-		'singular' 	=> 'butterfly',
-		'plural'		=> 'butterflies'
+		'type'		=> 'default'
 	), $atts );
 
 	wp_enqueue_script('skb-filter-script');
 	ob_start();
 ?>
-	<div id="skb-filter-container" data-singular="<?php echo $a['singular']; ?>" data-plural="<?php echo $a['singular']; ?>"></div>
+	<div id="skb-filter-container" data-type="<?php echo $a['type']; ?>"></div>
 <?php
 	 return ob_get_clean();
 }

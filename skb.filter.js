@@ -3,52 +3,24 @@ jQuery(document).ready( function($) {
 	$("#skb-filter-container").append("Hello?");
 
 	var selected_filter = 'all';
-	var singular = ucFirst($("#skb-filter-container").data("singular"));
-	var plural = ucFirst($("#skb-filter-container").data("plural"));
+	var filter_type = $("#skb-filter-container").data("type");
 
 	var data_list = []; var filters_list = [];
 
 	defineFilters(); // get a list of the filters
 	createFilters();
 
-	// CLEANUP SOME JUNK THAT THE AIRPRESS PLUGIN ADDS
-	// $(".skb-filter-item").each(function() {
-	// 	console.log( $(this).parent() );
-
-	// 	if( $(this).parent().attr("id") === "skb-filter-target" ) {
-	// 		$(this).remove();
-	// 	}
-	// });
-
 	// WHEN CLICKING ON A FILTER
-	$(".skb-filter").click(function() {
-		var tag = $(this).data("filter");
+	if(filter_type === "default" || filter_type === "single") {
+		$(".skb-filter").click(function() {
+			singleFilter( $(this) );
+		});
 
-		if( selected_filter === "all" || (selected_filter !== "all" && selected_filter !== tag ) ) {
-			selected_filter = tag;
-
-			$(this).addClass('skb-active-filter');
-
-			if( selected_filter !== "all" ) {
-				$(".skb-filter").each(function() { $(this).removeClass('skb-active-filter'); });
-
-				$(this).addClass('skb-active-filter');
-			}
-
-			handleFilter( $(this) );
-
-		} else if( selected_filter === tag ) {
-			$(this).removeClass("skb-active-filter");
-			$("#skb-filter-notice").remove();
-
-			$(".skb-filter-item").each(function() { $(this).show(); });
-
-		}
-
-		console.log(selected_filter);
-
-		$(".skb-filter-list").hide();
-	});
+	} else {
+		$(".skb-filter").click(function() {
+			multiFilterAdd( $(this) );
+		});
+	}
 
 	$(".skb-filter-title").click(function() {
 		var target = $(this).data("filtertype");
@@ -85,12 +57,14 @@ jQuery(document).ready( function($) {
 				$(`.skb-filter-list[data-filtertype='${key}'`).hide();
 			}
 		});
+
+		//console.log(filters_list);
 	}
 
 	function defineFilters() {
 		data_list = [];
 
-		$("#skb-filter-target > .skb-filter-item").each(function() {
+		$(".skb-filter-item").each(function() {
 			var data = $(this).data();
 
 			data_list.push(data);
@@ -198,6 +172,74 @@ jQuery(document).ready( function($) {
 
 			$("#skb-filter-notice").remove();
 		});
+	}
+
+	function singleFilter(el) {
+		var tag = el.data("filter");
+
+		if( selected_filter === "all" || (selected_filter !== "all" && selected_filter !== tag ) ) {
+			selected_filter = tag;
+
+			el.addClass('skb-active-filter');
+
+			if( selected_filter !== "all" ) {
+				$(".skb-filter").each(function() { el.removeClass('skb-active-filter'); });
+
+				$(this).addClass('skb-active-filter');
+			}
+
+			handleFilter( $(this) );
+
+		} else if( selected_filter === tag ) {
+			el.removeClass("skb-active-filter");
+			$("#skb-filter-notice").remove();
+
+			$(".skb-filter-item").each(function() { $(this).show(); });
+
+		}
+
+		$(".skb-filter-list").hide();
+	}
+
+	function multiFilterAdd(el) {
+		if( el.hasClass('skb-active-filter') ) {
+			$(this).removeClass('skb-active-filter');
+
+		} else {
+			el.addClass('skb-active-filter');
+		}
+
+		var filters_list = getSelectedFilters();
+		
+		$(".skb-filter-item").each(function() {
+
+			var item = $(this);
+			var colors = $(this).data("color");
+			if( strpos(colors, ',') ) {
+				colors = colors.split(',');
+			}
+			// var 
+
+			$.each(filters_list, function(i,v) {
+				// if( v.type !== "color" &&  === v.tag ) {
+				// 	item.show();
+
+				// } else {
+				// 	item.hide();
+				// }
+			});
+
+		});
+
+	}
+
+	function getSelectedFilters() {
+		var filters = [];
+		$(".skb-active-filter").each(function() {
+			filters.push( {'type': ($(this).data('filtertype')).toLowerCase(), 'tag': ($(this).data('filter')).toLowerCase() } );
+		});
+
+		return filters;
 	}
 
 	$('body').click(function(event, selector, element) {
