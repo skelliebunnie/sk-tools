@@ -39,7 +39,7 @@ function skb_filter_shortcode($atts) {
 	//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 	// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 	$a = shortcode_atts( array(
-		'type'		=> 'default'
+		'type'			=> 'default',
 	), $atts );
 
 	wp_enqueue_script('skb-filter-script');

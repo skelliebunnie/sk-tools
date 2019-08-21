@@ -1,15 +1,21 @@
 // do NOT enclose in (document).ready !!
 // and do NOT call these functions from this file!!
 function findObjByProperty(arr, value) {
+
     value = jQuery.trim(value);
+
 	var obj = arr.filter( index => ( index.name.toLowerCase() === `${value.toLowerCase()}` ) );
 
 	if( obj.length === 0 ) {
 		return null;
 
 	} else {
-		return arr.findIndex( index => index.name.toLowerCase() === `${value.toLowerCase()}` );
+		return arr.findIndex( index => ( index.name.toLowerCase() === `${value.toLowerCase()}` ) );
 	}
+}
+
+function compArrays(arr1, arr2) {
+    return jQuery(arr1).not(arr2).length === 0 && jQuery(arr2).not(arr1).length === 0;
 }
 
 function ucFirst(value) {
@@ -22,8 +28,8 @@ function lcFirst(value) {
 	return value.substr(0,1).toLowerCase()+value.substr(1);
 }
 
-function strpos(value) {
-    return value.indexOf(',' !== -1);
+function strpos(haystack, needle) {
+    return haystack.indexOf(needle !== -1);
 }
 
 function inArrayCaseInsensitive(haystackArray, needle){
