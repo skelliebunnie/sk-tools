@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 0.1
+ * Version: 1.0
  * Author: Margaret Ralston
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
@@ -16,37 +16,9 @@ define( 'SKB_ROOTURL', plugins_url() .'/skb-tools/' );
 define( 'SKB_SITE_URL', get_site_url() .'/' );
 define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
-function skb_styles() {
-	wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
+require_once('skb.enqueue.php');
 
-	wp_register_style('skb-filters-style', SKB_ROOTURL ."dist/css/skb-filter.styles.css");
+// SKB-FILTER
+foreach(glob(SKB_ROOTDIR ."skb-filter/*.php") as $filename) {
+	require_once($filename);
 }
-add_action( 'wp_enqueue_scripts', 'skb_styles' );
-add_action( 'admin_enqueue_scripts', 'skb_styles' );
-
-function skb_scripts() {
-	wp_register_script('skb-functions-script', SKB_ROOTURL ."skb.functions.js", array('jquery'), null, true);
-	wp_register_script('skb-filter-script', SKB_ROOTURL ."skb.filter.js", array('skb-functions-script'), null, true);
-}
-add_action( 'wp_enqueue_scripts', 'skb_scripts' );
-add_action( 'admin_enqueue_scripts', 'skb_scripts' );
-
-function skb_filter_shortcode($atts) {
-	wp_enqueue_style('skb-filters-style');
-
-	// types are: 
-	//	* default ( 1 filter at a time )
-	//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
-	// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
-	$a = shortcode_atts( array(
-		'type'			=> 'default',
-	), $atts );
-
-	wp_enqueue_script('skb-filter-script');
-	ob_start();
-?>
-	<div id="skb-filter-container" data-type="<?php echo $a['type']; ?>"></div>
-<?php
-	 return ob_get_clean();
-}
-add_shortcode('skb_filter', 'skb_filter_shortcode');

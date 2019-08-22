@@ -108,7 +108,7 @@ function strpos(haystack, needle) {
   return haystack.indexOf(needle !== -1);
 }
 
-function inArrayCaseInsensitive(haystackArray, needle){
+function inArrayCaseInsensitive(haystackArray, needle) {
   //Iterates over an array of items to return the index of the first item that matches the provided val ('needle') in a case-insensitive way.  Returns -1 if no match found.
   var defaultResult = -1;
   var result = defaultResult;
@@ -127,7 +127,7 @@ function inArrayCaseInsensitive(haystackArray, needle){
 
 // From https://stackoverflow.com/questions/48484767/javascript-check-if-string-is-valid-css-color
 // LeeGee's answer (2nd)
-function isColor(strColor) => {
+function isColor(strColor) {
   const s = new Option().style;
   s.color = strColor;
   return s.color !== '';
