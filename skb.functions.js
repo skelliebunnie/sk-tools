@@ -124,3 +124,11 @@ function inArrayCaseInsensitive(haystackArray, needle){
   	return true;
   }
 }
+
+// From https://stackoverflow.com/questions/48484767/javascript-check-if-string-is-valid-css-color
+// LeeGee's answer (2nd)
+function isColor(strColor) => {
+  const s = new Option().style;
+  s.color = strColor;
+  return s.color !== '';
+}
