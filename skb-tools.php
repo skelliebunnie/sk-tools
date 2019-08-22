@@ -16,7 +16,7 @@ define( 'SKB_ROOTURL', plugins_url() .'/skb-tools/' );
 define( 'SKB_SITE_URL', get_site_url() .'/' );
 define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
-require_once('skb.enqueue.php');
+require_once('dist/skb.enqueue.php');
 
 // SKB-FILTER
 foreach(glob(SKB_ROOTDIR ."skb-filter/*.php") as $filename) {

@@ -76,7 +76,7 @@ jQuery(document).ready( function($) {
 	}
 
 	function defineFilters() {
-		data_list = []; var colorFilter = $("#skb-filter-container").data('colorfilter');
+		data_list = [];
 
 		$(".skb-filter-item").each(function() {
 			var data = $(this).data();
@@ -85,50 +85,50 @@ jQuery(document).ready( function($) {
 		});
 
 		$.each(data_list, function(i, data) {
-
 			$.each(data, function(key, value) {
 				key = lcFirst(key);
 				value = lcFirst(value);
 
-				if( (colorFilter !== true && !(key in filters_list)) || 
-						(colorFilter === true && key !== "color" && !(key in filters_list)) ) {
+				if( !( key in filters_list ) ) {
 					filters_list[key] = [];
-
 				}
 
-				if( (colorFilter === true && key !== "color" && value !== "") || (colorFilter !== true && value !== "") ) {
+				if( value !== "" ) {
 
-					if( !strpos(value, ',') ) {
+					if( value.indexOf(',') === -1 ) {
+
 						var value_obj = { "name": value, "count": 1 };
 
 						var check = findObjByProperty(filters_list[key], value);
-						if( check === null ) {
-							filters_list[key].push(value_obj);
-
-						} else {
-							filters_list[key][check].count++;
-						}
-
-					} else {
-						var val_list = value.split(",");
-						val_list = lcTrimArray(val_list);
-
-						$.each(val_list, function(index, prop) {
-							var value_obj = { "name": prop, "count": 1 };
-
-							var check = findObjByProperty(filters_list[key], prop);
 							if( check === null ) {
 								filters_list[key].push(value_obj);
 
 							} else {
 								filters_list[key][check].count++;
 							}
-						});
 
+					} else {
+						var colors = value.split(",");
+
+						$.each(colors, function(i,color) {
+							color = lcFirst(color);
+
+							var color_obj = { "name": color, "count": 1 };
+
+							var check = findObjByProperty(filters_list[key], color);
+							if( check === null ) {
+								filters_list[key].push(color_obj);
+
+							} else {
+								filters_list[key][check].count++;
+							}
+
+						});
+						
 					}
 				}
 
-			}); //end $.each(data)
+			});
 		});
 	}
 

@@ -120,6 +120,33 @@
 	}
 }
 
+#skb-filter-colorblocks-container {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 1rem 0;
+}
+
+.skb-colorblock {
+	cursor: pointer;
+	position: relative;
+	z-index: 10;
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	margin: 0.25rem;
+	border: 1px solid #000;
+	// box-shadow: 1px 0 1px 1px #aaa, -1px 0 1px 1px #aaa, 0 1px 1px 1px #aaa, 0 -1px 1px 1px #aaa;
+}
+
+.skb-active-colorblock {
+	border: 3px solid #000;
+}
+
+/**
+ * MEDIA QUERIES
+**/
 @media all and (min-width: 1024px) {
 	#skb-filter-container {
 		flex-flow: row wrap;

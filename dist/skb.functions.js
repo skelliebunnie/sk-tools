@@ -32,6 +32,17 @@ function compArrays(arr1, arr2) {
   return jQuery(arr1).not(arr2).length === 0 && jQuery(arr2).not(arr1).length === 0;
 }
 
+// use to check if there is a difference between 2 arrays
+// difference of arrays is returned (if nothing returned, no difference)
+function arrayDiff(arr1, arr2) {
+  return jQuery(arr1).not(arr2).get(); 
+}
+
+// use to check if any value in an array can be found in the 2nd array
+function findMatchInArray(arr1, arr2) {
+  return arr1.some( r => arr2.includes(r) );
+}
+
 // from tutorial: https://gomakethings.com/check-if-two-arrays-or-objects-are-equal-with-javascript/
 // explicitly for comparing ARRAYs and OBJECTs *only*
 function isEqual(value, other) {
@@ -94,6 +105,12 @@ function isEqual(value, other) {
   return true;
 }
 
+function lcTrimArray(arr) {
+  var new_array = jQuery.map(arr, function(n,i){ return n.toLowerCase().trim(); } );
+
+  return new_array;
+}
+
 function ucFirst(value) {
   value = jQuery.trim(value);
 	return value.substr(0,1).toUpperCase()+value.substr(1);
@@ -113,8 +130,8 @@ function inArrayCaseInsensitive(haystackArray, needle) {
   var defaultResult = -1;
   var result = defaultResult;
   jQuery.each(haystackArray, function(index, value) { 
-  if (result == defaultResult && value.toLowerCase() == needle.toLowerCase()) {
-  result = index;
+    if (result == defaultResult && value.toLowerCase() == needle.toLowerCase() ) {
+    result = index;
   }
   });
 

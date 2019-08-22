@@ -49,7 +49,7 @@ const paths = {
 		src:  ROOT + '/src/images/**/!(_)*.{jpg,JPG,jpeg,JPEG,png,PNG}',
 		dest:  ROOT + '/dist/images'
 	},
-	public: ROOT + '/**/*.{html,php}'
+	public: ROOT + '/**/*.{html,php,js}'
 }
 
 console.log(paths.styles.src);
