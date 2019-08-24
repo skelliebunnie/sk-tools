@@ -1,0 +1,23 @@
+.no-pad {
+	padding: 0;
+
+	&-top { padding-top: 0; }
+	&-bottom { padding-bottom: 0; }
+	&-left { padding-left: 0; }
+	&-right { padding-right: 0; }
+}
+
+tr.no-pad > th,
+tr.no-pad > td { padding: 0; }
+
+tr.no-pad-top > th,
+tr.no-pad-top > td { padding-top: 0; }
+
+tr.no-pad-bottom > th,
+tr.no-pad-bottom > td { padding-bottom: 0; }
+
+tr.no-pad-left > th,
+tr.no-pad-left > td { padding-left: 0; }
+
+tr.no-pad-right > th,
+tr.no-pad-right > td { padding-right: 0; }

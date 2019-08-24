@@ -3,7 +3,11 @@
 function skb_styles() {
 	wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
 
-	wp_register_style('skb-filters-style', SKB_ROOTURL ."dist/css/skb-filter.styles.css");
+	wp_register_style('skb-admin-styles', SKB_ROOTURL ."dist/css/skb-admin.styles.css");
+
+	wp_register_style('skb-filters-styles', SKB_ROOTURL ."dist/css/skb-filter.styles.css");
+
+	wp_register_style('skb-breadcrumbs-styles', SKB_ROOTURL ."dist/css/skb-breadcrumbs.styles.css");
 }
 add_action( 'wp_enqueue_scripts', 'skb_styles' );
 add_action( 'admin_enqueue_scripts', 'skb_styles' );

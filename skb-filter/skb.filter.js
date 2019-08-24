@@ -1,7 +1,5 @@
 jQuery(document).ready( function($) {
 
-	$("#skb-filter-container").append("Hello?");
-
 	var selected_filter = 'all';
 	var filter_type = $("#skb-filter-container").data("type");
 

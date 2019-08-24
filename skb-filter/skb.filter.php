@@ -1,7 +1,7 @@
 <?php
 
 function skb_filter_shortcode($atts) {
-	wp_enqueue_style('skb-filters-style');
+	wp_enqueue_style('skb-filters-styles');
 
 	// types are: 
 	//	* default ( 1 filter at a time )
