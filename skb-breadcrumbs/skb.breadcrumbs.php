@@ -45,7 +45,7 @@ function skb_breadcrumbs_shortcode($atts) {
 		// if no permalink is found for the given title,
 		// just get the url of the parent page
 		// if there is no parent page, get the site URL
-		if( $parent['url'] === null || $parent['url'] === "" && get_permalink($post->post_parent) ) {
+		if( ($parent['url'] === null || $parent['url'] === "") && get_permalink($post->post_parent) ) {
 			$parent['url'] = get_permalink($post->post_parent);
 
 		} elseif( !get_permalink($post->post_parent) ) {
