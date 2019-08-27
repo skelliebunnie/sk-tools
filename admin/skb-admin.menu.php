@@ -24,3 +24,10 @@ function skb_tools_admin_menu() {
 	);
 }
 add_action('admin_menu', 'skb_tools_admin_menu');
+
+function skb_admin_enqueue() {
+	$script_misha = SKB_ROOTURL . 'admin/js/misha-image-upload.js';
+
+	wp_register_script('skb-misha-script', $script_misha);
+}
+add_action( 'admin_enqueue_scripts', 'skb_admin_enqueue', 50 );

@@ -1,14 +1,19 @@
 <?php
 // create options page content
 function skb_admin_settings() {
-	// Init general ST options
 	global $skb_options;
+
+	// echo "<pre>";
+	// var_dump($skb_options);
+	// echo "</pre>";
+
+	wp_enqueue_media();
+	wp_enqueue_script('skb-misha-script');
 
 	wp_enqueue_style('skb-admin-styles');
 
 	ob_start();
 ?>
-
 	<div class="st-wrap">
 		<h1><?php _e("SKB Tools Settings", "skb_domain"); ?></h1>
 		<!-- <p><?php //_e("Settings for the SKB Tools Plugin", "skb_domain"); ?></p> -->
@@ -19,8 +24,8 @@ function skb_admin_settings() {
 			<table class="form-table">
 				<tbody>
 					<tr>
-						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro;'>
-							<h4 class='no-pad no-margin'>Breadcrumbs Nav Options</h4>
+						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
+							<h3 class='no-pad no-margin'>Breadcrumbs Nav Options</h3>
 						</th>
 					</tr>
 					<!-- include home link in breadcrumbs nav -->
@@ -52,7 +57,7 @@ function skb_admin_settings() {
 					</tr>
 					<tr class="no-pad-top">
 						<td colspan="2">
-							<p class="description">
+							<p class="description no-pad">
 								<?php _e("Show the home icon in the breadcrumbs nav?", "skb_domain"); ?>
 							</p>
 						</td>
@@ -69,7 +74,7 @@ function skb_admin_settings() {
 					</tr>
 					<tr class='no-pad-top'>
 						<td colspan="2">
-							<p class="description" style="padding: 0">
+							<p class="description no-pad">
 								<?php _e("Show the name of the current page in the breadcrumbs nav?", "skb_domain"); ?>
 							</p>
 						</td>
@@ -86,8 +91,39 @@ function skb_admin_settings() {
 					</tr>
 					<tr class='no-pad-top'>
 						<td colspan="2">
-							<p class="description" style="padding: 0">
+							<p class="description no-pad">
 								<?php _e("Make the current page in the breadcrumbs nav a link?", "skb_domain"); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
+							<h3 class='no-pad no-margin'>Directory Options</h3>
+						</th>
+					</tr>
+					<!-- set default image for directory when no avatar is present -->
+					<tr class="no-pad">
+						<th scope="row" colspan=2>
+							<label for="skb_settings[skb-d_default_photo]"><?php _e('Default Photo', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default image for the directory if no avatar has been set for the user", "skb_domain"); ?>
+							</p>
+							<?php echo skb_image_upload('skb-d_default_photo', $skb_options['skb-d_default_photo'], true); ?>
+						</th>
+					</tr>
+					<!-- directory avatar size (square) -->
+					<tr>
+						<th scope="row">
+							<label for="skb_settings[skb-d_photo_size]"><?php _e('Directory Photo Size', 'skb_domain'); ?></label>
+						</th>
+						<td>
+							<input type="number" name="skb_settings[skb-d_photo_size]" value="<?php $skb_options['skb-d_photo_size']; ?>" placeholder="<?php if( isset($skb_options['skb-d_photo_size']) ) { echo $skb_options['skb-d_photo_size']; }; ?>">
+						</td>
+					</tr>
+					<tr class='no-pad-top'>
+						<td colspan="2">
+							<p class="description no-pad">
+								<?php _e("How large should the directory photo size be? Height & width are the same.", "skb_domain"); ?>
 							</p>
 						</td>
 					</tr>

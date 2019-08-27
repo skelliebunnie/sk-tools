@@ -8,6 +8,8 @@ function skb_styles() {
 	wp_register_style('skb-filters-styles', SKB_ROOTURL ."dist/css/skb-filter.styles.css");
 
 	wp_register_style('skb-breadcrumbs-styles', SKB_ROOTURL ."dist/css/skb-breadcrumbs.styles.css");
+
+	wp_register_style('skb-directory-styles', SKB_ROOTURL ."dist/css/skb-directory.styles.css");
 }
 add_action( 'wp_enqueue_scripts', 'skb_styles' );
 add_action( 'admin_enqueue_scripts', 'skb_styles' );
