@@ -48,6 +48,11 @@ foreach(glob(SKB_ROOTDIR ."skb-breadcrumbs/*.php") as $filename) {
 	require_once($filename);
 }
 
+// SKB-AIRTABLE
+foreach(glob(SKB_ROOTDIR ."skb-airtable/*.php") as $filename) {
+	require_once($filename);
+}
+
 // SKB-DIRECTORY
 // foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
 // 	require_once($filename);

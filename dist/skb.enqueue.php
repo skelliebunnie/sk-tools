@@ -20,8 +20,13 @@ function skb_scripts() {
 
 	// ../skb-filter/skb.filter.js
 	wp_register_script('skb-filter-script', SKB_ROOTURL ."skb-filter/skb.filter.js", array('skb-functions-script'), null, true);
+
 	// ../skb-filter/skb.filter-color.js
 	wp_register_script('skb-filter-color-script', SKB_ROOTURL ."skb-filter/skb.filter-color.js", array('skb-functions-script'), null, true);
+
+	// ../skb-airtable/airtable.api.js
+	wp_register_script('skb-airtable-api-script', SKB_ROOTURL ."skb-airtable/airtable.api.js", array('jquery'), null, true);
+	wp_register_script('skb-airtable-init-script', SKB_ROOTURL ."skb-airtable/skb.airtable.init.js", array('skb-functions-script'), null, true);
 }
 add_action( 'wp_enqueue_scripts', 'skb_scripts' );
 add_action( 'admin_enqueue_scripts', 'skb_scripts' );
