@@ -21,3 +21,8 @@ tr.no-pad-left > td { padding-left: 0; }
 
 tr.no-pad-right > th,
 tr.no-pad-right > td { padding-right: 0; }
+
+#skb-d_default_photo_image-upload img {
+	max-height: 100px;
+	margin-left: 3.25rem;
+}

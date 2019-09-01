@@ -18,17 +18,32 @@ define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
-	'skb-bc_show_home'					=> 'true',
-	'skb-bc_show_home_icon'			=> 'true',
-	'skb-bc_home_icon_only'			=> 'false',
-	'skb-bc_show_current'				=> 'true',
-	'skb-bc_current_url'				=> 'false',
-	'skb-d_default_photo'				=> SKB_ROOTURL .'skb-directory/pacsci-icon.png',
-	'skb-d_photo_size'					=> '200'
+	'skb_enable_airtable'				=> 'true',
+	'skb_enable_breadcrumbs'		=> 'true',
+	'skb_enable_directory'			=> 'true',
+	'skb_enable_filter'					=> 'true',
+	'skb_enable_virtualposts'		=> 'true',
+	'skb-bc-show_home'					=> 'true',
+	'skb-bc-show_home_icon'			=> 'true',
+	'skb-bc-home_icon_only'			=> 'false',
+	'skb-bc-show_current'				=> 'true',
+	'skb-bc-current_url'				=> 'false',
+	'skb-d-default_photo'				=> SKB_ROOTURL .'skb-directory/pacsci-icon.png',
+	'skb-d-photo_size'					=> '200'
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
 $skb_options = wp_parse_args(get_option('skb_settings'), $defaults);
+
+// global options variable; note SINGULAR get_option!
+$vp_defaults = array(
+	'skb-vp-url_slug'				=> 'virtual',
+	'skb-vp-post_title'			=> 'Virtual Post Title',
+	'skb-vp-post_content'		=> 'Virtual Post Content'
+);
+// wp_parse_args is REQUIRED when assigning an ARRAY of default values
+// Also, $defaults is in wp_parse_args(), NOT get_option() ...
+$skb_virtualpost_options = wp_parse_args(get_option('skb_virtualpost_settings'), $vp_defaults);
 
 require_once('dist/skb.functions.php');
 require_once('dist/skb.enqueue.php');
@@ -53,7 +68,13 @@ foreach(glob(SKB_ROOTDIR ."skb-airtable/*.php") as $filename) {
 	require_once($filename);
 }
 
+// SKB-VIRTUALPOSTS
+foreach(glob(SKB_ROOTDIR ."skb-virtualposts/*.php") as $filename) {
+	require_once($filename);
+}
+
 // SKB-DIRECTORY
 // foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
 // 	require_once($filename);
 // }
+
