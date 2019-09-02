@@ -1,5 +1,5 @@
 <?php
-
+//** CURRENTLY NOT IN USE 2019.09.02 **//
 class SKB_AirtableConnection {
 	private $root 	= "https://api.airtable.com/v0/";
 	private $url;
@@ -32,3 +32,11 @@ class SKB_AirtableConnection {
 		return wp_remote_get($this->url, $this->args);
 	}
 }
+
+function skb_ap_query($query,$request,$config) {
+	$butterflies_query = new AirpressQuery("Butterflies");
+	$butterflies_query->cacheImageFields("Photo", array("not-too-small", "medium", "full"));
+
+	return $query;
+}
+add_filter("airpress_virtualpost_query", "skb_ap_query", 10, 3);

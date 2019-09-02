@@ -32,17 +32,17 @@ function skb_admin_settings() {
 					<!-- enable skb-airtable -->
 					<tr class='no-pad'>
 						<th scope="row">
-							<label for="skb_settings[skb_enable_airtable]"><?php _e('Enable Airtable', 'skb_domain'); ?></label>
+							<label for="skb_settings[skb_enable_butterflies]"><?php _e('Enable Butterflies AirPress', 'skb_domain'); ?></label>
 						</th>
 						<td>
-							<input type="hidden" name="skb_settings[skb_enable_airtable]" value="false">
-							<input type="checkbox" name="skb_settings[skb_enable_airtable]" value="true" <?php if ($skb_options['skb_enable_airtable'] == "true" ) { echo "checked"; } ?> >
+							<input type="hidden" name="skb_settings[skb_enable_butterflies]" value="false">
+							<input type="checkbox" name="skb_settings[skb_enable_butterflies]" value="true" <?php if ($skb_options['skb_enable_butterflies'] == "true" ) { echo "checked"; } ?> >
 						</td>
 					</tr>
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Airtable shortcode be available?", "skb_domain"); ?>
+								<?php _e("Should the SKB-Tools Airpress (for Butterflies) shortcode be available?", "skb_domain"); ?>
 							</p>
 						</td>
 					</tr>

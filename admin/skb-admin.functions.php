@@ -18,7 +18,7 @@ function skb_image_upload($target, $url='', $setting = false) {
 		$target_name = "skb_settings[$target]";
 	}
 
-	$image_link = "<img id='imagePreview-{$target}' src='{$url}' height='{$skb_options['skb-d_photo_size']}' width='{$skb_options['skb-d_photo_size']}' style='margin-top: 1rem;'><br>";
+	$image_link = "<img id='imagePreview-{$target}' src='{$url}' height='{$skb_options['skb-d-photo_size']}' width='{$skb_options['skb-d-photo_size']}' style='margin-top: 1rem;'><br>";
 
 	$image_link .= "<section style='margin-left: 1.25rem;'><a href='#' id='{$target}-image' data-target='{$target}' class='misha_upload_image_button button' title='Set Image' aria-label='Set Image'><i class='far fa-image'></i> $set_new_img</a>";
 	

@@ -18,7 +18,7 @@ define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
-	'skb_enable_airtable'				=> 'true',
+	'skb_enable_butterflies'		=> 'true',
 	'skb_enable_breadcrumbs'		=> 'true',
 	'skb_enable_directory'			=> 'true',
 	'skb_enable_filter'					=> 'true',
@@ -64,7 +64,7 @@ foreach(glob(SKB_ROOTDIR ."skb-breadcrumbs/*.php") as $filename) {
 }
 
 // SKB-AIRTABLE
-foreach(glob(SKB_ROOTDIR ."skb-airtable/*.php") as $filename) {
+foreach(glob(SKB_ROOTDIR ."skb-butterflies/*.php") as $filename) {
 	require_once($filename);
 }
 
@@ -74,7 +74,7 @@ foreach(glob(SKB_ROOTDIR ."skb-virtualposts/*.php") as $filename) {
 }
 
 // SKB-DIRECTORY
-// foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
-// 	require_once($filename);
-// }
+foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
+	require_once($filename);
+}
 

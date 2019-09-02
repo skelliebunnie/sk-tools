@@ -53,10 +53,27 @@ jQuery(document).ready( function($) {
 
 		var keys = Object.keys(filters_list);
 
+		$.each(keys, function(n,k) {
+			// sort alphabetically
+			filters_list[k] = filters_list[k].sort(function(a, b){
+		    if(a.name < b.name) { return -1; }
+		    if(a.name > b.name) { return 1; }
+		    return 0;
+			});
+		});
+
+		console.log(filters_list["colors"]);
+
 		// add the filters to the container
 		$.each(keys, function(i, key) {
 			if( filters_list[key].length !== 0 ) {
-				$("#skb-filter-container").append(`<section id='skb-wrapper-${key}' class='skb-wrapper'><span class='skb-filter-title' data-filtertype='${key}'>${key}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul></section>`);
+				
+				var title = key;
+				if( strpos(key, "_") ) {
+					title = ucFirst(key.replace(/\_/g, " "));
+				}
+
+				$("#skb-filter-container").append(`<section id='skb-wrapper-${key}' class='skb-wrapper'><span class='skb-filter-title' data-filtertype='${key}'>${title}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul></section>`);
 
 				$.each( filters_list[key], function(i, obj) {
 					if( obj.name !== "" && obj.name !== " " ) {
@@ -85,8 +102,8 @@ jQuery(document).ready( function($) {
 		$.each(data_list, function(i, data) {
 
 			$.each(data, function(key, value) {
-				key = lcFirst(key);
-				value = lcFirst(value);
+				var key = lcFirst(key);
+				var value = lcFirst(value);
 
 				if( (colorFilter !== true && !(key in filters_list)) || 
 						(colorFilter === true && key !== "color" && !(key in filters_list)) ) {
@@ -227,7 +244,7 @@ jQuery(document).ready( function($) {
 						tags_list = filter.tags;
 
 						$.each(tags_list, function(k,t) {
-							t = ucFirst(t);
+							t = t;
 							if( !filters_notice.includes(t) ) {
 								filters_notice.push(t);
 							}
@@ -238,7 +255,7 @@ jQuery(document).ready( function($) {
 								obj = obj.split(', ');
 
 								$.each(obj, function(k, val) {
-									val = ucFirst(val);
+									val = val;
 									if( tags_list.includes(val) ) {
 										item.show();
 
@@ -246,7 +263,7 @@ jQuery(document).ready( function($) {
 								});
 
 							} else {
-								obj = ucFirst(obj);
+								obj = obj;
 								if( tags_list.includes(obj) ) {
 									item.show();
 								}
@@ -264,7 +281,7 @@ jQuery(document).ready( function($) {
 						tags_list = filter.tags;
 
 						$.each(tags_list, function(k,t) {
-							t = ucFirst(t);
+							t = t;
 							if( !filters_notice.includes(t) ) {
 								filters_notice.push(t);
 							}
@@ -279,14 +296,14 @@ jQuery(document).ready( function($) {
 								obj = obj.split(', ');
 
 								$.each(obj, function(k, val) {
-									val = ucFirst(val);
+									val = val;
 									if( tags_list.includes(val) ) {
 										item_list.push(val);
 									}
 								});
 
 							} else {
-								obj = ucFirst(obj);
+								obj = obj;
 								if( tags_list.includes(obj) ) {
 									item_list.push(obj);
 								}
@@ -322,21 +339,21 @@ jQuery(document).ready( function($) {
 		var filters = [];
 		$(".skb-active-filter").each(function() {
 
-			var filter_name = $(this).data('filtertype').toLowerCase();
-			var tag = ucFirst($(this).data('filter'));
+			var filter_name = $(this).data('filtertype');
+			var tag = $(this).data('filter');
 
 			if( filters.length <= 0 ) {
-				filters.push( {'name': filter_name, 'tags': [tag] } );
+				filters.push( {'name': filter_name.toLowerCase(), 'tags': [tag] } );
 
 			} else {
 				$.each(filters, function(i,obj) {
-					if( obj.name === filter_name ) {
+					if( obj.name === filter_name.toLowerCase() ) {
 						obj.tags.push( tag );
 					}
 				});
 
-				if( findObjByProperty(filters, filter_name) === null ) {
-					filters.push( {'name': filter_name, 'tags': [tag] } );
+				if( findObjByProperty(filters, filter_name.toLowerCase()) === null ) {
+					filters.push( {'name': filter_name.toLowerCase(), 'tags': [tag] } );
 				}
 			}
 		});

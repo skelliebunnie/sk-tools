@@ -13,11 +13,11 @@ function skb_breadcrumbs_shortcode($atts) {
 		//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		$a = shortcode_atts( array(
-			'show_home'				=> $skb_options['skb-bc_show_home'],
-			'home_icon'				=> $skb_options['skb-bc_show_home_icon'],
-			'home_icon_only'	=> $skb_options['skb-bc_home_icon_only'],
-			'show_current'		=> $skb_options['skb-bc_show_current'],
-			'current_url'			=> $skb_options['skb-bc_current_url'],
+			'show_home'				=> $skb_options['skb-bc-show_home'],
+			'home_icon'				=> $skb_options['skb-bc-show_home_icon'],
+			'home_icon_only'	=> $skb_options['skb-bc-home_icon_only'],
+			'show_current'		=> $skb_options['skb-bc-show_current'],
+			'current_url'			=> $skb_options['skb-bc-current_url'],
 			'parent_url'			=> '',
 			'parent_title'		=> ''
 		), $atts );

@@ -11,8 +11,8 @@ function skb_directory_shortcode($atts) {
 		$a = shortcode_atts( array(
 			'role'					=> 'all',
 			'photo_shape'		=> 'circle',
-			'default_photo'	=> $skb_options['skb-d_default_photo'],
-			'photo_size'		=> $skb_options['skb-d_photo_size']
+			'default_photo'	=> $skb_options['skb-d-default_photo'],
+			'photo_size'		=> $skb_options['skb-d-photo_size']
 		), $atts );
 
 		$role = $a['role'];
