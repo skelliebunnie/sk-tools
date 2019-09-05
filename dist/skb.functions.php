@@ -30,7 +30,7 @@ function skb_make_virtual_pages() {
 		$content .= "<h4>Markings</h4><p>{$butterfly['Markings']}</p>";
 		$content .= "<h4>Shape</h4><p>{$butterfly['Shape']}</p>";
 
-		$vp_args = array('slug' => $butterfly['slug'], 'page_title' => $butterfly['Common Name'], 'page_content' => $content);
+		$vp_args = array('slug' => $butterfly['slug'], 'parent' => 'butterflies', 'page_title' => $butterfly['Common Name'], 'page_content' => $content);
 
 		new WP_EX_PAGE_ON_THE_FLY($vp_args);
 	}

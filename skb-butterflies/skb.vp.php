@@ -17,7 +17,6 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
 
     public $slug ='';
     public $args = array();
-    public $target = "";
 
     /**
      * __construct
@@ -43,12 +42,14 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
       
       $page_slug = $this->slug;
 
-      $comp_slug = ""; $parent = "";
+      $comp_slug = ""; $parent = isset($this->args['parent']) ? $this->args['parent'] ."/" : "";
       if( array_key_exists('pagename', $wp->query_vars) ) {
         $comp = explode("/", $wp->query_vars['pagename']);
+
         if( count($comp) > 1 ) {
           $comp_slug = $comp[1];
-          $parent = $comp[0] ."/";
+          $parent = $comp[0];
+
         } else {
           $comp_slug = $comp[0];
         }
@@ -60,8 +61,12 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
         //create a fake post
         $post = new stdClass;
         $post->post_author = 1;
+        if($parent !== "") {
+          $post->post_parent = $parent;
+          $parent = $parent ."/";
+        }
         $post->post_name = $page_slug;
-        $post->guid = get_bloginfo('wpurl' . '/'. $parent . $page_slug);
+        $post->guid = get_bloginfo('wpurl' .'/'. $parent . $page_slug);
         $post->post_title = $this->args['page_title'];
         //put your custom content here
         $post->post_content = $this->args['page_content'];
