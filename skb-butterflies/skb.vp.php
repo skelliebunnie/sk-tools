@@ -42,7 +42,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
       
       $page_slug = $this->slug;
 
-      $comp_slug = ""; $parent = isset($this->args['parent']) ? $this->args['parent'] ."/" : "";
+      $comp_slug = ""; $parent = array_key_exists("parent",$this->args) ? $this->args['parent'] : "";
       if( array_key_exists('pagename', $wp->query_vars) ) {
         $comp = explode("/", $wp->query_vars['pagename']);
 
@@ -66,7 +66,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
           $parent = $parent ."/";
         }
         $post->post_name = $page_slug;
-        $post->guid = get_bloginfo('wpurl' .'/'. $parent . $page_slug);
+        $post->guid = get_bloginfo('wpurl' .'/'. $page_slug);
         $post->post_title = $this->args['page_title'];
         //put your custom content here
         $post->post_content = $this->args['page_content'];
