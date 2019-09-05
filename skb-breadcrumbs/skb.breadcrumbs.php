@@ -18,6 +18,7 @@ function skb_breadcrumbs_shortcode($atts) {
 			'home_icon_only'	=> $skb_options['skb-bc-home_icon_only'],
 			'show_current'		=> $skb_options['skb-bc-show_current'],
 			'current_url'			=> $skb_options['skb-bc-current_url'],
+			'current_title'		=> '',
 			'parent_url'			=> '',
 			'parent_title'		=> ''
 		), $atts );
@@ -28,7 +29,7 @@ function skb_breadcrumbs_shortcode($atts) {
 		global $post;
 
 		$current['url'] = get_permalink($post);
-		$current['title'] = get_the_title($post);
+		$current['title'] = $a['current_title'] === '' ? get_the_title($post) : $a['current_title'];
 
 		if($a['parent_title'] === "" && $a['parent_url'] === "") {
 			if( $post->post_parent ) {

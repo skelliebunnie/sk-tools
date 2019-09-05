@@ -49,6 +49,8 @@ class SKB_AirtableConnection {
 			foreach($rows as $record) {
 				$record["wp_url"] = $this->wp_url . $record["id"];
 				$record["slug"] = strtolower(str_replace(" ", "-", $record["Common Name"]));
+				$record["slug"] = str_replace("'", "", $record["slug"]);
+
 				array_push($new_records, $record);
 			}
 
@@ -67,6 +69,7 @@ class SKB_AirtableConnection {
 					$rec['Common Name'] = $record["fields"]['Common Name'];
 
 					$rec["slug"] = strtolower(str_replace(" ", "-", $record["fields"]["Common Name"]));
+					$rec["slug"] = str_replace("'", "", $rec["slug"]);
 
 				} else {
 					$rec['Common Name'] = $record["fields"]["Genus"] ." ". $record["fields"]["Species"];
@@ -121,9 +124,20 @@ class SKB_AirtableConnection {
 
 	}
 
-	// public function getSingleRecord($id) {
-	// 	$this->url = $this->url ."/". $id;
-	// }
+	public function getSingleRecord($id) {
+		$single_args = $this->args;
+		$single_url = $this->ap_url ."?maxRecords=1&recordId=$id";
+		$single = wp_remote_get($single_url, $single_args);
+
+		$record = json_decode($single["body"], true);
+		$record = $record["records"][0];
+
+		$slug = isset($record["fields"]["Common Name"]) ? $record["fields"]["Common Name"] : $record["fields"]["Genus"] . $record["fields"]["Species"];
+		$record["slug"] = strtolower(str_replace(" ", "-", $slug));
+		$record["slug"] = str_replace("'", "", $slug);
+
+		return $record;
+	}
 }
 
 // function skb_ap_query($query,$request,$config) {

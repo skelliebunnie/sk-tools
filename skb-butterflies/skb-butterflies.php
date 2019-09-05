@@ -6,8 +6,10 @@ function skb_ap_butterflies_shortcode($atts) {
 	$butterflies_conn = new SKB_AirtableConnection();
 	$skb_butterflies = $butterflies_conn->getAllRecords(true);
 
+	$test = skb_get_page_by_slug('butterflies');
+
 	// echo "<pre>";
-	// var_dump($skb_butterflies);
+	// var_dump($test->ID);
 	// echo "</pre>";
 
 	$a = shortcode_atts( array(
@@ -58,10 +60,10 @@ function skb_ap_butterflies_shortcode($atts) {
 		
 		echo "<div id='skb-butterflies-gallery' class='masonry'>";
 		foreach($skb_butterflies as $butterfly) :
-			if(($a['photo_only'] === "true" && $butterfly['Thumbnail'] !== "") || $a['photo_only'] !== "true") :
+			if(($a['photo_only'] === "true" && $butterfly['Thumbnail'] !== "") || $a['photo_only'] !== "true") {
 		?>
 		<div class="card skb-filter-item" data-colors="<?php echo $butterfly['Colors']; ?>" data-region="<?php echo $butterfly['Region']; ?>" data-genus="<?php echo $butterfly['Genus']; ?>" data-markings="<?php echo $butterfly['Markings']; ?>" data-shape="<?php echo $butterfly['Shape']; ?>">
-			<a href="<?php echo SKB_SITE_URL ."butterflies/". $butterfly['slug']; ?>">
+			<a href="<?php echo SKB_SITE_URL . $butterfly['slug']; ?>">
 				<figure>
 					<img src="<?php echo $butterfly['Thumbnail']; ?>" alt="<?php echo $butterfly['Common Name']; ?>">
 					<figcaption>
@@ -73,7 +75,7 @@ function skb_ap_butterflies_shortcode($atts) {
 			</a>
 		</div>
 		<?php
-			endif;
+			}
 		endforeach;
 		echo "</div>";
 

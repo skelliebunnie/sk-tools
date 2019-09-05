@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.2
+ * Version: 3.3
  * Author: Margaret Ralston
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
@@ -80,3 +80,26 @@ foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
 	require_once($filename);
 }
 
+function skb_tools_activation() {
+	//flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'skb_tools_activation' );
+
+function skb_tools_deactivation() {
+	//flush_rewrite_rules();
+}
+register_deactivation_hook( __FILE__, 'skb_tools_deactivation' );
+
+// function skb_append($content) {
+// 	global $post;
+
+// 	//$content .= $post->post_parent;
+
+// 	if( $post->post_name === "african-moon-moth" ) {
+// 		$content .= "Permalink: ". get_permalink($post) ."<br>";
+// 		$content .= "Ancestors: ". implode("<br>", $post->ancestors);
+// 	}
+
+// 	return $content;
+// }
+// add_filter('the_content', 'skb_append');

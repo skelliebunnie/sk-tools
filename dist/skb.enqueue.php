@@ -12,6 +12,10 @@ function skb_styles() {
 	wp_register_style('skb-butterflies-styles', SKB_ROOTURL ."dist/css/skb-butterflies.styles.css");
 
 	wp_register_style('skb-directory-styles', SKB_ROOTURL ."dist/css/skb-directory.styles.css");
+
+	if ( is_page_template( 'custom.php' ) ) {
+    wp_enqueue_style( 'skb-butterflies-styles' );
+  }
 }
 add_action( 'wp_enqueue_scripts', 'skb_styles' );
 add_action( 'admin_enqueue_scripts', 'skb_styles' );

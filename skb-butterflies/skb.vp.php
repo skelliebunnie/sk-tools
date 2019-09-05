@@ -62,11 +62,11 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
         $post = new stdClass;
         $post->post_author = 1;
         if($parent !== "") {
-          $post->post_parent = $parent;
-          $parent = $parent ."/";
+          $p = skb_get_page_by_slug($parent);
+          $post->post_parent = $p->ID;
         }
         $post->post_name = $page_slug;
-        $post->guid = get_bloginfo('wpurl' .'/'. $page_slug);
+        $post->guid = get_bloginfo('wpurl' . $page_slug);
         $post->post_title = $this->args['page_title'];
         //put your custom content here
         $post->post_content = $this->args['page_content'];
@@ -81,6 +81,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
         $post->post_date_gmt = current_time('mysql',1);
 
         $post = (object) array_merge((array) $post, (array) $this->args);
+        wp_set_post_categories($post->ID, "butterflies", true);
         $posts = NULL;
         $posts[] = $post;
 
