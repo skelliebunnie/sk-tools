@@ -11,6 +11,8 @@
 if( !defined( 'ABSPATH' ) ) { exit; }
 date_default_timezone_set('America/Los_Angeles');
 
+register_activation_hook( __FILE__, 'flush_rewrite_rules' );
+
 define( 'SKB_ROOTDIR', plugin_dir_path(__FILE__) );
 define( 'SKB_ROOTURL', plugins_url() .'/skb-tools/' );
 define( 'SKB_SITE_URL', get_site_url() .'/' );
@@ -69,9 +71,9 @@ foreach(glob(SKB_ROOTDIR ."skb-butterflies/*.php") as $filename) {
 }
 
 // SKB-VIRTUALPOSTS
-foreach(glob(SKB_ROOTDIR ."skb-virtualposts/*.php") as $filename) {
-	require_once($filename);
-}
+// foreach(glob(SKB_ROOTDIR ."skb-virtualposts/*.php") as $filename) {
+// 	require_once($filename);
+// }
 
 // SKB-DIRECTORY
 foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {

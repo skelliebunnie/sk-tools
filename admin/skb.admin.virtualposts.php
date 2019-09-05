@@ -11,9 +11,9 @@ function skb_admin_virtualposts() {
 
 	update_option( 'skb_virtualpost_settings', $skb_virtualpost_options );
 
-	echo "<pre>";
-	var_dump(get_option('skb_virtualpost_settings'));
-	echo "</pre>";
+	// echo "<pre>";
+	// var_dump(get_option('skb_virtualpost_settings'));
+	// echo "</pre>";
 
 	//echo get_option('skb-vp-url_slug');
 
