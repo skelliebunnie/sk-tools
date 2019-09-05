@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 2.6
+ * Version: 3.0
  * Author: Margaret Ralston
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
