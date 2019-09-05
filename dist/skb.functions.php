@@ -11,9 +11,9 @@ function skb_get_page_by_slug($page_slug, $post_type = 'page', $output = OBJECT 
 }
 
 function skb_make_virtual_pages() {
+
 	require_once(SKB_ROOTDIR ."skb-butterflies/skb-butterflies.apclass.php");
 	require_once(SKB_ROOTDIR ."skb-butterflies/skb.vp.php");
-
 	$butterflies_conn = new SKB_AirtableConnection();
 	$skb_butterflies = $butterflies_conn->getAllRecords(true);
 

@@ -15,77 +15,81 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
   */
   class WP_EX_PAGE_ON_THE_FLY {
 
-  public $slug ='';
-  public $args = array();
+    public $slug ='';
+    public $args = array();
+    public $target = "";
 
-  /**
-   * __construct
-   * @param array $arg post to create on the fly
-   * @author Ohad Raz 
-   * 
-   */
-  function __construct($args){
-    add_filter('the_posts',array($this,'fly_page'));
-    $this->args = $args;
-    $this->slug = $args['slug'];
-  }
-
-  /**
-   * fly_page 
-   * the Money function that catches the request and returns the page as if it was retrieved from the database
-   * @param  array $posts 
-   * @return array 
-   * @author Ohad Raz
-   */
-  public function fly_page($posts) {
-    global $wp,$wp_query;
-    $page_slug = $this->slug;
-
-    $comp = explode("/", $wp->query_vars['pagename']);
-    $comp_slug = ""; $parent = "";
-    if( count($comp) > 1 ) {
-    	$comp_slug = $comp[1];
-    	$parent = $comp[0] ."/";
-    } else {
-    	$comp_slug = $comp[0];
+    /**
+     * __construct
+     * @param array $arg post to create on the fly
+     * @author Ohad Raz 
+     * 
+     */
+    function __construct($args){
+      add_filter('the_posts',array($this,'fly_page'));
+      $this->args = $args;
+      $this->slug = $args['slug'];
     }
 
-    //check if user is requesting our fake page
-    if( count($posts) == 0 && (strtolower($wp->request)) == $page_slug || $comp_slug == $page_slug ) {
+    /**
+     * fly_page 
+     * the Money function that catches the request and returns the page as if it was retrieved from the database
+     * @param  array $posts 
+     * @return array 
+     * @author Ohad Raz
+     */
+    public function fly_page($posts) {
+      global $wp,$wp_query;
+      
+      $page_slug = $this->slug;
 
-      //create a fake post
-      $post = new stdClass;
-      $post->post_author = 1;
-      $post->post_name = $page_slug;
-      $post->guid = get_bloginfo('wpurl' . '/'. $parent . $page_slug);
-      $post->post_title = $this->args['page_title'];
-      //put your custom content here
-      $post->post_content = $this->args['page_content'];
-      //just needs to be a number - negatives are fine
-      $post->ID = -42;
-      $post->post_status = 'static';
-      $post->comment_status = 'closed';
-      $post->ping_status = 'closed';
-      $post->comment_count = 0;
-      //dates may need to be overwritten if you have a "recent posts" widget or similar - set to whatever you want
-      $post->post_date = current_time('mysql');
-      $post->post_date_gmt = current_time('mysql',1);
+      $comp_slug = ""; $parent = "";
+      if( array_key_exists('pagename', $wp->query_vars) ) {
+        $comp = explode("/", $wp->query_vars['pagename']);
+        if( count($comp) > 1 ) {
+          $comp_slug = $comp[1];
+          $parent = $comp[0] ."/";
+        } else {
+          $comp_slug = $comp[0];
+        }
+      }
 
-      $post = (object) array_merge((array) $post, (array) $this->args);
-      $posts = NULL;
-      $posts[] = $post;
+      //check if user is requesting our fake page
+      if( count($posts) == 0 && (strtolower($wp->request)) == $page_slug || $comp_slug == $page_slug ) {
 
-      $wp_query->is_page = true;
-      $wp_query->is_singular = true;
-      $wp_query->is_home = false;
-      $wp_query->is_archive = false;
-      $wp_query->is_category = false;
-      unset($wp_query->query["error"]);
-      $wp_query->query_vars["error"]="";
-      $wp_query->is_404 = false;
+        //create a fake post
+        $post = new stdClass;
+        $post->post_author = 1;
+        $post->post_name = $page_slug;
+        $post->guid = get_bloginfo('wpurl' . '/'. $parent . $page_slug);
+        $post->post_title = $this->args['page_title'];
+        //put your custom content here
+        $post->post_content = $this->args['page_content'];
+        //just needs to be a number - negatives are fine
+        $post->ID = -42;
+        $post->post_status = 'static';
+        $post->comment_status = 'closed';
+        $post->ping_status = 'closed';
+        $post->comment_count = 0;
+        //dates may need to be overwritten if you have a "recent posts" widget or similar - set to whatever you want
+        $post->post_date = current_time('mysql');
+        $post->post_date_gmt = current_time('mysql',1);
+
+        $post = (object) array_merge((array) $post, (array) $this->args);
+        $posts = NULL;
+        $posts[] = $post;
+
+        $wp_query->is_page = true;
+        $wp_query->is_singular = true;
+        $wp_query->is_home = false;
+        $wp_query->is_archive = false;
+        $wp_query->is_category = false;
+        unset($wp_query->query["error"]);
+        $wp_query->query_vars["error"]="";
+        $wp_query->is_404 = false;
+      }
+
+      return $posts;
     }
-
-    return $posts;
-  }
   }//end class
 }//end if
