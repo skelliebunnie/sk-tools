@@ -43,7 +43,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
       $page_slug = $this->slug;
 
       $comp_slug = ""; $parent = array_key_exists("parent",$this->args) ? $this->args['parent'] : "";
-      if( is_array($wp->query_vars) && array_key_exists('pagename', $wp->query_vars) ) {
+      if( is_object($wp) && is_array($wp->query_vars) && array_key_exists('pagename', $wp->query_vars) ) {
         $comp = explode("/", $wp->query_vars['pagename']);
 
         if( count($comp) > 1 ) {
@@ -56,7 +56,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
       }
 
       //check if user is requesting our fake page
-      if( count($posts) == 0 && (strtolower($wp->request)) == $page_slug || $comp_slug == $page_slug ) {
+      if( is_object($wp) && count($posts) == 0 && (strtolower($wp->request)) == $page_slug || $comp_slug == $page_slug ) {
 
         //create a fake post
         $post = new stdClass;
