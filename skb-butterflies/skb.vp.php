@@ -43,7 +43,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
       $page_slug = $this->slug;
 
       $comp_slug = ""; $parent = array_key_exists("parent",$this->args) ? $this->args['parent'] : "";
-      if( array_key_exists('pagename', $wp->query_vars) ) {
+      if( is_array($wp->query_vars) && array_key_exists('pagename', $wp->query_vars) ) {
         $comp = explode("/", $wp->query_vars['pagename']);
 
         if( count($comp) > 1 ) {
