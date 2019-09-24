@@ -1,12 +1,12 @@
 var PROXY, PORT, ROOT;
 var public = true;
 
-PROXY = "wordpress.lfx"; // MADAGASCAR
-//PROXY = "wordpress.dnt"; // DINONITE
+//PROXY = "wordpress.lfx"; // MADAGASCAR
+PROXY = "wordpress.dnt"; // DINONITE
 PORT = 3000;
 
-ROOT = "/media/lfx/www/wordpress/wp-content/plugins/skb-tools";
-//ROOT = 'X:/cms/wordpress/wp-content/plugins/skb-tools';
+//ROOT = "/media/lfx/www/wordpress/wp-content/plugins/skb-tools";
+ROOT = 'X:/cms/wordpress/wp-content/plugins/skb-tools';
 SOURCEMAP_ROOT = "http://" + PROXY + "/public/css/maps/";
 
 function nthIndex(str, search, n) {
@@ -39,15 +39,15 @@ const server = browserSync.create();
 const paths = {
 	styles: {
 		src:  ROOT + '/src/styles/**/!(#)*.scss',
-		dest:  ROOT + '/dist/css'
+		dest:  ROOT + '/includes/css'
 	},
 	scripts: {
 		src:  ROOT + '/src/scripts/**/!(_)*.js',
-		dest:  ROOT + '/dist/js'
+		dest:  ROOT + '/includes/js'
 	},
 	images: {
 		src:  ROOT + '/src/images/**/!(_)*.{jpg,JPG,jpeg,JPEG,png,PNG}',
-		dest:  ROOT + '/dist/images'
+		dest:  ROOT + '/includes/images'
 	},
 	public: ROOT + '/**/*.{html,php,js}'
 }

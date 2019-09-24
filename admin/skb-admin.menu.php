@@ -14,15 +14,15 @@ function skb_tools_admin_menu() {
 	);
 
 	// CREATE EVENTS
-	add_submenu_page(
-		//'options-general.php', // parent slug
-		'skb_admin',
-		'Virtual Posts', // $page_title
-		'Virtual Posts', // $menu_title
-		'manage_options', // $capability
-		'skb_admin_virtualposts', // $menu_slug
-		'skb_admin_virtualposts'//,  $function
-	);
+	// add_submenu_page(
+	// 	//'options-general.php', // parent slug
+	// 	'skb_admin',
+	// 	'Virtual Posts', // $page_title
+	// 	'Virtual Posts', // $menu_title
+	// 	'manage_options', // $capability
+	// 	'skb_admin_virtualposts', // $menu_slug
+	// 	'skb_admin_virtualposts'//,  $function
+	// );
 
 	// SKB-TOOLS SETTINGS
 	add_submenu_page(

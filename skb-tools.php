@@ -47,8 +47,8 @@ $vp_defaults = array(
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
 $skb_virtualpost_options = wp_parse_args(get_option('skb_virtualpost_settings'), $vp_defaults);
 
-require_once('dist/skb.functions.php');
-require_once('dist/skb.enqueue.php');
+require_once('includes/skb.functions.php');
+require_once('includes/skb.enqueue.php');
 
 // SKB-ADMIN
 foreach(glob(SKB_ROOTDIR ."admin/*.php") as $filename) {
