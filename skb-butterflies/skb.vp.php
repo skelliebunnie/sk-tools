@@ -38,7 +38,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
      * @author Ohad Raz
      */
     public function fly_page($posts) {
-      global $wp,$wp_query;
+      global $wp,$wp_query, $skb_options;
       
       $page_slug = $this->slug;
 
@@ -62,7 +62,7 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
 
         //create a fake post
         $post = new stdClass;
-        $post->post_author = 1;
+        $post->post_author = $skb_options['skb-btf-author'];
         if($parent !== "") {
           $p = skb_get_page_by_slug($parent);
           $post->post_parent = $p->ID;

@@ -29,7 +29,7 @@ function skb_admin_settings() {
 							<h3 class='no-pad no-margin'>Enable / Disable Tools</h3>
 						</th>
 					</tr>
-					<!-- enable skb-airtable -->
+					<!-- enable skb-butterflies -->
 					<tr class='no-pad'>
 						<th scope="row">
 							<label for="skb_settings[skb_enable_butterflies]"><?php _e('Enable Butterflies AirPress', 'skb_domain'); ?></label>
@@ -188,12 +188,34 @@ function skb_admin_settings() {
 							</p>
 						</td>
 					</tr>
+					<!-- author for Butterflies virtual pages -->
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-btf-author]"><?php _e('Butterflies Virtual Pages Author', 'skb_domain'); ?></label>
+						</th>
+						<td>
+							<select name="skb_settings[skb-btf-author]" id="skb_settings[skb-btf-author]">
+							<?php
+								$users = get_users(); 
+							  foreach ($users as $user) {
+							  	$option = "<option value='{$user->ID}'>";
+							  	if( $skb_options['skb-btf-author'] == $user->ID ) {
+							  		$option = "<option value='{$user->ID}' selected>";
+							  	}
+							    $option .= $user->display_name;
+							    $option .= "</option>";
+							    echo $option;
+							  }
+							?>
+							</select>
+						</td>
+					</tr>
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
 							<h3 class='no-pad no-margin'>Directory Options</h3>
 						</th>
 					</tr>
-					<!-- set default image for directory when no avatar is present -->
+					<!-- set default avatar for directory when no avatar is present -->
 					<tr class="no-pad">
 						<th scope="row" colspan=2>
 							<label for="skb_settings[skb-d-default_photo]"><?php _e('Default Photo', 'skb_domain'); ?></label>

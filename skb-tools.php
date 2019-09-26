@@ -31,7 +31,8 @@ $defaults = array(
 	'skb-bc-show_current'				=> 'true',
 	'skb-bc-current_url'				=> 'false',
 	'skb-d-default_photo'				=> SKB_ROOTURL .'skb-directory/pacsci-icon.png',
-	'skb-d-photo_size'					=> '200'
+	'skb-d-photo_size'					=> '200',
+	'skb-btf-author'						=> 2
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
