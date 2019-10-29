@@ -63,20 +63,20 @@ function skb_admin_settings() {
 							</p>
 						</td>
 					</tr>
-					<!-- enable skb-directory -->
+					<!-- enable skb-notices -->
 					<tr class='no-pad'>
 						<th scope="row">
-							<label for="skb_settings[skb_enable_directory]"><?php _e('Enable Directory', 'skb_domain'); ?></label>
+							<label for="skb_settings[skb_enable_notices]"><?php _e('Enable Notices', 'skb_domain'); ?></label>
 						</th>
 						<td>
-							<input type="hidden" name="skb_settings[skb_enable_directory]" value="false">
-							<input type="checkbox" name="skb_settings[skb_enable_directory]" value="true" <?php if ($skb_options['skb_enable_directory'] == "true" ) { echo "checked"; } ?> >
+							<input type="hidden" name="skb_settings[skb_enable_notices]" value="false">
+							<input type="checkbox" name="skb_settings[skb_enable_notices]" value="true" <?php if ($skb_options['skb_enable_notices'] == "true" ) { echo "checked"; } ?> >
 						</td>
 					</tr>
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Directory be available?", "skb_domain"); ?>
+								<?php _e("Should the SKB-Tools Notices be available?", "skb_domain"); ?>
 							</p>
 						</td>
 					</tr>
@@ -210,35 +210,57 @@ function skb_admin_settings() {
 							</select>
 						</td>
 					</tr>
+					<!-- NOTICES OPTIONS -->
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
-							<h3 class='no-pad no-margin'>Directory Options</h3>
+							<h3 class='no-pad no-margin'>Notices Options</h3>
 						</th>
 					</tr>
-					<!-- set default avatar for directory when no avatar is present -->
+					<!-- set default message for notices if none is provided in shortcode -->
 					<tr class="no-pad">
-						<th scope="row" colspan=2>
-							<label for="skb_settings[skb-d-default_photo]"><?php _e('Default Photo', 'skb_domain'); ?></label>
-							<p class="description no-pad" style="font-weight: normal;">
-								<?php _e("Default image for the directory if no avatar has been set for the user", "skb_domain"); ?>
-							</p>
-							<?php echo skb_image_upload('skb-d-default_photo', $skb_options['skb-d-default_photo'], true); ?>
-						</th>
-					</tr>
-					<!-- directory avatar size (square) -->
-					<tr>
 						<th scope="row">
-							<label for="skb_settings[skb-d-photo_size]"><?php _e('Directory Photo Size', 'skb_domain'); ?></label>
+							<label for="skb_settings[skb-n-default_message]"><?php _e('Default Message', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default message if none provided", "skb_domain"); ?>
+							</p>
 						</th>
 						<td>
-							<input type="number" name="skb_settings[skb-d-photo_size]" value="<?php $skb_options['skb-d-photo_size']; ?>" placeholder="<?php if( isset($skb_options['skb-d-photo_size']) ) { echo $skb_options['skb-d-photo_size']; }; ?>">
+							<input type="text" name="skb_settings[skb-n-default_message]" value="<?php echo $skb_options['skb-n-default_message']; ?>">
 						</td>
 					</tr>
-					<tr class='no-pad-top'>
-						<td colspan="2">
-							<p class="description no-pad">
-								<?php _e("How large should the directory photo size be? Height & width are the same.", "skb_domain"); ?>
+					<!-- notices default date format -->
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-n-default_date_format]"><?php _e('Default Date Format', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default date format if none provided", "skb_domain"); ?>
 							</p>
+						</th>
+						<td>
+							<input type="text" name="skb_settings[skb-n-default_date_format]" value="<?php echo $skb_options['skb-n-default_date_format']; ?>">
+						</td>
+					</tr>
+					<!-- notices default "type" -->
+					<?php $msg_types = array('info', 'warn', 'alert', 'success'); ?>
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-n-default_message_type]"><?php _e('Default Message Type', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default date format if none provided", "skb_domain"); ?>
+							</p>
+						</th>
+						<td>
+							<select name="skb_settings[skb-n-default_message_type]" id="skb_settings[skb-n-default_message_type]">
+							<?php
+								foreach($msg_types as $index=>$type) {
+									$selected = "";
+									if( (isset($skb_options['skb-n-default_message_type']) && $skb_options['skb-n-default_message_type'] === $type) || (!isset($skb_options['skb-n-default_message_type']) && $index=0) ) {
+										$selected = "selected";
+									}
+									echo "<option value='{$type}' $selected>". ucfirst($type) ."</option>";
+								}
+							?>
+							</select>
 						</td>
 					</tr>
 				</tbody>

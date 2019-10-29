@@ -22,7 +22,7 @@ define( 'SKB_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 $defaults = array(
 	'skb_enable_butterflies'		=> 'true',
 	'skb_enable_breadcrumbs'		=> 'true',
-	'skb_enable_directory'			=> 'true',
+	'skb_enable_notices'				=> 'true',
 	'skb_enable_filter'					=> 'true',
 	'skb_enable_virtualposts'		=> 'true',
 	'skb-bc-show_home'					=> 'true',
@@ -30,9 +30,10 @@ $defaults = array(
 	'skb-bc-home_icon_only'			=> 'false',
 	'skb-bc-show_current'				=> 'true',
 	'skb-bc-current_url'				=> 'false',
-	'skb-d-default_photo'				=> SKB_ROOTURL .'skb-directory/pacsci-icon.png',
-	'skb-d-photo_size'					=> '200',
-	'skb-btf-author'						=> 2
+	'skb-btf-author'						=> 3,
+	'skb-n-default_message'			=> 'Notice',
+	'skb-n-default_date_format'	=> 'l, F j, Y',
+	'skb-n-default_message_type' => 'info'
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
@@ -71,13 +72,8 @@ foreach(glob(SKB_ROOTDIR ."skb-butterflies/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-VIRTUALPOSTS
-// foreach(glob(SKB_ROOTDIR ."skb-virtualposts/*.php") as $filename) {
-// 	require_once($filename);
-// }
-
 // SKB-DIRECTORY
-foreach(glob(SKB_ROOTDIR ."skb-directory/*.php") as $filename) {
+foreach(glob(SKB_ROOTDIR ."skb-notices/*.php") as $filename) {
 	require_once($filename);
 }
 

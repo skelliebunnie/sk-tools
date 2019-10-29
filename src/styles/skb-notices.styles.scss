@@ -1,0 +1,50 @@
+@import "settings";
+
+.skb-notice {
+	width: 100%;
+	margin: 1rem 0.2rem 0.5rem 0.2rem;
+	padding: 0.3rem 0.75rem;
+	border: 2px solid #333;
+	background-color: gainsboro;
+
+	&--centered { text-align: center; }
+
+	&--font-xx-small { font-size: xx-small; }
+	&--font-x-small { font-size: x-small; }
+	&--font-small { font-size: small; }
+	&--font-normal { font-size: normal; }
+	&--font-large { font-size: large; }
+	&--font-x-large { font-size: x-large; }
+	&--font-xx-large { font-size: xx-large; }
+
+	&--info {
+		border-color: #00a0e0;
+		background-color: azure;
+	}
+	&--success {
+		border-color: #A0A65E;
+		background-color: #f8ffde;
+	}
+	&--warn {
+		border-color: #F0795B;
+		background-color: #fbe0e0;
+	}
+	&--alert {
+		border-color: #FFCD6A;
+		background-color: #fff4df;
+	}
+	&--neutral {
+		border-color: #434544;
+		background-color: #BEC4C2;
+	}
+	&--simple {
+		border: none;
+		background-color: transparent;
+		padding: 0.25rem 0.75rem;
+		margin: 0.15rem;
+	}
+}
+
+.skb-notice--date {
+	&-bold { font-weight: bold; }
+}
