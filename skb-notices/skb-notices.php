@@ -17,12 +17,30 @@ function skb_notices_shortcode($atts) {
 			'new_line'			=> 'true',
 			'date_format'		=> $skb_options['skb-n-default_date_format'], // e.g. Tuesday, October 29, 2019
 			'message'				=> $skb_options['skb-n-default_message'],
-			'type'					=> $skb_options['skb-n-default_message_type']
+			'type'					=> $skb_options['skb-n-default_message_type'],
+			'schedule'			=> 'every day'
 		), $atts );
 
 		if($a['date_location'] == 'first') { $a['date_location'] = 'before'; }
 		if($a['date_location'] == 'last') { $a['date_location'] = 'after'; }
 
+		$schedule = (strpos($a['schedule'], "/") === -1 && strpos($a['schedule'], "-") === -1) ? array(ucfirst(strtolower($a['schedule']))) : $a['schedule'];
+
+		$weekday = date('l');
+
+		$show_notice = false;
+
+		if( is_array($schedule) && (in_array($weekday, $schedule) || in_array('Every day', $schedule) || in_array('every day', $schedule)) || $schedule === "every day" ) { $show_notice = true; }
+
+		if( !is_array($schedule) && strpos($schedule, "/") ) {
+			$dt = date('Y-m-d', strtotime($schedule));
+
+			if($dt < date('Y-m-d')) {
+				$show_notice = true;
+			}
+		}
+
+		if($show_notice) :
 		?>
 <div class="skb-notice skb-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " skb-notice--centered"; }; echo " skb-notice--font-{$a['font_size']}"; ?>">
 <?php
@@ -45,6 +63,7 @@ function skb_notices_shortcode($atts) {
 ?>
 </div>
 		<?php
+	endif; // end if($show_notice)
 	} else {
 		echo "<p>skb_notices shortcode not enabled</p>";
 	} // end if skb_enable_directory check
