@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.3
+ * Version: 3.4
  * Author: Margaret Ralston
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
@@ -24,7 +24,6 @@ $defaults = array(
 	'skb_enable_breadcrumbs'		=> 'true',
 	'skb_enable_notices'				=> 'true',
 	'skb_enable_filter'					=> 'true',
-	'skb_enable_virtualposts'		=> 'true',
 	'skb-bc-show_home'					=> 'true',
 	'skb-bc-show_home_icon'			=> 'true',
 	'skb-bc-home_icon_only'			=> 'false',

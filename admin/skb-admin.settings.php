@@ -42,7 +42,7 @@ function skb_admin_settings() {
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Airpress (for Butterflies) shortcode be available?", "skb_domain"); ?>
+								<?php _e("Should the SKB-Tools Butterflies (data from AirPress) shortcode be available?", "skb_domain"); ?>
 							</p>
 						</td>
 					</tr>
@@ -94,23 +94,6 @@ function skb_admin_settings() {
 						<td colspan="2">
 							<p class="description">
 								<?php _e("Should the SKB-Tools Filter be available?", "skb_domain"); ?>
-							</p>
-						</td>
-					</tr>
-					<!-- enable skb-virtualposts -->
-					<tr class='no-pad'>
-						<th scope="row">
-							<label for="skb_settings[skb_enable_virtualposts]"><?php _e('Enable Virtual Posts', 'skb_domain'); ?></label>
-						</th>
-						<td>
-							<input type="hidden" name="skb_settings[skb_enable_virtualposts]" value="false">
-							<input type="checkbox" name="skb_settings[skb_enable_virtualposts]" value="true" <?php if ($skb_options['skb_enable_virtualposts'] == "true" ) { echo "checked"; } ?> >
-						</td>
-					</tr>
-					<tr class="no-pad-top">
-						<td colspan="2">
-							<p class="description">
-								<?php _e("Should the SKB-Tools Virtual Posts be available?", "skb_domain"); ?>
 							</p>
 						</td>
 					</tr>

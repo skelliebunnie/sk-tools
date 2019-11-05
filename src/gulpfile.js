@@ -1,13 +1,13 @@
 var PROXY, PORT, ROOT;
 var public = true;
 
-PROXY = "wordpress.lfx"; // MADAGASCAR
-//PROXY = "wordpress.dnt"; // DINONITE
+//PROXY = "wordpress.lfx"; // MADAGASCAR
+PROXY = "wordpress.dnt"; // DINONITE
 PORT = 3000;
 
-ROOT = "/media/lfx/www/wordpress/wp-content/plugins/skb-tools";
-//ROOT = 'X:/cms/wordpress/wp-content/plugins/skb-tools';
-SOURCEMAP_ROOT = "http://" + PROXY + "/public/css/maps/";
+//ROOT = "/media/lfx/www/wordpress/wp-content/plugins/skb-tools";
+ROOT = 'X:/cms/wordpress/wp-content/plugins/skb-tools';
+SOURCEMAP_ROOT = "http://" + PROXY + "/wp-content/plugins/skb-tools/src/style-maps/";
 
 function nthIndex(str, search, n) {
 	var L = str.length, i = -1;
