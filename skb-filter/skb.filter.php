@@ -8,16 +8,17 @@ function skb_filter_shortcode($atts) {
 	if($skb_options['skb_enable_filter'] === 'true') {
 		wp_enqueue_style('skb-filters-styles');
 
+		wp_enqueue_script('skb-functions-script');
+		wp_enqueue_script('skb-filter-script');
+
 		// types are: 
 		//	* default ( 1 filter at a time )
 		//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		$a = shortcode_atts( array(
 			'type'				=> 'default',
-			'colorblocks'	=> 'true'
+			'colorblocks'	=> 'false'
 		), $atts );
-
-		wp_enqueue_script('skb-filter-script');
 		
 		if($a['colorblocks'] === 'true') { wp_enqueue_script('skb-filter-color-script'); }
 

@@ -16,13 +16,15 @@ function skb_styles() {
 	if ( is_page_template( 'custom.php' ) ) {
     wp_enqueue_style( 'skb-butterflies-styles' );
   }
+
+  if(is_page_template('page.php')) { wp_enqueue_style('skb-butterflies-styles'); }
 }
 add_action( 'wp_enqueue_scripts', 'skb_styles' );
 add_action( 'admin_enqueue_scripts', 'skb_styles' );
 
 function skb_scripts() {
 	// General Functions
-	wp_register_script('skb-functions-script', SKB_ROOTURL ."dist/skb.functions.js", array('jquery'), null, true);
+	wp_register_script('skb-functions-script', SKB_ROOTURL ."includes/skb.functions.js", array('jquery'), null, true);
 
 	// ../skb-filter/skb.filter.js
 	wp_register_script('skb-filter-script', SKB_ROOTURL ."skb-filter/skb.filter.js", array('skb-functions-script'), null, true);

@@ -95,9 +95,11 @@ if ( !class_exists('WP_EX_PAGE_ON_THE_FLY') ) {
         unset($wp_query->query["error"]);
         $wp_query->query_vars["error"]="";
         $wp_query->is_404 = false;
+
       }
 
       return $posts;
     }
+
   }//end class
 }//end if

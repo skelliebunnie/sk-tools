@@ -48,7 +48,7 @@ class SKB_AirtableConnection {
 			$new_records = array();
 			foreach($rows as $record) {
 				$record["wp_url"] = $this->wp_url . $record["id"];
-				$record["slug"] = strtolower(str_replace(" ", "-", $record["Common Name"]));
+				$record["slug"] = strtolower(str_replace(" ", "-", $record['fields']["Common Name"]));
 				$record["slug"] = str_replace("'", "", $record["slug"]);
 
 				array_push($new_records, $record);
@@ -108,12 +108,12 @@ class SKB_AirtableConnection {
 					$rec['Fun Facts'] = "";
 				}
 
+				$rec['Photo'] = array();
 				if( array_key_exists('Photo', $record["fields"]) ) {
-					$rec["Thumbnail"] = $record['fields']['Photo'][0]['thumbnails']['large']['url'];
-					$rec["Photo"] = $record['fields']['Photo'][0]['thumbnails']['full']['url'];
-				} else {
-					$rec["Thumbnail"] = "";
-					$rec["Photo"] = "";
+					foreach($record['fields']['Photo'] as $photo) {
+						$url = $photo['thumbnails']['large']['url'];
+						array_push($rec['Photo'], $url);
+					}
 				}
 
 				array_push($simplified_records, $rec);

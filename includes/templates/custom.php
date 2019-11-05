@@ -1,16 +1,7 @@
 <?php
+
   // AIRTABLE LIST TEMPLATE
   $value = $_GET['butterfly'];
-  echo $value;
-  
-  $butterflies_conn = new SKB_AirtableConnection();
-  $skb_butterfly = $butterflies_conn->getSingleRecord($value);
-
-  echo $skb_butterfly["fields"]["Common Name"];
-
-  // echo "<pre>";
-  // var_dump($skb_butterfly);
-  // echo "</pre>";
 
   $id = $skb_butterfly["id"];
   $slug = $skb_butterfly["slug"];

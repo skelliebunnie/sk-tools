@@ -60,12 +60,12 @@ function skb_ap_butterflies_shortcode($atts) {
 		
 		echo "<div id='skb-butterflies-gallery' class='masonry'>";
 		foreach($skb_butterflies as $butterfly) :
-			if(($a['photo_only'] === "true" && $butterfly['Thumbnail'] !== "") || $a['photo_only'] !== "true") {
+			if(($a['photo_only'] === "true" && !empty($butterfly['Photo'])) || $a['photo_only'] !== "true") {
 		?>
 		<div class="card skb-filter-item" data-colors="<?php echo $butterfly['Colors']; ?>" data-region="<?php echo $butterfly['Region']; ?>" data-genus="<?php echo $butterfly['Genus']; ?>" data-markings="<?php echo $butterfly['Markings']; ?>" data-shape="<?php echo $butterfly['Shape']; ?>">
 			<a href="<?php echo SKB_SITE_URL . $butterfly['slug']; ?>">
 				<figure>
-					<img src="<?php echo $butterfly['Thumbnail']; ?>" alt="<?php echo $butterfly['Common Name']; ?>">
+					<img src="<?php echo $butterfly["Photo"][0]; ?>" alt="<?php echo $butterfly['Common Name']; ?>">
 					<figcaption>
 						<p class="common-name"><strong><?php echo $butterfly['Common Name']; ?></strong><br>
 						<span class="genus-species"><em><?php echo $butterfly['Genus'] ." ". $butterfly['Species']; ?></em></span></p>

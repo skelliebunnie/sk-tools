@@ -14,14 +14,28 @@ function skb_make_virtual_pages() {
 
 	require_once(SKB_ROOTDIR ."skb-butterflies/skb-butterflies.apclass.php");
 	require_once(SKB_ROOTDIR ."skb-butterflies/skb.vp.php");
+
 	$butterflies_conn = new SKB_AirtableConnection();
 	$skb_butterflies = $butterflies_conn->getAllRecords(true);
 
 	foreach($skb_butterflies as $butterfly) {
-		$name = $butterfly['Common Name'];
+		$name = ucwords($butterfly['Common Name']);
 
 		$content = "[skb_breadcrumbs parent_title='Butterflies' parent_url='butterflies']";
-		$content .= "<img src='{$butterfly['Photo']}' alt='{$butterfly['Common Name']}'>";
+		
+		$images = array();
+		if( array_key_exists("Photo", $butterfly) ) {
+	
+			foreach($butterfly['Photo'] as $index=>$photo) {
+				$i = $index + 1;
+				
+				$img = '<img src="'. $photo .'" alt="'. $butterfly['Common Name'] .' Photo #'. $i .'">';
+				array_push($images, $img);
+
+			}
+
+			$content .= "<div class='skb-butterflies--single-gallery'>". implode("", $images) ."</div>";
+		}
 		$content .= "<p class='common-name'><strong>{$butterfly['Common Name']}</strong><br>";
 		$content .= "<span class='genus-species'><em>{$butterfly['Genus']} {$butterfly['Species']}</em></span></p>";
 		$content .= "<p class='region'><strong>Region:</strong> {$butterfly['Region']}</p>";
@@ -32,7 +46,8 @@ function skb_make_virtual_pages() {
 
 		$vp_args = array('slug' => $butterfly['slug'], 'parent' => 'butterflies', 'page_title' => $butterfly['Common Name'], 'page_content' => $content);
 
-		new WP_EX_PAGE_ON_THE_FLY($vp_args);
+		$post = new WP_EX_PAGE_ON_THE_FLY($vp_args);
+
 	}
 }
 skb_make_virtual_pages();

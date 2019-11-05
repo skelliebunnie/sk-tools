@@ -62,7 +62,7 @@ jQuery(document).ready( function($) {
 			});
 		});
 
-		console.log(filters_list["colors"]);
+		// console.log(filters_list["colors"]);
 
 		// add the filters to the container
 		$.each(keys, function(i, key) {
