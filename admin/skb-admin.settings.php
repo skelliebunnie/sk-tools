@@ -80,6 +80,23 @@ function skb_admin_settings() {
 							</p>
 						</td>
 					</tr>
+					<!-- enable skb-notices -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="skb_settings[skb_enable_datetime]"><?php _e('Enable Date/Time', 'skb_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="skb_settings[skb_enable_datetime]" value="false">
+							<input type="checkbox" name="skb_settings[skb_enable_datetime]" value="true" <?php if ($skb_options['skb_enable_datetime'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SKB-Tools Date/Time be available?", "skb_domain"); ?>
+							</p>
+						</td>
+					</tr>
 					<!-- enable skb-filter -->
 					<tr class='no-pad'>
 						<th scope="row">
@@ -214,9 +231,9 @@ function skb_admin_settings() {
 					<!-- notices default date format -->
 					<tr class="no-pad">
 						<th scope="row">
-							<label for="skb_settings[skb-n-default_date_format]"><?php _e('Default Date Format', 'skb_domain'); ?></label>
+							<label for="skb_settings[skb-n-default_date_format]"><?php _e('Default Date Format (Notice)', 'skb_domain'); ?></label>
 							<p class="description no-pad" style="font-weight: normal;">
-								<?php _e("Default date format if none provided", "skb_domain"); ?>
+								<?php _e("Default date format (for skb_notice) if none provided", "skb_domain"); ?>
 							</p>
 						</th>
 						<td>
@@ -224,7 +241,7 @@ function skb_admin_settings() {
 						</td>
 					</tr>
 					<!-- notices default "type" -->
-					<?php $msg_types = array('info', 'warn', 'alert', 'success'); ?>
+					<?php $msg_types = array('info', 'warn', 'alert', 'success', 'neutral', 'simple'); ?>
 					<tr class="no-pad">
 						<th scope="row">
 							<label for="skb_settings[skb-n-default_message_type]"><?php _e('Default Message Type', 'skb_domain'); ?></label>
@@ -244,6 +261,36 @@ function skb_admin_settings() {
 								}
 							?>
 							</select>
+						</td>
+					</tr>
+					<!-- DATETIME OPTIONS -->
+					<tr>
+						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
+							<h3 class='no-pad no-margin'>Date/Time Options</h3>
+						</th>
+					</tr>
+					<!-- datetime default date format -->
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-dt-default_date_format]"><?php _e('Default Date Format (Date/Time)', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default date format (for skb_datetime) if none provided", "skb_domain"); ?>
+							</p>
+						</th>
+						<td>
+							<input type="text" name="skb_settings[skb-dt-default_date_format]" value="<?php echo $skb_options['skb-dt-default_date_format']; ?>">
+						</td>
+					</tr>
+					<!-- datetime default time format -->
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-dt-default_time_format]"><?php _e('Default Time Format (Date/Time)', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Default time format (for skb_datetime) if none provided", "skb_domain"); ?>
+							</p>
+						</th>
+						<td>
+							<input type="text" name="skb_settings[skb-dt-default_time_format]" value="<?php echo $skb_options['skb-dt-default_time_format']; ?>">
 						</td>
 					</tr>
 				</tbody>

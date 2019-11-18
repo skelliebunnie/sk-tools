@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.4
+ * Version: 3.5
  * Author: Margaret Ralston
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
@@ -24,6 +24,7 @@ $defaults = array(
 	'skb_enable_breadcrumbs'		=> 'true',
 	'skb_enable_notices'				=> 'true',
 	'skb_enable_filter'					=> 'true',
+	'skb_enable_datetime'				=> 'true',
 	'skb-bc-show_home'					=> 'true',
 	'skb-bc-show_home_icon'			=> 'true',
 	'skb-bc-home_icon_only'			=> 'false',
@@ -32,7 +33,9 @@ $defaults = array(
 	'skb-btf-author'						=> 3,
 	'skb-n-default_message'			=> 'Notice',
 	'skb-n-default_date_format'	=> 'l, F j, Y',
-	'skb-n-default_message_type' => 'info'
+	'skb-n-default_message_type' => 'simple',
+	'skb-dt-default_date_format' => 'l, F j, Y', // e.g. Monday, November 18, 2019
+	'skb-dt-default_time_format' => 'h:i A', // e.g. 07:12 AM; g/G no leading 0, h/H leading 0 (12/24)
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
@@ -66,13 +69,18 @@ foreach(glob(SKB_ROOTDIR ."skb-breadcrumbs/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-AIRTABLE
+// SKB-BUTTERFLIES
 foreach(glob(SKB_ROOTDIR ."skb-butterflies/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-DIRECTORY
+// SKB-NOTICES
 foreach(glob(SKB_ROOTDIR ."skb-notices/*.php") as $filename) {
+	require_once($filename);
+}
+
+// SKB-DATETIME
+foreach(glob(SKB_ROOTDIR ."skb-datetime/*.php") as $filename) {
 	require_once($filename);
 }
 
