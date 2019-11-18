@@ -31,15 +31,30 @@ function skb_datetime_shortcode($atts) {
 			$time_format = $a['time_format'];
 		}
 
-		$date = date($date_format);
-		$time = date($time_format);
+		$today = date($date_format);
+		$now = date($time_format);
 
-		if($a['date'] != 'today') {
+		$date = $a['date']; $time = $a['time'];
+
+		if($a['date'] != 'today' && $a['date'] != 'false') {
 			$date = date($date_format, strtotime($a['date']));
+
+		} elseif($a['date'] != 'false' && $a['date'] == 'today') {
+			$date = $today;
+
+		} else {
+			$date = NULL;
+
 		}
 
-		if($a['time'] != 'today') {
-			$date = date($date_format, strtotime($a['time']));
+		if($a['time'] != 'now' && $a['time'] != 'today' && $a['time'] != 'false') {
+			$time = date($time_format, strtotime($a['time']));
+
+		} elseif($a['time']!= 'false' && $a['time'] == 'now') {
+			$time = $now;
+
+		} else {
+			$time = NULL;
 		}
 
 		$separator = $a['separator'];
@@ -47,11 +62,11 @@ function skb_datetime_shortcode($atts) {
 			$separator = str_pad($separator, strlen($separator) + 2, " ", STR_PAD_BOTH);
 		}
 
-		if($a['bold_date'] == 'true') { $date = "<strong>{$date}</strong>"; }
-		if($a['bold_time'] == 'true') { $time = "<strong>{$time}</strong>"; }
+		if($a['bold_date'] == 'true' && $date !== NULL) { $date = "<strong>{$date}</strong>"; }
+		if($a['bold_time'] == 'true' && $time !== NULL) { $time = "<strong>{$time}</strong>"; }
 
 		$content = "";
-		if($date != 'false' && $time != 'false') {
+		if($date !== NULL && $time !== NULL) {
 			if($order[0] === 'date') {
 				$content .= "{$date}{$separator}{$time}";
 
@@ -59,10 +74,10 @@ function skb_datetime_shortcode($atts) {
 				$content .= "{$time}{$separator}{$date}";
 
 			}
-		} elseif($date != 'false') {
+		} elseif($date !== NULL) {
 			$content .= "{$date}";
 
-		} elseif($time != 'false') {
+		} elseif($time !== NULL) {
 			$content .= "{$time}";
 		}
 
