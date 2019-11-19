@@ -33,11 +33,15 @@ function skb_notices_shortcode($atts) {
 		$schedule = explode(",", $a['schedule']);
 
 		$weekday = strtolower(date('l'));
+		$short_weekday = strtolower(date('D'));
 		$date = date('Y-m-d');
+
+		$weekdays = array('mon','tue','wed','thu','fri');
+		$weekends = array('sat','sun');
 
 		$show_notice = false;
 
-		if( in_array($weekday, $schedule) || in_array('every day', $schedule) ) { 
+		if( in_array($weekday, $schedule) || in_array($short_weekday, $schedule) || in_array('every day', $schedule) || (in_array('weekdays', $schedule) && in_array($short_weekday, $weekdays)) || in_array('weekends', $schedule) && in_array($short_weekday, $weekends) ) { 
 			$show_notice = true; 
 
 		} elseif( strpos($schedule[0], "/") > 0 || strpos($schedule[0], "-") > 0 ) {
