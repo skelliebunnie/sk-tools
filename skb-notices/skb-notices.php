@@ -36,8 +36,9 @@ function skb_notices_shortcode($atts) {
 		$short_weekday = strtolower(date('D'));
 		$date = date('Y-m-d');
 
-		$weekdays = array('mon','tue','wed','thu','fri');
-		$weekends = array('sat','sun');
+		$days = array('mon','tue','wed','thu','fri','sat','sun');
+		$weekdays = $skb_options['skb-n-default_weekdays'];
+		$weekends = array_diff($days, $weekdays);
 
 		$show_notice = false;
 

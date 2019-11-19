@@ -263,6 +263,28 @@ function skb_admin_settings() {
 							</select>
 						</td>
 					</tr>
+					<!-- notices weekdays -->
+					<tr class="no-pad">
+						<th scope="row">
+							<label for="skb_settings[skb-n-default_weekdays][]"><?php _e('Default Weekdays', 'skb_domain'); ?></label>
+							<p class="description no-pad" style="font-weight: normal;">
+								<?php _e("Weekdays for scheduling Notices", "skb_domain"); ?>
+							</p>
+						</th>
+						<td>
+							<fieldset>
+							<?php
+								$days = array('mon' => 'Monday','tue' => 'Tuesday','wed' => 'Wednesday','thu' => 'Thursday','fri' => 'Friday','sat' => 'Saturday','sun' => 'Sunday');
+								$weekdays = $skb_options['skb-n-default_weekdays'];
+								foreach($days as $key=>$day) {
+									$checked = "";
+									if(in_array($key, $weekdays)) { $checked = "checked"; }
+									echo "<label for='{$key}'><input type='checkbox' name='skb_settings[skb-n-default_weekdays][]' value='{$key}' $checked/>$key</label>";
+								}
+							?>
+							</fieldset>
+						</td>
+					</tr>
 					<!-- DATETIME OPTIONS -->
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>

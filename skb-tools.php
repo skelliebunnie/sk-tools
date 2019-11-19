@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.5
+ * Version: 3.7
  * Author: Angel Byrd
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
@@ -34,6 +34,7 @@ $defaults = array(
 	'skb-n-default_message'			=> 'Notice',
 	'skb-n-default_date_format'	=> 'l, F j, Y',
 	'skb-n-default_message_type' => 'simple',
+	'skb-n-default_weekdays'		=> array('mon','tue','wed','thu','fri'),
 	'skb-dt-default_date_format' => 'l, F j, Y', // e.g. Monday, November 18, 2019
 	'skb-dt-default_time_format' => 'h:i A', // e.g. 07:12 AM; g/G no leading 0, h/H leading 0 (12/24)
 );
