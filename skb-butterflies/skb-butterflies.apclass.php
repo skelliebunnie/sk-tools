@@ -41,85 +41,90 @@ class SKB_AirtableConnection {
 	public function getAllRecords($simplified=false) {
 		$records = wp_remote_get($this->ap_url, $this->args);
 
-		$list = json_decode($records["body"], true);
-		$rows = $list["records"];
+		$list = is_array($records) ? json_decode($records["body"], true) : $records;
 
-		if($simplified === false) {
-			$new_records = array();
-			foreach($rows as $record) {
-				$record["wp_url"] = $this->wp_url . $record["id"];
-				$record["slug"] = strtolower(str_replace(" ", "-", $record['fields']["Common Name"]));
-				$record["slug"] = str_replace("'", "", $record["slug"]);
+		if(is_array($list) && isset($list['records'])) {
+			$rows = $list["records"];
 
-				array_push($new_records, $record);
-			}
+			if($simplified === false) {
+				$new_records = array();
+				foreach($rows as $record) {
+					$record["wp_url"] = $this->wp_url . $record["id"];
+					$record["slug"] = strtolower(str_replace(" ", "-", $record['fields']["Common Name"]));
+					$record["slug"] = str_replace("'", "", $record["slug"]);
 
-			return $new_records;
-
-		} else {
-			$simplified_records = array();
-
-			foreach($rows as $record) {
-				$rec = array();
-				$rec['id'] = $record["id"];
-				$rec['Species'] = $record["fields"]["Species"];
-				$rec['Genus'] = $record["fields"]['Genus'];
-
-				if( array_key_exists('Common Name', $record["fields"]) ) {
-					$rec['Common Name'] = $record["fields"]['Common Name'];
-
-					$rec["slug"] = strtolower(str_replace(" ", "-", $record["fields"]["Common Name"]));
-					$rec["slug"] = str_replace("'", "", $rec["slug"]);
-
-				} else {
-					$rec['Common Name'] = $record["fields"]["Genus"] ." ". $record["fields"]["Species"];
-					$rec["slug"] = strtolower(str_replace(" ", "_", $record["fields"]["Genus"])) ."-". strtolower(str_replace(" ", "_", $record["fields"]["Species"]));
+					array_push($new_records, $record);
 				}
 
-				$rec["wp_url"] = $rec["slug"];
+				return $new_records;
 
-				if( array_key_exists('Region', $record["fields"]) ) {
-					$rec['Region'] = $record["fields"]['Region'];
-				} else {
-					$rec['Region'] = "";
-				}
+			} else {
+				$simplified_records = array();
 
-				if( array_key_exists('Colors', $record["fields"]) ) {
-					$rec['Colors'] = $record["fields"]['Colors'];
-				} else {
-					$rec['Colors'] = "";
-				}
+				foreach($rows as $record) {
+					$rec = array();
+					$rec['id'] = $record["id"];
+					$rec['Species'] = $record["fields"]["Species"];
+					$rec['Genus'] = $record["fields"]['Genus'];
 
-				if( array_key_exists('Markings', $record["fields"]) ) {
-					$rec['Markings'] = $record["fields"]['Markings'];
-				} else {
-					$rec['Markings'] = "";
-				}
+					if( array_key_exists('Common Name', $record["fields"]) ) {
+						$rec['Common Name'] = $record["fields"]['Common Name'];
 
-				if( array_key_exists('Shape', $record["fields"]) ) {
-					$rec['Shape'] = $record["fields"]['Shape'];
-				} else {
-					$rec['Shape'] = "";
-				}
+						$rec["slug"] = strtolower(str_replace(" ", "-", $record["fields"]["Common Name"]));
+						$rec["slug"] = str_replace("'", "", $rec["slug"]);
 
-				if( array_key_exists('Fun Facts', $record["fields"]) ) {
-					$rec['Fun Facts'] = $record["fields"]['Fun Facts'];
-				} else {
-					$rec['Fun Facts'] = "";
-				}
-
-				$rec['Photo'] = array();
-				if( array_key_exists('Photo', $record["fields"]) ) {
-					foreach($record['fields']['Photo'] as $photo) {
-						$url = $photo['thumbnails']['large']['url'];
-						array_push($rec['Photo'], $url);
+					} else {
+						$rec['Common Name'] = $record["fields"]["Genus"] ." ". $record["fields"]["Species"];
+						$rec["slug"] = strtolower(str_replace(" ", "_", $record["fields"]["Genus"])) ."-". strtolower(str_replace(" ", "_", $record["fields"]["Species"]));
 					}
+
+					$rec["wp_url"] = $rec["slug"];
+
+					if( array_key_exists('Region', $record["fields"]) ) {
+						$rec['Region'] = $record["fields"]['Region'];
+					} else {
+						$rec['Region'] = "";
+					}
+
+					if( array_key_exists('Colors', $record["fields"]) ) {
+						$rec['Colors'] = $record["fields"]['Colors'];
+					} else {
+						$rec['Colors'] = "";
+					}
+
+					if( array_key_exists('Markings', $record["fields"]) ) {
+						$rec['Markings'] = $record["fields"]['Markings'];
+					} else {
+						$rec['Markings'] = "";
+					}
+
+					if( array_key_exists('Shape', $record["fields"]) ) {
+						$rec['Shape'] = $record["fields"]['Shape'];
+					} else {
+						$rec['Shape'] = "";
+					}
+
+					if( array_key_exists('Fun Facts', $record["fields"]) ) {
+						$rec['Fun Facts'] = $record["fields"]['Fun Facts'];
+					} else {
+						$rec['Fun Facts'] = "";
+					}
+
+					$rec['Photo'] = array();
+					if( array_key_exists('Photo', $record["fields"]) ) {
+						foreach($record['fields']['Photo'] as $photo) {
+							$url = $photo['thumbnails']['large']['url'];
+							array_push($rec['Photo'], $url);
+						}
+					}
+
+					array_push($simplified_records, $rec);
 				}
 
-				array_push($simplified_records, $rec);
+				return $simplified_records;
 			}
-
-			return $simplified_records;
+		} else {
+			return $list;
 		}
 
 	}
