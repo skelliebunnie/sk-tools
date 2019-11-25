@@ -85,6 +85,11 @@ foreach(glob(SKB_ROOTDIR ."skb-datetime/*.php") as $filename) {
 	require_once($filename);
 }
 
+// SKB-SHORTCODE-GENERATOR
+foreach(glob(SKB_ROOTDIR ."skb-slider/*.php") as $filename) {
+	require_once($filename);
+}
+
 function skb_tools_activation() {
 	//flush_rewrite_rules();
 }

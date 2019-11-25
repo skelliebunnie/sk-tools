@@ -36,9 +36,11 @@ function skb_custom_posttype() {
 		'hierarchical'				=> false,
 		'public'							=> true,
 		'show_ui'							=> true,
-		'show_in_menu'				=> true,
+		'show_in_menu'				=> 'false',
+		// 'show_in_menu'				=> true,
+		// 'menu_order'					=> 5,
+		'show_in_nav_menus'		=> true,
 		'show_in_admin_bar'		=> true,
-		'menu_position'				=> 5,
 		'can_export'					=> false,
 		'has_archive'					=> true,
 		'exclude_from_search'	=> false,
@@ -47,7 +49,7 @@ function skb_custom_posttype() {
 	);
 
 	// Register custom post type
-	register_post_type('sliders', $args);
+	register_post_type('skb_slider', $args);
 }
 add_action('init', 'skb_custom_posttype', 0);
 
