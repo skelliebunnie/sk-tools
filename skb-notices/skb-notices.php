@@ -12,6 +12,7 @@ function skb_notices_shortcode($atts) {
 			'show_date'			=> 'true',
 			'date_location'	=> 'before',
 			'date_bold'			=> 'false',
+			'date_large'		=> 'false',
 			'center_text'		=> 'false',
 			'center'				=> 'false',
 			'font_size'			=> 'normal',
@@ -34,9 +35,9 @@ function skb_notices_shortcode($atts) {
 
 		$schedule = explode(",", $a['schedule']);
 
-		$weekday = strtolower(date('l'));
-		$short_weekday = strtolower(date('D'));
 		$today = date('Y-m-d');
+		$today_day_name = strtolower(date('l'));
+		$today_short_day_name = strtolower(date('D'));
 
 		$days = array('mon','tue','wed','thu','fri','sat','sun');
 		$weekdays = $skb_options['skb-n-default_weekdays'];
@@ -44,7 +45,7 @@ function skb_notices_shortcode($atts) {
 
 		$show_notice = false;
 
-		if( in_array($weekday, $schedule) || in_array($short_weekday, $schedule) || in_array('every day', $schedule) || (in_array('weekdays', $schedule) && in_array($short_weekday, $weekdays)) || in_array('weekends', $schedule) && in_array($short_weekday, $weekends) ) { 
+		if( in_array($today_day_name, $schedule) || in_array($today_short_day_name, $schedule) || in_array('every day', $schedule) || (in_array('weekdays', $schedule) && in_array($today_short_day_name, $weekdays)) || in_array('weekends', $schedule) && in_array($today_short_day_name, $weekends) ) { 
 			$show_notice = true; 
 
 		} elseif( (strpos($schedule[0], "/") > 0 || strpos($schedule[0], "-") > 0) && is_numeric($schedule[0][0]) ) {
@@ -58,16 +59,31 @@ function skb_notices_shortcode($atts) {
 			}
 			
 		} elseif( strpos($schedule[0], "-") > 0 && in_array(substr($schedule[0], 0, 3), $days) ) {
+
 			$days_schedule = explode("-", $schedule[0]);
 			
 			$first_day = $days_schedule[0];
 			$last_day = $days_schedule[1];
 
-			$days_list = array();
+			$days_list = array(); $first_index = 0; $last_index = 6;
+			foreach($days as $index=>$day) {
 
-			echo "First Day: $first_day<br>";
-			echo "Last Day: $last_day<br>";
-			// echo "All Days: ". implode(", ", $between_days) ."<br>";
+				if( $day === $first_day ) {
+					$first_index = $index;
+					array_push($days_list, $day);
+
+				} elseif( $day === $last_day ) {
+					$last_index = $index;
+					array_push($days_list, $day);
+
+				} elseif( $index > $first_index && $index < $last_index && $day !== $last_day && $day !== $first_day ) {
+					array_push($days_list, $day);
+				}
+			}
+
+			if( in_array($today_short_day_name, $days_list) || in_array($today_day_name, $days_list) ) {
+				$show_notice = true;
+			}
 		}
 
 		// this way, you can schedule every Monday / Tuesday but only until <date>
@@ -107,11 +123,12 @@ function skb_notices_shortcode($atts) {
 		?>
 <div class="skb-notice skb-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " skb-notice--centered"; }; echo " skb-notice--font-{$a['font_size']}"; ?>">
 <?php
-	$bold = "";
+	$bold = ""; $date_large = "";
 	if($a['date_bold'] == 'true') { $bold = "skb-notice--date-bold"; }
+	if($a['date_large'] == 'true') { $date_large = "skb-notice--date-large"; }
 
 	if($a['show_date'] == "true" && $a['date_location'] === "before") {
-		echo "<span class='skb-notice--date $bold'>". date($a['date_format']) ."</span>";
+		echo "<span class='skb-notice--date $bold $date_large'>". date($a['date_format']) ."</span>";
 
 		if($a['new_line'] == 'true') { echo "<br/>"; } else { echo "&nbsp;"; }
 	}
@@ -121,7 +138,7 @@ function skb_notices_shortcode($atts) {
 	if($a['show_date'] == "true" && $a['date_location'] === "after") {
 		if($a['new_line'] == 'true') { echo "<br/>"; } else { echo "&nbsp;"; } 
 
-		echo "<span class='skb-notice-date $bold'>". date($a['date_format']) ."</span>"; 
+		echo "<span class='skb-notice-date $bold $date_large'>". date($a['date_format']) ."</span>"; 
 	}
 ?>
 </div>
