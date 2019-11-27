@@ -48,6 +48,33 @@ function skb_notices_shortcode($atts) {
 		if( in_array($today_day_name, $schedule) || in_array($today_short_day_name, $schedule) || in_array('every day', $schedule) || (in_array('weekdays', $schedule) && in_array($today_short_day_name, $weekdays)) || in_array('weekends', $schedule) && in_array($today_short_day_name, $weekends) ) { 
 			$show_notice = true; 
 
+		} elseif( strpos($schedule[0], "/") > 0 && strpos($schedule[0], "-") > 0 ) {
+
+			$schedule_dates = array();
+			foreach($schedule as $s) {
+				$dates = explode("-", $s);
+
+				$start_date = skb_parse_date($dates[0]);
+				$end_date = skb_parse_date($dates[1]);
+
+				array_push($schedule_dates, $start_date);
+				array_push($schedule_dates, $end_date);	
+
+				$start = date_create($start_date);
+				$end = date_create($end_date);
+				$end = $end->modify("+1 day");
+				$interval = DateInterval::createFromDateString('1 day');
+				$period = new DatePeriod($start, $interval, $end);
+
+				foreach($period as $dt) {
+					array_push($schedule_dates, $dt->format('Y-m-d'));
+				}
+			}
+
+			if( in_array($today, $schedule_dates) ) {
+				$show_notice = true;
+			}
+			
 		} elseif( (strpos($schedule[0], "/") > 0 || strpos($schedule[0], "-") > 0) && is_numeric($schedule[0][0]) ) {
 
 			foreach($schedule as $dt) {
@@ -57,7 +84,7 @@ function skb_notices_shortcode($atts) {
 					$show_notice = true;
 				}
 			}
-			
+
 		} elseif( strpos($schedule[0], "-") > 0 && in_array(substr($schedule[0], 0, 3), $days) ) {
 
 			$days_schedule = explode("-", $schedule[0]);

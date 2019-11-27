@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.8
+ * Version: 3.9
  * Author: Angel Byrd
  * Author URI: https://tech.dinonite.com
  * Prefix: skb
