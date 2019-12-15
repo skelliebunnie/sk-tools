@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKB Tools
  * Description: A collection of small tools
- * Version: 3.9
+ * Version: 4.0.0
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: skb

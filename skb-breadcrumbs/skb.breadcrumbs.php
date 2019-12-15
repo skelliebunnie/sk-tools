@@ -69,17 +69,16 @@ function skb_breadcrumbs_shortcode($atts) {
 	?>
 		<div id="skb-breadcrumbs-container">
 			<?php if ($a['show_home'] === 'true'): ?>
-				<a href="<?php echo $site_url; ?>" class='skb-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a>
+				<a href="<?php echo $site_url; ?>" class='skb-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a> &raquo;
 			<?php 
 			endif;
 
 			if( !empty($parent) && $parent['url'] !== $site_url && $parent['url'] !== "$site_url/" ): ?>
-				&raquo; <a href="<?php echo $parent['url']; ?>" class='skb-parent-url'><?php echo $parent['title']; ?></a>
+				<a href="<?php echo $parent['url']; ?>" class='skb-parent-url'><?php echo $parent['title']; ?></a> &raquo;
 			<?php 
 			endif;
 
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
-				&raquo;
 				<?php if ($a['current_url'] === "true") { ?>
 					<a href="<?php echo $current['url']; ?>" class='skb-current-url' data-title="<?php echo $current['title']; ?>"><?php echo $current['title']; ?></a>
 				<?php } else { ?>
