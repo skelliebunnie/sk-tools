@@ -116,6 +116,16 @@ function ucFirst(value) {
 	return value.substr(0,1).toUpperCase()+value.substr(1);
 }
 
+function ucFirstWords(value) {
+  var arr = value.split(" ");
+  var string = "";
+  jQuery.each(arr, function(i,v) {
+    string += ucFirst(v) +" ";
+  });
+
+  return string.trim();
+}
+
 function lcFirst(value) {
   value = jQuery.trim(value);
 	return value.substr(0,1).toLowerCase()+value.substr(1);

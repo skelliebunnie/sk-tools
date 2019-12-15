@@ -20,16 +20,17 @@ jQuery(document).ready( function($) {
 	} else {
 		$(".skb-filter").click(function() {
 
-			if( $(this).hasClass('skb-active-filter') ) {
-				$(this).removeClass('skb-active-filter');
+			$(this).toggleClass('skb-active-filter');
 
-				multiFilter( $(this), filter_type );
+			// if( $(this).hasClass('skb-active-filter') ) {
+			// 	$(this).removeClass('skb-active-filter');
 
-			} else {
-				$(this).addClass('skb-active-filter');
+			// } else {
+			// 	$(this).addClass('skb-active-filter');
 
-				multiFilter( $(this), filter_type );
-			}
+			// }
+
+			multiFilter( $(this), filter_type );
 		});
 
 	}
@@ -62,8 +63,6 @@ jQuery(document).ready( function($) {
 			});
 		});
 
-		// console.log(filters_list["colors"]);
-
 		// add the filters to the container
 		$.each(keys, function(i, key) {
 			if( filters_list[key].length !== 0 ) {
@@ -86,8 +85,6 @@ jQuery(document).ready( function($) {
 				$(`.skb-filter-list[data-filtertype='${key}'`).hide();
 			}
 		});
-
-		//console.log(filters_list);
 	}
 
 	function defineFilters() {
@@ -160,18 +157,18 @@ jQuery(document).ready( function($) {
 		if( selected_filter !== "all" ) {
 			$(".skb-filter-item").each(function() {
 				var item = $(this);
-				var match = $(this).data(target_type);
+				var match = ($(this).data(target_type)).toLowerCase();
 
 				$(this).addClass("skb-active-filter");
 
-				if( strpos(match, ', ') ) {
-					match = match.split(", ");
+				// if( strpos(match, ', ') ) {
+				// 	match = match.split(", ");
 
-				} else if( strpos(match, ',') )  {
-					match = match.split(",");
-				}
+				// } else if( strpos(match, ',') )  {
+				// 	match = match.split(",");
+				// }
 
-				if( inArrayCaseInsensitive(match, filter_tag) ) {					
+				if( match.includes(filter_tag.toLowerCase()) ) {					
 					item.show();
 					item.parent("p").show();
 
@@ -181,9 +178,23 @@ jQuery(document).ready( function($) {
 
 				}
 
+				// if( inArrayCaseInsensitive(match, filter_tag) ) {					
+				// 	item.show();
+				// 	item.parent("p").show();
+
+				// } else {
+				// 	item.hide();
+				// 	item.parent("p").hide();
+
+				// }
+
 			});
 
-			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			var target_type_title = target_type.replace(/\_/g, " ");
+			target_type_title = ucFirstWords(target_type_title);
+
+
+			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${target_type_title} : ${ucFirstWords(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		} else {
 			$('.skb-filter-item').each(function() {
@@ -325,6 +336,7 @@ jQuery(document).ready( function($) {
 			if( filters_notice.length > 1 ) { tag_count = "the tags"; }
 
 			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently filtering by ${tag_count} <strong>${filters_notice.join(", ")}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+
 		} else {
 			$("#skb-filter-notice").remove();
 
