@@ -23,6 +23,7 @@ function skb_breadcrumbs_shortcode($atts) {
 			'parent_title'		=> ''
 		), $atts );
 
+		$current = [];
 		$parent = [];
 		$site_url = get_site_url();
 
@@ -80,9 +81,9 @@ function skb_breadcrumbs_shortcode($atts) {
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
 				&raquo;
 				<?php if ($a['current_url'] === "true") { ?>
-					<a href="<?php echo $current['url']; ?>" class='skb-current-url'><?php echo $current['title']; ?></a>
+					<a href="<?php echo $current['url']; ?>" class='skb-current-url' data-title="<?php echo $current['title']; ?>"><?php echo $current['title']; ?></a>
 				<?php } else { ?>
-					<span class='skb-current'><?php echo $current['title']; ?></span>
+					<span class='skb-current' data-title="<?php echo $current['title']; ?>"><?php echo $current['title']; ?></span>
 			<?php
 				}
 				endif; 
