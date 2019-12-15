@@ -71,6 +71,7 @@ jQuery(document).ready( function($) {
 				var title = key;
 				if( strpos(key, "_") ) {
 					title = ucFirst(key.replace(/\_/g, " "));
+					title = ucFirst(title.replace(/\-/g, " "));
 				}
 
 				$("#skb-filter-container").append(`<section id='skb-wrapper-${key}' class='skb-wrapper'><span class='skb-filter-title' data-filtertype='${key}'>${title}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul></section>`);
