@@ -66,10 +66,14 @@ function sk_breadcrumbs_shortcode($atts) {
 			$parent['title'] = $a['parent_title'];
 
 		}
+
+		if(substr($parent['url'], -1, 1) === "/") {
+			$parent['url'] = substr($parent['url'], 0, strlen($parent['url']) - 1);
+		}
 	?>
 		<div id="sk-breadcrumbs-container">
 			<?php if ($a['show_home'] === 'true'): ?>
-				<a href="<?php echo $site_url; ?>" class='sk-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a>
+				<a href="<?php echo $site_url; ?>" class='sk-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a> &raquo;
 			<?php 
 			endif;
 
@@ -78,6 +82,9 @@ function sk_breadcrumbs_shortcode($atts) {
 			<?php 
 			endif;
 
+			if( $parent['url'] !== $site_url ) {
+				echo "&raquo; ";
+			}
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
 				<?php if ($a['current_url'] === "true") { ?>
 					<a href="<?php echo $current['url']; ?>" class='sk-current-url'><?php echo $current['title']; ?></a>
