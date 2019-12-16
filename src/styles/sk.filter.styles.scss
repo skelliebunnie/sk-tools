@@ -1,14 +1,14 @@
 @import "settings";
 
-#skb-filter-container {
+#sk-filter-container {
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: space-between;
 	align-items: stretch;
-	color: getColor('neutral-900');
+	color: $sk-filter-container--color;
 }
 
-.skb-wrapper { 
+.sk-wrapper { 
 	flex: 1; 
 	display: flex; 
 	flex-flow: column nowrap;
@@ -17,7 +17,7 @@
 	min-width: 25%;
 }
 
-.skb-filter-title {
+.sk-filter-title {
 	position: relative;
 	flex: 0;
 	cursor: pointer;
@@ -25,18 +25,18 @@
 	font-size: large;
 	font-weight: bold;
 	text-transform: capitalize;
-	background-color:  getColor('secondary-700');
-	color: getContrast( getColor('secondary-700') );
+	background-color:  $sk-filter-title--bg-color;
+	color: $sk-filter-title--color;
 
 	&:hover,
 	&:active {
-		background-color: getColor('accent-400');
-		color: getContrast( getColor('accent-400') );
+		background-color: $sk-filter-title-hover--bg-color;
+		color: $sk-filter-title-hover--color;
 	}
 }
 
-.skb-filter-list {
-	box-shadow: inset 0 6px 3px -2px getColor('neutral-400');
+.sk-filter-list {
+	box-shadow: inset 0 6px 3px -2px $sk-filter-list--box-shadow-color;
 	position: absolute;
 	top: 2.2rem;
 	z-index: 50;
@@ -47,14 +47,14 @@
 	width: 100%;
 	margin: 0;
 	padding: 0.25rem 0 0;
-	background-color: getColor('neutral-50');
+	background-color: $sk-filter-list--bg-color;
 }
 
-.skb-filter-list + .skb-filter-title {
+.sk-filter-list + .sk-filter-title {
 	margin-top: 1rem;
 }
 
-.skb-filter {
+.sk-filter {
 	text-transform: capitalize;
 	flex: 1;
 	display: flex;
@@ -64,24 +64,24 @@
 	padding: 0.4rem 0.5rem;
 	line-height: 1.2rem;
 
-	&.skb-active-filter {
-		background-color: getColor('active-400');
-		color: getContrast( getColor('active-400') );
+	&.sk-active-filter {
+		background-color: $sk-active-filter--bg-color;
+		color: $sk-active-filter--color;
 
-		.skb-filter-count { color: getContrast( getColor('neutral-200') ); }
+		.sk-filter-count { color: $sk-filter-count--color; }
 	}
 
 	&:hover,
 	&:focus {
-		background-color: getColor('accent-400');
-		color: getContrast( getColor('accent-400') );
+		background-color: $sk-filter-hover--bg-color;
+		color: $sk-filter-hover--color;
 		cursor: pointer;
 	}
 }
 
-.skb-filter-count {
-	background-color: getColor('neutral-200');
-	color: getColor('neutral-600');
+.sk-filter-count {
+	background-color: $sk-filter-count--bg-color;
+	color: $sk-filter-count--color;
 	border-radius: 0.15rem;
 	padding: 2px 0 0;
 	flex: 1 0 10%;
@@ -89,16 +89,16 @@
 	text-align: center;
 }
 
-#skb-filter-notice {
+#sk-filter-notice {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-around;
 	align-items: center;
 	text-align: center;
 	font-size: large;
-	background-color: getColor('alert-100');
-	color: getContrast( getColor('alert-100') );
-	border: 2px solid getColor('alert-400');
+	background-color: $sk-filter-notice--bg-color;
+	color: $sk-filter-notice--color;
+	border: 2px solid $sk-filter-notice--border-color;
 	margin: 1rem 0;
 
 	& > span {
@@ -107,7 +107,7 @@
 		margin-left: 3rem;
 	}
 
-	#skb-remove-filter {
+	#sk-remove-filter {
 		cursor: pointer;
 		flex: 1;
 		max-width: 1rem;
@@ -115,12 +115,12 @@
 
 		&:hover,
 		&:focus {
-			color: getColor('alert-400');
+			color: $sk-remove-filter--color;
 		}
 	}
 }
 
-#skb-filter-colorblocks-container {
+#sk-filter-colorblocks-container {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
@@ -128,7 +128,7 @@
 	padding: 1rem 0;
 }
 
-.skb-colorblock {
+.sk-colorblock {
 	cursor: pointer;
 	position: relative;
 	display: inline-block;
@@ -139,7 +139,7 @@
 	// box-shadow: 1px 0 1px 1px #aaa, -1px 0 1px 1px #aaa, 0 1px 1px 1px #aaa, 0 -1px 1px 1px #aaa;
 }
 
-.skb-active-colorblock {
+.sk-active-colorblock {
 	border: 3px solid #000;
 }
 
@@ -147,7 +147,7 @@
  * MEDIA QUERIES
 **/
 @media all and (min-width: 1024px) {
-	#skb-filter-container {
+	#sk-filter-container {
 		flex-flow: row wrap;
 		justify-content: space-between;
 	}

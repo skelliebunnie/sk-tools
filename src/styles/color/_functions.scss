@@ -215,8 +215,12 @@
 	);
 }
 
-@function tintShade($map, $scaleColors: 17, $scaleRatio: 2) {
-	$tsRange: ();
+@function tintShade($map, $scaleColors: 17, $depth: 7, $scaleRatio: 2) {
+	$r7: (); $r5:(); $r3:(); $tsRange: ();
+
+	@if $depth != 7 and $depth != 5 and $depth != 3 { 
+		@if($depth > 7) { $depth: 7; } @else if $depth > 3 { $depth: 5; } @else { $depth: 3; }
+	}
 
 	$values: map-values($map);
 	$names: map-keys($map);
@@ -263,7 +267,7 @@
 		}
 		
 
-	$tsr: (
+		$r7: (
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c2,
 			unquote("#{$name}")-300: $c3,
@@ -273,14 +277,40 @@
 			unquote("#{$name}")-700: $c7
 		);
 
-		$tsRange: map-merge($tsRange, $tsr);
+		$r5: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c2,
+			unquote("#{$name}")-400: $c4,
+			unquote("#{$name}")-600: $c6,
+			unquote("#{$name}")-700: $c7
+		);
+
+		$r3: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-400: $c4,
+			unquote("#{$name}")-700: $c7
+		);
+
+		@if $depth == 7 {
+			$tsRange: map-merge($tsRange, $r7);
+
+		} @else if $depth == 5 {
+			$tsRange: map-merge($tsRange, $r5);
+
+		} @else {
+			$tsRange: map-merge($tsRange, $r3);
+		}
 	} // end looping through colors to create tintShade ranges
 
 	@return $tsRange;
 }
 
-@function rangeAdaptive($map, $scaleColors: 17) {
-	$r: (); $range: (); 
+@function rangeAdaptive($map, $depth: 7, $scaleColors: 17) {
+	$r7: (); $r5: (); $r3: (); $range: (); 
+
+	@if $depth != 7 and $depth != 5 and $depth != 3 { 
+		@if($depth > 7) { $depth: 7; } @else if $depth > 3 { $depth: 5; } @else { $depth: 3; }
+	}
 	// scale, for lightening/darkening: (-100 - 100[%]) scale
 	// luminance comparison: 0 - 1 scale
 	$scale: $scaleColors; $luminanceComparison: $scale / 100;
@@ -290,7 +320,7 @@
 	$c1: null; $c2: null; $c3: null; $c4: null;
 	$c5: null; $c6: null; $c7: null;
 
-	@for $i from 1 through length($names) {
+	@for $i from 1 through length($values) {
 		$color: nth($values,$i);
 		$l: luminance($color);
 		$name: nth($names,$i);
@@ -365,7 +395,8 @@
 			$c6: darkenColor($color, ($scale * 5));
 			$c7: darkenColor($color, ($scale * 6));
 		}
-		$r: (
+
+		$r7: (
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c2,
 			unquote("#{$name}")-300: $c3,
@@ -375,14 +406,42 @@
 			unquote("#{$name}")-700: $c7
 		);
 
-		$range: map-merge($range, $r);
+		$r5: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: darkColor($c2, ($scale * 1.5)),
+			unquote("#{$name}")-300: $c4,
+			unquote("#{$name}")-400: lightenColor($c6, ($scale * 1.5)),
+			unquote("#{$name}")-500: $c7
+		);
+
+		$r3: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-400: $c4,
+			unquote("#{$name}")-700: $c7
+		);
+
+		@if $depth == 7 {
+			$range: map-merge($range, $r7);
+			
+		} @else if $depth == 5 {
+			$range: map-merge($range, $r5);
+			
+		} @else {
+			$range: map-merge($range, $r3);
+			
+		}
+
 	}
 
 	@return $range;
 }
 
 @function rangeStatic($map, $depth: 7) {
-	$r1: (); $r2: (); $range: ();
+	$r9: (); $r7: (); $r5: (); $r3: (); $range: ();
+
+	@if $depth != 9 and $depth != 7 and $depth != 5 and $depth != 3 { 
+		@if($depth > 9) { $depth: 9; } @else if $depth > 7 { $depth: 7; } @else if $depth > 5 { $depth: 5; } @else { $depth: 3; }
+	}
 
 	$values: map-values($map);
 	$names: map-keys($map);
@@ -403,6 +462,7 @@
 		$c200: 81%;
 		$c300: 69%;
 		$c400: 57%;
+		$c450: 51%;
 		$c500: 45%;
 		$c600: 31%;
 		$c700: 21%;
@@ -421,17 +481,7 @@
 		$c8: change-color($color, $lightness: $c800);
 		$c9: change-color($color, $lightness: $c900);
 
-		$r1: (
-			unquote("#{$name}")-100: $c1,
-			unquote("#{$name}")-200: $c2,
-			unquote("#{$name}")-300: $c3,
-			unquote("#{$name}")-400: $c4,
-			unquote("#{$name}")-500: $c5,
-			unquote("#{$name}")-600: $c6,
-			unquote("#{$name}")-700: $c7
-		);
-
-		$r2: (
+		$r9: (
 			unquote("#{$name}")-50: $c50,
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c2,
@@ -443,19 +493,58 @@
 			unquote("#{$name}")-800: $c8,
 			unquote("#{$name}")-900: $c9
 		);
+
+		$r7: (
+			unquote("#{$name}")-50: $c50,
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c2,
+			unquote("#{$name}")-300: $c4,
+			unquote("#{$name}")-400: $c5,
+			unquote("#{$name}")-500: $c7,
+			unquote("#{$name}")-600: $c8,
+			unquote("#{$name}")-700: $c9
+		);
+
+		$r5: (
+			unquote("#{$name}")-50: $c50,
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c3,
+			unquote("#{$name}")-300: $c5,
+			unquote("#{$name}")-400: $c7,
+			unquote("#{$name}")-500: $c9
+		);
+
+		$r3: (
+			unquote("#{$name}")-50: $c50,
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: change-color($color, $lightness: $c450),
+			unquote("#{$name}")-300: $c9
+		);
 	
-		@if $depth == 7 {
-			$range: map-merge($range, $r1);
+		@if $depth == 9 {
+			$range: map-merge($range, $r9);
+
+		} @else if $depth == 7 {
+			$range: map-merge($range, $r7);
+
+		} @else if $depth == 5 {
+			$range: map-merge($range, $r5);
+
 		} @else {
-			$range: map-merge($range, $r2);
+			$range: map-merge($range, $r3);
+
 		}
 	}
 
 	@return $range;
 }
 
-@function rangeDefault($map, $scaleColors: 17) {
-	$r: (); $range: (); 
+@function rangeDefault($map, $depth: 7, $scaleColors: 17) {
+	$r7: (); $r5: (); $r3: (); $range: ();
+
+	@if $depth != 7 and $depth != 5 and $depth != 3 { 
+		@if($depth > 7) { $depth: 7; } @else if $depth > 3 { $depth: 5; } @else { $depth: 3; }
+	} 
 	// scale, for lightening/darkening: (-100 - 100[%]) scale
 	// luminance comparison: 0 - 1 scale
 	$scale: $scaleColors; $luminanceComparison: $scale / 100;
@@ -484,7 +573,7 @@
 		$c6: darkenColor($color, ($scale * 2));
 		$c7: darkenColor($color, ($scale * 3));
 
-		$r: (
+		$r7: (
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c2,
 			unquote("#{$name}")-300: $c3,
@@ -494,7 +583,31 @@
 			unquote("#{$name}")-700: $c7
 		);
 
-		$range: map-merge($range, $r);
+		$r5: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c2,
+			unquote("#{$name}")-300: $c3,
+			unquote("#{$name}")-400: $c4,
+			unquote("#{$name}")-500: $c5,
+			unquote("#{$name}")-600: $c6,
+			unquote("#{$name}")-700: $c7
+		);
+
+		$r3: (
+			unquote("#{$name}")-100: $c1,
+			unquote("#{$name}")-200: $c4,
+			unquote("#{$name}")-300: $c7
+		);
+
+		@if $depth == 7 {
+			$range: map-merge($range, $r7);
+
+		} @else if $depth == 5 {
+			$range: map-merge($range, $r5);
+
+		} @else {
+			$range: map-merge($range, $r3);
+		}
 	}
 
 	@return $range;
@@ -517,16 +630,16 @@
 		$harmony: 'tetrad';
 	}
 
-	$c1: adjust-hue($main, 30deg);
-	$c2: adjust-hue($main, 210deg);
+	$c1: adjust-hue($main, 35deg);
+	$c2: adjust-hue($main, 195deg);
 
-	$compound1: change-color($c1, $saturation: clamp(saturation($main) - 10, $min: 0, $max: 50), $lightness: clamp(lightness($main) + 25, $min: 0, $max: 75));
+	$compound1: change-color($c1, $saturation: clamp(saturation($main) + 40, $min: 0, $max: 100), $lightness: clamp(lightness($main) + 40, $min: 0, $max: 8));
 
-	$compound2: change-color($c1, $saturation: clamp(saturation($main) - 60, $min: 0, $max: 80), $lightness: clamp(lightness($main) - 60, $min: 30, $max: 70));
+	$compound2: change-color($c1, $saturation: clamp(saturation($main) + 10, $min: 0, $max: 80), $lightness: clamp(lightness($main) + 10, $min: 30, $max: 70));
 
-	$compound3: change-color($c2, $saturation: clamp(saturation($main) - 20, $min: 0, $max: 55), $lightness: clamp(lightness($main) + 10, $min: 85, $max: 95));
+	$compound3: change-color($c2, $saturation: clamp(saturation($main) - 25, $min: 0, $max: 55), $lightness: clamp(lightness($main) + 5, $min: 85, $max: 95));
 
-	$compound4: change-color($c2, $saturation: clamp(saturation($main) - 20, $min: 30, $max: 90), $lightness: clamp(lightness($main) - 35, $min: 25, $max: 65));
+	$compound4: change-color($c2, $saturation: clamp(saturation($main) + 10, $min: 30, $max: 90), $lightness: clamp(lightness($main) + 20, $min: 25, $max: 65));
 
 	
 	$harmonyPalettes: (

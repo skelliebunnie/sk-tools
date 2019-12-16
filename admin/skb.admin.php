@@ -1,6 +1,6 @@
 <?php
 
-function skb_admin() {
+function sk_admin() {
 
 	ob_start();
 

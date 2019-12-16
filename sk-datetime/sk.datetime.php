@@ -1,11 +1,11 @@
 <?php
 
-function skb_datetime_shortcode($atts) {
-	global $skb_options;
+function sk_datetime_shortcode($atts) {
+	global $sk_options;
 
 	ob_start();
 
-	if($skb_options['skb_enable_datetime'] === 'true') {
+	if($sk_options['sk_enable_datetime'] === 'true') {
 		$a = shortcode_atts( array(
 			'date'						=> 'today',
 			'time'						=> 'now',
@@ -20,8 +20,8 @@ function skb_datetime_shortcode($atts) {
 
 		$order = explode(",", $a['order']);
 
-		$date_format = $skb_options['skb-dt-default_date_format'];
-		$time_format = $skb_options['skb-dt-default_time_format'];
+		$date_format = $sk_options['sk-dt-default_date_format'];
+		$time_format = $sk_options['sk-dt-default_time_format'];
 
 		if($a['date_format'] !== 'default' && $a['date_format'] != $date_format) {
 			$date_format = $a['date_format'];
@@ -86,9 +86,9 @@ function skb_datetime_shortcode($atts) {
 		echo $content;
 
 	} else {
-		echo "<p>skb_datetime shortcode not enabled</p>";
+		echo "<p>sk_datetime shortcode not enabled</p>";
 	}
 
 	return ob_get_clean();
 }
-add_shortcode('skb_datetime', 'skb_datetime_shortcode');
+add_shortcode('sk_datetime', 'sk_datetime_shortcode');

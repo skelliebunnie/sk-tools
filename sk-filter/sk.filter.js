@@ -1,10 +1,10 @@
 jQuery(document).ready( function($) {
 
 	var selected_filter = 'all';
-	var filter_type = $("#skb-filter-container").data("type");
+	var filter_type = $("#sk-filter-container").data("type");
 
-	//var singular = $("#skb-filter-container").data("singular")
-	//var plural = $("#skb-filter-container").data("plural")
+	//var singular = $("#sk-filter-container").data("singular")
+	//var plural = $("#sk-filter-container").data("plural")
 
 	var data_list = []; var filters_list = [];
 
@@ -13,20 +13,20 @@ jQuery(document).ready( function($) {
 
 	// WHEN CLICKING ON A FILTER
 	if(filter_type === "default" || filter_type === "single") {
-		$(".skb-filter").click(function() {
+		$(".sk-filter").click(function() {
 			singleFilter( $(this) );
 		});
 
 	} else {
-		$(".skb-filter").click(function() {
+		$(".sk-filter").click(function() {
 
-			if( $(this).hasClass('skb-active-filter') ) {
-				$(this).removeClass('skb-active-filter');
+			if( $(this).hasClass('sk-active-filter') ) {
+				$(this).removeClass('sk-active-filter');
 
 				multiFilter( $(this), filter_type );
 
 			} else {
-				$(this).addClass('skb-active-filter');
+				$(this).addClass('sk-active-filter');
 
 				multiFilter( $(this), filter_type );
 			}
@@ -34,22 +34,22 @@ jQuery(document).ready( function($) {
 
 	}
 
-	$(".skb-filter-title").click(function() {
+	$(".sk-filter-title").click(function() {
 		var target = $(this).data("filtertype");
 
-		if( $(this).siblings(".skb-filter-list").is(":visible") ) {
-			$(".skb-filter-list").each(function() { $(this).hide(); });
+		if( $(this).siblings(".sk-filter-list").is(":visible") ) {
+			$(".sk-filter-list").each(function() { $(this).hide(); });
 
 		} else {
-			$(this).parent().siblings(".skb-wrapper").children(".skb-filter-list").hide();
-			$(this).siblings(".skb-filter-list").show();
+			$(this).parent().siblings(".sk-wrapper").children(".sk-filter-list").hide();
+			$(this).siblings(".sk-filter-list").show();
 
 		}
 	});
 
 	function createFilters() {
 
-		$("#skb-filter-container").empty(); // empty out the container
+		$("#sk-filter-container").empty(); // empty out the container
 
 		var keys = Object.keys(filters_list);
 
@@ -73,17 +73,17 @@ jQuery(document).ready( function($) {
 					title = ucFirst(key.replace(/\_/g, " "));
 				}
 
-				$("#skb-filter-container").append(`<section id='skb-wrapper-${key}' class='skb-wrapper'><span class='skb-filter-title' data-filtertype='${key}'>${title}</span><ul class='skb-filter-list' data-filtertype='${key}'></ul></section>`);
+				$("#sk-filter-container").append(`<section id='sk-wrapper-${key}' class='sk-wrapper'><span class='sk-filter-title' data-filtertype='${key}'>${title}</span><ul class='sk-filter-list' data-filtertype='${key}'></ul></section>`);
 
 				$.each( filters_list[key], function(i, obj) {
 					if( obj.name !== "" && obj.name !== " " ) {
-						$(`.skb-filter-list[data-filtertype='${key}']`).append(`<li class='skb-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='skb-filter-count'>${obj.count}</span></li>`);
+						$(`.sk-filter-list[data-filtertype='${key}']`).append(`<li class='sk-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='sk-filter-count'>${obj.count}</span></li>`);
 					}
 				});
 			}
 
-			if( $(`.skb-filter-list[data-filtertype='${key}'`).length > 0 ) {
-				$(`.skb-filter-list[data-filtertype='${key}'`).hide();
+			if( $(`.sk-filter-list[data-filtertype='${key}'`).length > 0 ) {
+				$(`.sk-filter-list[data-filtertype='${key}'`).hide();
 			}
 		});
 
@@ -91,9 +91,9 @@ jQuery(document).ready( function($) {
 	}
 
 	function defineFilters() {
-		data_list = []; var colorFilter = $("#skb-filter-container").data('colorfilter');
+		data_list = []; var colorFilter = $("#sk-filter-container").data('colorfilter');
 
-		$(".skb-filter-item").each(function() {
+		$(".sk-filter-item").each(function() {
 			var data = $(this).data();
 
 			data_list.push(data);
@@ -151,18 +151,18 @@ jQuery(document).ready( function($) {
 
 		var filter_tag = el.data("filter");
 		var target_type = el.data("filtertype").toLowerCase();
-		var count = el.children(".skb-filter-count").text();
+		var count = el.children(".sk-filter-count").text();
 
 		selected_filter = filter_tag;
 
-		$("#skb-remove-filter").remove();
+		$("#sk-remove-filter").remove();
 
 		if( selected_filter !== "all" ) {
-			$(".skb-filter-item").each(function() {
+			$(".sk-filter-item").each(function() {
 				var item = $(this);
 				var match = $(this).data(target_type);
 
-				$(this).addClass("skb-active-filter");
+				$(this).addClass("sk-active-filter");
 
 				if( strpos(match, ', ') ) {
 					match = match.split(", ");
@@ -183,16 +183,16 @@ jQuery(document).ready( function($) {
 
 			});
 
-			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			$("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		} else {
-			$('.skb-filter-item').each(function() {
+			$('.sk-filter-item').each(function() {
 				$(this).show();
 			});
 
 		}
 
-		$("#skb-remove-filter").click(function() { clearFilter(); });
+		$("#sk-remove-filter").click(function() { clearFilter(); });
 	}
 
 	function singleFilter(el) {
@@ -202,34 +202,34 @@ jQuery(document).ready( function($) {
 			
 			clearFilter();
 
-			el.addClass('skb-active-filter');
+			el.addClass('sk-active-filter');
 
 			handleSingleFilter( el );
 
 		} else if( selected_filter === tag ) {
 
-			el.removeClass("skb-active-filter");
-			$("#skb-filter-notice").remove();
+			el.removeClass("sk-active-filter");
+			$("#sk-filter-notice").remove();
 
-			$(".skb-filter-item").each(function() { $(this).show(); });
+			$(".sk-filter-item").each(function() { $(this).show(); });
 
 			selected_filter = "all";
 
 		}
 
-		$(".skb-filter-list").hide();
+		$(".sk-filter-list").hide();
 
-		$("#skb-remove-filter").click(function() { clearFilter(); });
+		$("#sk-remove-filter").click(function() { clearFilter(); });
 	}
 
 	function multiFilter(el, multiType) {
-		$("#skb-filter-notice").remove();
+		$("#sk-filter-notice").remove();
 
 		var filters_list = getSelectedFilters();
 		var filters_notice = [];
 
 		if( filters_list.length > 0 ) {
-			$(".skb-filter-item").each(function() {
+			$(".sk-filter-item").each(function() {
 
 				var item = $(this);
 				var data = item.data();
@@ -324,20 +324,20 @@ jQuery(document).ready( function($) {
 			var tag_count = "the tag";
 			if( filters_notice.length > 1 ) { tag_count = "the tags"; }
 
-			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently filtering by ${tag_count} <strong>${filters_notice.join(", ")}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			$("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently filtering by ${tag_count} <strong>${filters_notice.join(", ")}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
 		} else {
-			$("#skb-filter-notice").remove();
+			$("#sk-filter-notice").remove();
 
-			$(".skb-filter-item").each(function() { $(this).show(); selected_filter = "all"; });
+			$(".sk-filter-item").each(function() { $(this).show(); selected_filter = "all"; });
 		}
 
-		$("#skb-remove-filter").click(function() { clearFilter(); });
+		$("#sk-remove-filter").click(function() { clearFilter(); });
 	}
 
 	function getSelectedFilters() {
 
 		var filters = [];
-		$(".skb-active-filter").each(function() {
+		$(".sk-active-filter").each(function() {
 
 			var filter_name = $(this).data('filtertype');
 			var tag = $(this).data('filter');
@@ -362,11 +362,11 @@ jQuery(document).ready( function($) {
 	}
 
 	function clearFilter() {
-		$("#skb-filter-notice").remove();
+		$("#sk-filter-notice").remove();
 
-		$(".skb-filter").each(function() { $(this).removeClass("skb-active-filter"); });
+		$(".sk-filter").each(function() { $(this).removeClass("sk-active-filter"); });
 
-		$(".skb-filter-item").each(function() {
+		$(".sk-filter-item").each(function() {
 			$(this).show();
 			$(this).parent("p").show();
 		});
@@ -378,13 +378,13 @@ jQuery(document).ready( function($) {
 
 		var target = $(event.target);
 
-		if( !target.hasClass('skb-filter') && !target.hasClass('skb-filter-title') && !target.hasClass('skb-filter-item') ) {
+		if( !target.hasClass('sk-filter') && !target.hasClass('sk-filter-title') && !target.hasClass('sk-filter-item') ) {
 
-			$('.skb-filter-title').each(function() {
+			$('.sk-filter-title').each(function() {
 				$(this).removeClass('filter-title-active');
 			});
 
-			$(".skb-filter-list").each(function() { 
+			$(".sk-filter-list").each(function() { 
 				if( $(this).is(':visible') ) { $(this).hide(); }
 
 			});

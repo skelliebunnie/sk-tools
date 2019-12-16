@@ -1,12 +1,17 @@
 // SETTINGS
 $coreColors: (
-	'primary': #F4EEB4, // #348aa7
-	'secondary': #942668, // #bce784; #5E5E5E
-	'tertiary': #E2DDD1, // #fcdfa6; #d2d2d2
-	'accent': #B4D12B, // #d36135; #cde7b0
-	'alert': #F68357,
-	'active': #00a0e0,
-	'neutral': #414150,
+	'primary': 	 #F4EEB4,
+	'secondary': #942668,
+	'tertiary':  #E2DDD1,
+	'accent': 	 #B4D12B,
+	'active': 	 #00a0e0,
+	'neutral': 	 #414150,
+	// message colors
+	default: 		 #5D576B,
+	info: 			 #41D3BD,
+	success: 		 #A9E190,
+	alert: 			 #F4F1BB,
+	warn: 			 #ED6A5A
 ) !default;
 
 @import "color/functions";
@@ -14,5 +19,52 @@ $coreColors: (
 
 // quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
 // rangeType = adaptive | static | tintshade | default
-@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $staticDepth: 9);
+@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $rangeDepth: 9);
 
+/*
+	SK-FILTER VARIABLES
+ */
+$sk-filter-container--color: getColor('neutral-900');
+$sk-filter-title--bg-color: getColor('secondary-700');
+$sk-filter-title-hover--bg-color: getColor('accent-400');
+$sk-filter-title--color: getContrast( $sk-filter-title--bg-color );
+$sk-filter-title-hover--color: getContrast( $sk-filter-title-hover--bg-color );
+$sk-filter-list--box-shadow-color: getColor('neutral-400');
+$sk-filter-list--bg-color: getColor('neutral-50');
+
+$sk-filter-hover--bg-color: getColor('accent-400');
+$sk-filter-hover--color: getContrast($sk-filter-hover--bg-color);
+
+$sk-active-filter--bg-color: getColor('active-400');
+$sk-active-filter--color: getContrast(getColor('active-400'));
+$sk-filter-count--bg-color: getColor('neutral-200');
+$sk-filter-count--color: getContrast( getColor('neutral-200') );
+
+$sk-filter-notice--bg-color: getColor('alert-100');
+$sk-filter-notice--color: getContrast($sk-filter-notice--bg-color);
+$sk-filter-notice--border-color: getColor('alert-400');
+
+$sk-remove-filter--color: getColor('alert-400');
+
+/*
+	SK-NOTICES VARIABLES
+ */
+$sk-notice-info--border-color: getColor('info-400');
+$sk-notice-info--bg-color: getColor('info-50');
+
+$sk-notice-success--border-color: getColor('success-400');
+$sk-notice-success--bg-color: getColor('success-50');
+
+$sk-notice-success--border-color: getColor('success-400');
+$sk-notice-success--bg-color: getColor('success-50');
+
+$sk-notice-alert--border-color: getColor('alert-400');
+$sk-notice-alert--bg-color: getColor('alert-50');
+
+$sk-notice-warn--border-color: getColor('warn-400');
+$sk-notice-warn--bg-color: getColor('warn-50');
+
+$sk-notice-neutral--border-color: getColor('neutral-400');
+$sk-notice-neutral--bg-color: getColor('neutral-50');
+
+$sk-note--color: getColor('neutral-700');

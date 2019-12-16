@@ -1,11 +1,11 @@
-@mixin palette($color: #777, $colorMap: $coreColors, $colorName: $color, $harmony: 'analogous', $include-complement: false, $complement-name: "#{$color}-complement", $rangeType: 'range', $scaleColors: 17, $staticDepth: 7) {
+@mixin palette($color: #777, $colorMap: $coreColors, $colorName: $color, $harmony: 'analogous', $include-complement: false, $complement-name: "#{$color}-complement", $rangeType: 'range', $scaleColors: 17, $rangeDepth: 7) {
 	$palette: ();
 	
 	$primaryColor: getColor($color, $colorMap);
 
 	$colors: (); $primaryHarmonyRange: null; $mapRange: null;
 
-	// I FORGOT THE BLOODY '@' SYMBOL BEFORE else
+	// only run through the harmony function if it's required
 	@if $harmony == 'none' {
 		$colors: $colorMap;
 
@@ -18,15 +18,15 @@
 		$mapRange: tintShade($map: $colorMap, $scaleColors: $scaleColors);
 
 	} @else if $rangeType == 'rangeAdaptive' or $rangeType == 'adaptive' {
-		$primaryHarmonyRange: rangeAdaptive($map: $colors, $scaleColors: $scaleColors);
-		$mapRange: rangeAdaptive($map: $colorMap, $scaleColors: $scaleColors);
+		$primaryHarmonyRange: rangeAdaptive($map: $colors, $scaleColors: $scaleColors, $depth: $rangeDepth);
+		$mapRange: rangeAdaptive($map: $colorMap, $scaleColors: $scaleColors, $depth: $rangeDepth);
 
 	} @else if $rangeType == 'rangeStatic' or $rangeType == 'static' {
-		$primaryHarmonyRange: rangeStatic($map: $colors, $depth: $staticDepth);
-		$mapRange: rangeStatic($map: $colorMap, $depth: $staticDepth);
+		$primaryHarmonyRange: rangeStatic($map: $colors, $depth: $rangeDepth);
+		$mapRange: rangeStatic($map: $colorMap, $depth: $rangeDepth);
 	} @else {
-		$primaryHarmonyRange: rangeDefault($map: $colors, $scaleColors: $scaleColors);
-		$mapRange: rangeDefault($map: $colorMap, $scaleColors: $scaleColors);
+		$primaryHarmonyRange: rangeDefault($map: $colors, $scaleColors: $scaleColors, $depth: $rangeDepth);
+		$mapRange: rangeDefault($map: $colorMap, $scaleColors: $scaleColors, $depth: $rangeDepth);
 	}
 
 	// if a harmony was generated, add the range of the core colors (less the one used for the harmony)
@@ -42,7 +42,7 @@
 			$originalRange: rangeAdaptive($originalList, $scaleColors: $scaleColors);
 		}
 		@if($rangeType == 'rangeStatic' or $rangeType == 'static') {
-			$originalRange: rangeStatic($originalList, $depth: $staticDepth);
+			$originalRange: rangeStatic($originalList, $depth: $rangeDepth);
 		}
 
 		$rangeMaps: map-merge($mapRange, $originalRange);

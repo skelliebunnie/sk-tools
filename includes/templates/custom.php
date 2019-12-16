@@ -3,9 +3,9 @@
   // AIRTABLE LIST TEMPLATE
   $value = $_GET['butterfly'];
 
-  $id = $skb_butterfly["id"];
-  $slug = $skb_butterfly["slug"];
-  $butterfly = $skb_butterfly["fields"];
+  $id = $sk_butterfly["id"];
+  $slug = $sk_butterfly["slug"];
+  $butterfly = $sk_butterfly["fields"];
   $photos = $butterfly["Photo"];
 
   get_header();
@@ -19,7 +19,7 @@
         <div class="p-15">
             <header class="entry-header">
                 <h1><?php echo ucwords($butterfly['Common Name']); ?></h1>
-                <?php echo do_shortcode('[skb_breadcrumbs parent_title="Butterflies" parent_url="butterflies" current_title="'. $butterfly['Common Name'] .'" current_url="butterflies/?butterfly='. $id .'"]'); ?>
+                <?php echo do_shortcode('[sk_breadcrumbs parent_title="Butterflies" parent_url="butterflies" current_title="'. $butterfly['Common Name'] .'" current_url="butterflies/?butterfly='. $id .'"]'); ?>
             </header>
             <!-- .entry-header -->
 
@@ -28,7 +28,7 @@
             <div class="entry-content">
                 
                 <?php
-                echo "<div class='skb-butterfly-gallery'>";
+                echo "<div class='sk-butterfly-gallery'>";
                 if( count($photos) > 1 ) {
                     foreach($photos as $photo) {
                         echo "<img src={$photo['url']} class='gallery-img'>";

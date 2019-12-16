@@ -1,7 +1,7 @@
 jQuery(document).ready( function($) {
 	var color_blocks = [];
 
-	$(".skb-filter-item").each(function() {
+	$(".sk-filter-item").each(function() {
 		var item_colors = $(this).data('color');
 		if(item_colors === null || item_colors === undefined) { item_colors = $(this).data('colors'); }
 		item_colors = item_colors.split(",");
@@ -15,28 +15,28 @@ jQuery(document).ready( function($) {
 		});
 	});
 
-	$("#skb-filter-container").after(`<div id='skb-filter-colorblocks-container'></div>`);
+	$("#sk-filter-container").after(`<div id='sk-filter-colorblocks-container'></div>`);
 
 	$.each(color_blocks, function(i, name) {
 
-		$("#skb-filter-colorblocks-container").append(`<i class='skb-colorblock' style='background-color: ${name}' data-color='${name}'></i>`);
+		$("#sk-filter-colorblocks-container").append(`<i class='sk-colorblock' style='background-color: ${name}' data-color='${name}'></i>`);
 	});
 
 	var filter_list;
 
-	$(".skb-colorblock").click(function() {
+	$(".sk-colorblock").click(function() {
 		filter_list = [];
 
-		if( $(this).hasClass('skb-active-colorblock') ) {
-			$(this).removeClass('skb-active-colorblock');
+		if( $(this).hasClass('sk-active-colorblock') ) {
+			$(this).removeClass('sk-active-colorblock');
 
 		} else {
-			$(this).addClass('skb-active-colorblock');
+			$(this).addClass('sk-active-colorblock');
 
 		}
 
-		$(".skb-colorblock").each(function() {
-			if( $(this).hasClass('skb-active-colorblock') ) {
+		$(".sk-colorblock").each(function() {
+			if( $(this).hasClass('sk-active-colorblock') ) {
 				filter_list.push($(this).data('color'));
 			}
 		});
@@ -51,10 +51,10 @@ jQuery(document).ready( function($) {
 	function filterByColor(color) {
 	
 		if(color === 'all') {
-			$(".skb-filter-item").each(function() { $(this).show(); });
+			$(".sk-filter-item").each(function() { $(this).show(); });
 
 		} else {
-			$('.skb-filter-item').each(function() {
+			$('.sk-filter-item').each(function() {
 				var item = $(this);
 				var item_colors = item.data('color');
 

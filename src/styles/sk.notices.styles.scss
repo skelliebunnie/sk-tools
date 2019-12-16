@@ -1,6 +1,6 @@
 @import "settings";
 
-.skb-notice {
+.sk-notice {
 	width: 100%;
 	margin: 1rem 0.2rem 0.5rem 0.2rem;
 	padding: 0.3rem 0.75rem;
@@ -18,24 +18,24 @@
 	&--font-xx-large { font-size: xx-large; }
 
 	&--info {
-		border-color: #00a0e0;
-		background-color: azure;
+		border-color: $sk-notice-info--border-color;
+		background-color: $sk-notice-info--bg-color;
 	}
 	&--success {
-		border-color: #A0A65E;
-		background-color: #f8ffde;
+		border-color: $sk-notice-success--border-color;
+		background-color: $sk-notice-success--bg-color;
 	}
 	&--warn {
-		border-color: #F0795B;
-		background-color: #fbe0e0;
+		border-color: $sk-notice-warn--border-color;
+		background-color: $sk-notice-warn--bg-color;
 	}
 	&--alert {
-		border-color: #FFCD6A;
-		background-color: #fff4df;
+		border-color: $sk-notice-alert--border-color;
+		background-color: $sk-notice-alert--bg-color;
 	}
 	&--neutral {
-		border-color: #434544;
-		background-color: #BEC4C2;
+		border-color: $sk-notice-neutral--border-color;
+		background-color: $sk-notice-neutral--bg-color;
 	}
 	&--simple {
 		border: none;
@@ -45,13 +45,13 @@
 	}
 }
 
-.skb-notice--date {
+.sk-notice--date {
 	&-bold { font-weight: bold; }
 	&-large { font-size: larger; }
 }
 
-.note {
+.sk-note {
 	font-size: small;
 	font-style: italic;
-	color: darkgrey;
+	color: $sk-note--color;
 }

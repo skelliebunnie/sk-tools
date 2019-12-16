@@ -1,12 +1,12 @@
 <?php
 
-function skb_notices_shortcode($atts) {
-	global $skb_options;
+function sk_notices_shortcode($atts) {
+	global $sk_options;
 
 	ob_start();
 	
-	if($skb_options['skb_enable_notices'] === 'true') {
-		wp_enqueue_style('skb-notices-styles');
+	if($sk_options['sk_enable_notices'] === 'true') {
+		wp_enqueue_style('sk-notices-styles');
 
 		$a = shortcode_atts( array(
 			'show_date'			=> 'true',
@@ -17,9 +17,9 @@ function skb_notices_shortcode($atts) {
 			'center'				=> 'false',
 			'font_size'			=> 'normal',
 			'new_line'			=> 'true',
-			'date_format'		=> $skb_options['skb-n-default_date_format'], // e.g. Tuesday, October 29, 2019
-			'message'				=> $skb_options['skb-n-default_message'],
-			'type'					=> $skb_options['skb-n-default_message_type'],
+			'date_format'		=> $sk_options['sk-n-default_date_format'], // e.g. Tuesday, October 29, 2019
+			'message'				=> $sk_options['sk-n-default_message'],
+			'type'					=> $sk_options['sk-n-default_message_type'],
 			'schedule'			=> 'every day',
 			'end_schedule'	=> 'never',
 			'on'						=> null,
@@ -40,7 +40,7 @@ function skb_notices_shortcode($atts) {
 		$today_short_day_name = strtolower(date('D'));
 
 		$days = array('mon','tue','wed','thu','fri','sat','sun');
-		$weekdays = $skb_options['skb-n-default_weekdays'];
+		$weekdays = $sk_options['sk-n-default_weekdays'];
 		$weekends = array_diff($days, $weekdays);
 
 		$show_notice = false;
@@ -54,8 +54,8 @@ function skb_notices_shortcode($atts) {
 			foreach($schedule as $s) {
 				$dates = explode("-", $s);
 
-				$start_date = skb_parse_date($dates[0]);
-				$end_date = skb_parse_date($dates[1]);
+				$start_date = sk_parse_date($dates[0]);
+				$end_date = sk_parse_date($dates[1]);
 
 				array_push($schedule_dates, $start_date);
 				array_push($schedule_dates, $end_date);	
@@ -78,7 +78,7 @@ function skb_notices_shortcode($atts) {
 		} elseif( (strpos($schedule[0], "/") > 0 || strpos($schedule[0], "-") > 0) && is_numeric($schedule[0][0]) ) {
 
 			foreach($schedule as $dt) {
-				$date = skb_parse_date($dt);
+				$date = sk_parse_date($dt);
 
 				if( (count($schedule) === 1 && $today <= $date) || count($schedule) > 1 && $today === $date ) {
 					$show_notice = true;
@@ -115,7 +115,7 @@ function skb_notices_shortcode($atts) {
 
 		// this way, you can schedule every Monday / Tuesday but only until <date>
 		if($a['end_schedule'] !== 'never') {
-			$dt = skb_parse_date($a['end_schedule']);
+			$dt = sk_parse_date($a['end_schedule']);
 			
 			if($dt < $today) { $show_notice = false; }
 		}
@@ -123,7 +123,7 @@ function skb_notices_shortcode($atts) {
 		if($a['on'] !== null && $a['on'] !== "") {
 			$on = explode(",", $a['on']);
 			foreach($on as $date) {
-				$date = skb_parse_date($date);
+				$date = sk_parse_date($date);
 
 				$d = date('Y-m-d', strtotime($date));
 
@@ -136,7 +136,7 @@ function skb_notices_shortcode($atts) {
 		if($a['off'] !== null && $a['off'] !== "") {
 			$off = explode(",", $a['off']);
 			foreach($off as $date) {
-				$date = skb_parse_date($date);
+				$date = sk_parse_date($date);
 
 				$d = date('Y-m-d', strtotime($date));
 
@@ -148,24 +148,24 @@ function skb_notices_shortcode($atts) {
 
 		if($show_notice) {
 		?>
-<div class="skb-notice skb-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " skb-notice--centered"; }; echo " skb-notice--font-{$a['font_size']}"; ?>">
+<div class="sk-notice sk-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " sk-notice--centered"; }; echo " sk-notice--font-{$a['font_size']}"; ?>">
 <?php
 	$bold = ""; $date_large = "";
-	if($a['date_bold'] == 'true') { $bold = "skb-notice--date-bold"; }
-	if($a['date_large'] == 'true') { $date_large = "skb-notice--date-large"; }
+	if($a['date_bold'] == 'true') { $bold = "sk-notice--date-bold"; }
+	if($a['date_large'] == 'true') { $date_large = "sk-notice--date-large"; }
 
 	if($a['show_date'] == "true" && $a['date_location'] === "before") {
-		echo "<span class='skb-notice--date $bold $date_large'>". date($a['date_format']) ."</span>";
+		echo "<span class='sk-notice--date $bold $date_large'>". date($a['date_format']) ."</span>";
 
 		if($a['new_line'] == 'true') { echo "<br/>"; } else { echo "&nbsp;"; }
 	}
 
-	echo "<span class='skb-notice--message'>". $a['message'] ."</span>";
+	echo "<span class='sk-notice--message'>". $a['message'] ."</span>";
 
 	if($a['show_date'] == "true" && $a['date_location'] === "after") {
 		if($a['new_line'] == 'true') { echo "<br/>"; } else { echo "&nbsp;"; } 
 
-		echo "<span class='skb-notice-date $bold $date_large'>". date($a['date_format']) ."</span>"; 
+		echo "<span class='sk-notice-date $bold $date_large'>". date($a['date_format']) ."</span>"; 
 	}
 ?>
 </div>
@@ -196,14 +196,14 @@ function skb_notices_shortcode($atts) {
 			}
 		}
 	} else {
-		echo "<p>skb_notices shortcode not enabled</p>";
-	} // end if skb_enable_directory check
+		echo "<p>sk_notices shortcode not enabled</p>";
+	} // end if sk_enable_directory check
 
 	return ob_get_clean();
 }
-add_shortcode('skb_notice', 'skb_notices_shortcode');
+add_shortcode('sk_notice', 'sk_notices_shortcode');
 
-function skb_parse_date($date) {
+function sk_parse_date($date) {
 	if( strpos($date, "/") > 0 ) {
 		$x = explode("/", $date);
 		$m = $x[0];

@@ -1,23 +1,23 @@
 <?php
 
-function skb_breadcrumbs_shortcode($atts) {
-	global $skb_options;
+function sk_breadcrumbs_shortcode($atts) {
+	global $sk_options;
 
 	ob_start();
 
-	if($skb_options['skb_enable_breadcrumbs'] === 'true') {
-		wp_enqueue_style('skb-breadcrumbs-styles');
+	if($sk_options['sk_enable_breadcrumbs'] === 'true') {
+		wp_enqueue_style('sk-breadcrumbs-styles');
 
 		// types are: 
 		//	* default ( 1 filter at a time )
 		//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		$a = shortcode_atts( array(
-			'show_home'				=> $skb_options['skb-bc-show_home'],
-			'home_icon'				=> $skb_options['skb-bc-show_home_icon'],
-			'home_icon_only'	=> $skb_options['skb-bc-home_icon_only'],
-			'show_current'		=> $skb_options['skb-bc-show_current'],
-			'current_url'			=> $skb_options['skb-bc-current_url'],
+			'show_home'				=> $sk_options['sk-bc-show_home'],
+			'home_icon'				=> $sk_options['sk-bc-show_home_icon'],
+			'home_icon_only'	=> $sk_options['sk-bc-home_icon_only'],
+			'show_current'		=> $sk_options['sk-bc-show_current'],
+			'current_url'			=> $sk_options['sk-bc-current_url'],
 			'current_title'		=> '',
 			'parent_url'			=> '',
 			'parent_title'		=> ''
@@ -66,23 +66,23 @@ function skb_breadcrumbs_shortcode($atts) {
 
 		}
 	?>
-		<div id="skb-breadcrumbs-container">
+		<div id="sk-breadcrumbs-container">
 			<?php if ($a['show_home'] === 'true'): ?>
-				<a href="<?php echo $site_url; ?>" class='skb-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a>
+				<a href="<?php echo $site_url; ?>" class='sk-home-url'><?php if($a['home_icon'] === true) { echo "<i class='fas fa-home'></i>"; } ?> <?php if($a['home_icon_only'] !== "true") { echo "Home"; } ?></a>
 			<?php 
 			endif;
 
 			if( !empty($parent) && $parent['url'] !== $site_url && $parent['url'] !== "$site_url/" ): ?>
-				&raquo; <a href="<?php echo $parent['url']; ?>" class='skb-parent-url'><?php echo $parent['title']; ?></a>
+				&raquo; <a href="<?php echo $parent['url']; ?>" class='sk-parent-url'><?php echo $parent['title']; ?></a>
 			<?php 
 			endif;
 
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
 				&raquo;
 				<?php if ($a['current_url'] === "true") { ?>
-					<a href="<?php echo $current['url']; ?>" class='skb-current-url'><?php echo $current['title']; ?></a>
+					<a href="<?php echo $current['url']; ?>" class='sk-current-url'><?php echo $current['title']; ?></a>
 				<?php } else { ?>
-					<span class='skb-current'><?php echo $current['title']; ?></span>
+					<span class='sk-current'><?php echo $current['title']; ?></span>
 			<?php
 				}
 				endif; 
@@ -90,9 +90,9 @@ function skb_breadcrumbs_shortcode($atts) {
 		</div>
 	<?php
 	} else {
-		echo "<p>skb_breadcrumbs shortcode not enabled</p>";
-	} // end if skb_enable_breadcrumbs check
+		echo "<p>sk_breadcrumbs shortcode not enabled</p>";
+	} // end if sk_enable_breadcrumbs check
 
 	return ob_get_clean();
 }
-add_shortcode('skb_breadcrumbs', 'skb_breadcrumbs_shortcode');
+add_shortcode('sk_breadcrumbs', 'sk_breadcrumbs_shortcode');

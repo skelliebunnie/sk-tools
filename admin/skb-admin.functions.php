@@ -1,7 +1,7 @@
 <?php
 
-function skb_image_upload($target, $url='', $setting = false) {
-	global $skb_options;
+function sk_image_upload($target, $url='', $setting = false) {
+	global $sk_options;
 
   $image_size = 'thumbnail'; // it would be better to use thumbnail size here (150x150 or so)
   $display = 'none'; // display state ot the "Remove image" button
@@ -15,7 +15,7 @@ function skb_image_upload($target, $url='', $setting = false) {
 
 	$target_name = $target;
 	if($setting === true) {
-		$target_name = "skb_settings[$target]";
+		$target_name = "sk_settings[$target]";
 	}
 
 	$image_link = "<img id='imagePreview-{$target}' src='{$url}' height='150' style='margin-top: 1rem;'><br>";
