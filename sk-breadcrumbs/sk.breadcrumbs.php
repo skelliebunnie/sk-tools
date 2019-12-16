@@ -23,6 +23,7 @@ function sk_breadcrumbs_shortcode($atts) {
 			'parent_title'		=> ''
 		), $atts );
 
+		$current = [];
 		$parent = [];
 		$site_url = get_site_url();
 
@@ -78,7 +79,6 @@ function sk_breadcrumbs_shortcode($atts) {
 			endif;
 
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
-				&raquo;
 				<?php if ($a['current_url'] === "true") { ?>
 					<a href="<?php echo $current['url']; ?>" class='sk-current-url'><?php echo $current['title']; ?></a>
 				<?php } else { ?>

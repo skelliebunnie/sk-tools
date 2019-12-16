@@ -11,6 +11,10 @@ jQuery(document).ready( function($) {
 	defineFilters(); // get a list of the filters
 	createFilters();
 
+	$(".skb-filter").click(function() {
+		$(this).parents(".skb-filter-list").hide();
+	});
+
 	// WHEN CLICKING ON A FILTER
 	if(filter_type === "default" || filter_type === "single") {
 		$(".sk-filter").click(function() {
@@ -20,16 +24,9 @@ jQuery(document).ready( function($) {
 	} else {
 		$(".sk-filter").click(function() {
 
-			if( $(this).hasClass('sk-active-filter') ) {
-				$(this).removeClass('sk-active-filter');
+			$(this).toggleClass('skb-active-filter');
 
-				multiFilter( $(this), filter_type );
-
-			} else {
-				$(this).addClass('sk-active-filter');
-
-				multiFilter( $(this), filter_type );
-			}
+			multiFilter( $(this), filter_type );
 		});
 
 	}
@@ -62,8 +59,6 @@ jQuery(document).ready( function($) {
 			});
 		});
 
-		// console.log(filters_list["colors"]);
-
 		// add the filters to the container
 		$.each(keys, function(i, key) {
 			if( filters_list[key].length !== 0 ) {
@@ -86,8 +81,6 @@ jQuery(document).ready( function($) {
 				$(`.sk-filter-list[data-filtertype='${key}'`).hide();
 			}
 		});
-
-		//console.log(filters_list);
 	}
 
 	function defineFilters() {
@@ -160,18 +153,11 @@ jQuery(document).ready( function($) {
 		if( selected_filter !== "all" ) {
 			$(".sk-filter-item").each(function() {
 				var item = $(this);
-				var match = $(this).data(target_type);
+				var match = ($(this).data(target_type)).toLowerCase();
 
 				$(this).addClass("sk-active-filter");
 
-				if( strpos(match, ', ') ) {
-					match = match.split(", ");
-
-				} else if( strpos(match, ',') )  {
-					match = match.split(",");
-				}
-
-				if( inArrayCaseInsensitive(match, filter_tag) ) {					
+				if( match.includes(filter_tag.toLowerCase()) ) {					
 					item.show();
 					item.parent("p").show();
 
@@ -183,7 +169,11 @@ jQuery(document).ready( function($) {
 
 			});
 
-			$("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently showing only <strong>${ucFirst(target_type)} : ${ucFirst(filter_tag)}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
+			var target_type_title = target_type.replace(/\_/g, " ");
+			target_type_title = ucFirstWords(target_type_title);
+
+
+			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${target_type_title} : ${ucFirstWords(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		} else {
 			$('.sk-filter-item').each(function() {
@@ -225,110 +215,65 @@ jQuery(document).ready( function($) {
 	function multiFilter(el, multiType) {
 		$("#sk-filter-notice").remove();
 
-		var filters_list = getSelectedFilters();
-		var filters_notice = [];
+		var filters_list = []; var filters_notice = []; var filters_message = "";
 
-		if( filters_list.length > 0 ) {
-			$(".sk-filter-item").each(function() {
+		$(".skb-active-filter").each(function() {
+			filters_list.push($(this).data());
+		});
 
+		if(multiType === "add" || multiType === "additive") {
+			
+			$(".skb-filter-item").each(function() {
 				var item = $(this);
-				var data = item.data();
-
-				var filter_name, tags_list;
-
 				item.hide();
 
-				if(multiType === "add" || multiType === "additive") {
-					$.each(filters_list, function(i, filter) {
-						filter_name = filter.name;
-						tags_list = filter.tags;
-
-						$.each(tags_list, function(k,t) {
-							t = t;
-							if( !filters_notice.includes(t) ) {
-								filters_notice.push(t);
-							}
-						});
-
-						$.each(data, function(n, obj) {
-							if( strpos(obj, ', ') ) {
-								obj = obj.split(', ');
-
-								$.each(obj, function(k, val) {
-									val = val;
-									if( tags_list.includes(val) ) {
-										item.show();
-
-									}
-								});
-
-							} else {
-								obj = obj;
-								if( tags_list.includes(obj) ) {
-									item.show();
-								}
-							}
-
-						});
-
-					});
-
-				} else {
-					var target_list = [], item_list = [];
-
-					$.each(filters_list, function(i, filter) {
-						filter_name = filter.name;
-						tags_list = filter.tags;
-
-						$.each(tags_list, function(k,t) {
-							t = t;
-							if( !filters_notice.includes(t) ) {
-								filters_notice.push(t);
-							}
-
-							if( !target_list.includes(t) ) {
-								target_list.push(t);
-							}
-						});
-
-						$.each(data, function(n, obj) {
-							if( strpos(obj, ', ') ) {
-								obj = obj.split(', ');
-
-								$.each(obj, function(k, val) {
-									val = val;
-									if( tags_list.includes(val) ) {
-										item_list.push(val);
-									}
-								});
-
-							} else {
-								obj = obj;
-								if( tags_list.includes(obj) ) {
-									item_list.push(obj);
-								}
-							}
-
-						});
-
-					});
-
-					if( compArrays(target_list, item_list) ) {
-						item.show();
+				$.each(filters_list, function(i,filters)  {
+					if(!filters_notice.includes(ucFirstWords(filters.filter))) {
+						filters_notice.push(ucFirstWords(filters.filter));
 					}
 
-				}
+					var item_value = (item.data(filters.filtertype)).toLowerCase();
+					var filter_value = (filters.filter).toLowerCase();
 
+					if( (item_value).includes( filter_value ) ) {
+						item.show();
+
+					}
+
+				});
 			});
 
-			var tag_count = "the tag";
-			if( filters_notice.length > 1 ) { tag_count = "the tags"; }
+			filters_notice = filters_notice.join(", ");
 
-			$("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently filtering by ${tag_count} <strong>${filters_notice.join(", ")}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
+			filters_message = $("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only items that contain at least <em>one (1)</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+
 		} else {
-			$("#sk-filter-notice").remove();
+			$(".skb-filter-item").each(function() {
+				var item = $(this);
 
-			$(".sk-filter-item").each(function() { $(this).show(); selected_filter = "all"; });
+				var show = 0; var count = 0;
+				$.each(filters_list, function(i,filters) {
+					if(!filters_notice.includes(ucFirstWords(filters.filter))) {
+						filters_notice.push(ucFirstWords(filters.filter));
+					}
+
+					var item_value = (item.data(filters.filtertype)).toLowerCase();
+					var filter_value = (filters.filter).toLowerCase();
+
+					count++;
+					if( (item_value).includes( filter_value ) ) {
+						show++;
+					}
+				});
+				console.log("Show: "+ show);
+				console.log("Count: "+ count);
+
+				if(show === count) { item.show(); } else { item.hide(); }
+			});
+
+			filters_notice = filters_notice.join(", ");
+
+			filters_message = $("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only items that contain <em>all</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
 		}
 
 		$("#sk-remove-filter").click(function() { clearFilter(); });
