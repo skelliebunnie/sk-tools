@@ -78,13 +78,14 @@ function sk_breadcrumbs_shortcode($atts) {
 			endif;
 
 			if( !empty($parent) && $parent['url'] !== $site_url && $parent['url'] !== "$site_url/" ): ?>
-				&raquo; <a href="<?php echo $parent['url']; ?>" class='sk-parent-url'><?php echo $parent['title']; ?></a>
+				<a href="<?php echo $parent['url']; ?>" class='sk-parent-url'><?php echo $parent['title']; ?></a>
 			<?php 
 			endif;
 
 			if( $parent['url'] !== $site_url ) {
 				echo "&raquo; ";
 			}
+			
 			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
 				<?php if ($a['current_url'] === "true") { ?>
 					<a href="<?php echo $current['url']; ?>" class='sk-current-url'><?php echo $current['title']; ?></a>
