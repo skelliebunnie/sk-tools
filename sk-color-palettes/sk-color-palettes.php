@@ -3,11 +3,8 @@
 if( !defined( 'ABSPATH' ) ) { exit; }
 /**
  * USING THE SHORTCODE
- * 'colors' can be an array of colors as hex, rgb, or hsl values
- * hsla & rgba (inclusion of alpha value) not yet supported
- * 		EX.hex// #ff0000, 00ff00 (with or without the '#')
- * 		EX.rgb// rgb(0,0,255), (255,255,0) ('rgb' not required)
- * 		EX.hsl// hsl(300, 100%, 50%) ('hsl' & '%' not required)
+ * 'colors' can be an array of colors - colors MUST be hexadecimal format
+ * 		EX // #ff0000, 00ff00 (with or without the '#')
  * effects: default is 'slide', which is 'slide blocks, slide text up'
  * 	all text effects have an 'all' variant (e.g. 'slide text' => 'slide all text')
  * 	the 'all' variant displays all text on hover, rather than just the text for the
@@ -153,19 +150,19 @@ function sk_color_palette($args) {
 
 		foreach($lists as $index=>$list) {
 			$count = count($list);
-			$color_blocks .= "<div id='sk-palette--{$index}' class='sk-palette sk-colors--count-{$count} {$effect}'>";
+			$color_blocks .= "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
 			$color_blocks .= implode("", $list);
 			$color_blocks .= "</div>";
 		}
 
 	} else {
-		$color_blocks = "<div class='sk-palette sk-colors--count-{$count} {$effect}'>";
+		$color_blocks = "<div class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
 		$color_blocks .= implode("", $blocks);
 		$color_blocks .= "</div>";
 	}
 
 	$show_as = implode(',', $show_color);
-	$color_palettes = "<div class='sk-palette--container gutter-{$gutter} palettes-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
+	$color_palettes = "<div class='sk-grid gutter-{$gutter} cols-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
@@ -177,7 +174,7 @@ function getEffects($effect) {
 
 	$list = explode(",", $effect);
 	foreach($list as $e) {
-
+		$e = trim($e);
 		$e = str_replace(" ", "-", $e);
 
 		if($e === "slide-all-text-up" || $e === "slide-all-text") { $e = "slide-all-text text-up"; }
@@ -211,19 +208,34 @@ function buildBlock($show_color, $color, $name, $break="<br>") {
 
 	$list = array();
 	$list['rgb'] = "<span class='color-rgb'>rgb({$rgb['red']},{$rgb['green']},{$rgb['blue']})</span>";
-	$list['hsl'] = "<span class='color-hsl'>hsl({$hsl->hue}, {$hsl->saturation}, {$hsl->lightness})</span>";
+	$list['hsl'] = "<span class='color-hsl'>hsl({$hsl->hue}, {$hsl->saturation}%, {$hsl->lightness}%)</span>";
 	$list['name'] = "<span class='color-name'>{$name}</span>";
 	$list['hex'] = "<span class='color-hex'>#{$color}</span>";
 
 	$show_this = "";
-	foreach($show_color as $index=>$show) {
-		if($index === 0) {
-			$show_this .= "{$list[$show]}";
+	if($show_color[0] !== "all") {
+		foreach($show_color as $index=>$show) {
+			if($index === 0) {
+				$show_this .= "{$list[$show]}";
 
-		} else {
-			$show_this .= "{$break}{$list[$show]}";
+			} else {
+				$show_this .= "{$break}{$list[$show]}";
 
+			}
 		}
+	} else {
+		$n = 0;
+		foreach($list as $item) {
+			if($n === 0) {
+				$show_this .= "{$item}";
+
+			} else {
+				$show_this .= "{$break}{$item}";
+
+			}
+			$n++;
+		}
+
 	}
 
 	$txt_clr = readableColor($color);

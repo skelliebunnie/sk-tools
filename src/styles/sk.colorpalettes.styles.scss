@@ -1,289 +1,192 @@
 @import "settings";
 
-.sk-palette--container {
-	width: 100%;
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
+$sk-color-block--height: 4rem;
+$sk-color-block--min-height: 1rem;
+
+.sk-grid {
+	position: relative;
 	display: grid;
+	// auto-FILL will *add* (empty) columns to fit as many cols as possible into the row
+	// auto-FIT will expand the *currently available* cols to fit the row
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-rows: auto;
+	width: 100%;
 
-	&.row {
-		@for $i from 1 through 6 {
-			grid-template-rows: repeat(#{$i}, 1fr);
+	&.row { grid-template-columns: 1fr; }
+}
 
-			.sk-palette:nth-child(#{$i}) {
-				grid-row-start: $i;
-				grid-row-end: $i + 1;
-			}
-		}
-
-		@for $i from 0 through 4 {
-			&.gutter-#{$i} { grid-row-gap: $i; }
-		}
-
-		.sk-palette {
-			flex-flow: row wrap;
-			min-width: 100%;
-		}
+@for $i from 1 through 12 {
+	.sk-grid.grid-col-#{$i} {
+		grid-template-columns: repeat(#{$i}, minmax(250px, 1fr));
 	}
 
-	&.column {
-		@for $i from 1 through 6 {
-			grid-template-columns: repeat(#{$i}, 1fr);
+	.sk-grid.gutter-#{$i} {
+		grid-gap: 0.5rem * $i;
+	}
 
-			.sk-palette:nth-child(#{$i}) {
-				grid-column-start: $i;
-			}
+	.sk-grid-col.width-#{$i} {
+		grid-column: span $i;
+	}
+
+	.sk-grid-col.height-#{$i} {
+		grid-row: span 2;
+	}
+
+	.sk-grid-col.start-col-#{$i} {
+		grid-column: $i;
+	}
+}
+
+.sk-grid-col {
+	box-sizing: border-box;
+	padding: 0.25rem 0.5rem;
+}
+
+.sk-grid.column .sk-palette {
+	flex-flow: column nowrap;
+	min-height: 10rem;
+
+	&.static-blocks .sk-color-block {
+		min-height: $sk-color-block--height;
+		max-height: auto;
+	}
+
+	&.slide-blocks {
+		min-height: auto;
+		justify-content: flex-start;
+
+		.sk-color-block { max-height: auto;}
+
+		.sk-color-block:hover {
+			max-height: stretch;
+			min-height: $sk-color-block--height;
+		}
+	} 
+
+	@for $i from 1 through 12 {
+		&.slide-blocks.colors--#{$i} .sk-color-block {
+			max-height: auto;
+			flex: 1 1 ($i / 12 * 100%) / 12;
 		}
 
-		@for $i from 0 through 4 {
-			&.gutter-#{$i} { grid-column-gap: $i; }
-		}
-
-		.sk-palette {
-			flex-flow: column nowrap;
-			min-width: 100%;
+		&.slide-blocks.colors--#{$i} .sk-color-block:hover {
+			max-height: stretch;
+			flex: 1 1 ($i / 12 * 100%) / 2;
 		}
 	}
-	
 }
 
 .sk-palette {
-	flex: 1 0 100%;
 	display: flex;
-	width: 100%;
-	min-height: 0.5rem;
-	max-height: 8rem;
-	overflow: hidden;
+	flex-flow: row wrap;
+
+	justify-content: center;
+	align-items: stretch;
+
+	&.static-blocks .sk-color-block,
+	&:hover .sk-color-block {
+		height: $sk-color-block--height;
+	}
+}
+
+.sk-grid[data-show-color-as*=",hex,"] .sk-palette,
+.sk-grid[data-show-color-as*=",hsl,"] .sk-palette,
+.sk-grid[data-show-color-as*=",rgb,"] .sk-palette,
+.sk-grid[data-show-color-as*=",name,"] .sk-palette {
+	&.static-blocks .sk-color-block,
+	&.slide-blocks .sk-color-block:hover,
+	&:hover .sk-color-block {
+		min-height: 5.25rem;
+	}
+}
+
+.sk-grid[data-show-color-as="all"] .sk-palette {
+	&.static-blocks .sk-color-block,
+	&.slide-blocks .sk-color-block:hover,
+	&:hover .sk-color-block {
+		min-height: 7rem;
+	}
+}
+
+@for $i from 1 through 12 {
+	.colors--#{$i} .sk-color-block {
+		flex: 1 0 (($i / 12) * 100%) / 12;
+	}
+
+	.colors--#{$i}.slide-blocks .sk-color-block:hover {
+		flex: 1 0 (($i / 12) * 100%) / 2;
+	}
+
+	// @if $i > 6 { 
+	// 	.colors--#{$i} .sk-color-block {
+	// 		.sk-color-content { font-size: 0.65rem; }
+	// 		&:hover .sk-color-content { font-size: 1.2rem; }
+	// 	}
+	// }
+}
+
+.slide-blocks {
+	.sk-color-block {
+		max-width: auto;
+		min-height: $sk-color-block--min-height;
+	}
+
+	.sk-color-block:hover {
+		max-width: stretch;
+		min-height: stretch;
+	}
+}
+
+.slide-text,
+.fade-text {
+	.sk-color-block:hover .sk-color-content {
+		opacity: 1;
+	}
+}
+
+.slide-text {
+
+	&.text-up .sk-color-content { bottom: -10%; }
+	&.text-up .sk-color-block:hover .sk-color-content { bottom: 0; }
+
+	&.text-down .sk-color-content { top: -10%; }
+	&.text-down .sk-color-block:hover .sk-color-content { top: 0; }
+
+	&.text-right .sk-color-content { left: -100%; }
+	&.text-right .sk-color-block:hover .sk-color-content { left: 0; right: auto; }
+
+	&.text-left .sk-color-content { right: -100%; }
+	&.text-left .sk-color-block:hover .sk-color-content { right: 0; left: auto; }
+}
+
+.sk-palette.show-text .sk-color-content {
+	opacity: 1;
+	padding: 0;
+	top: 0;
 }
 
 .sk-color-block {
 	flex: 1;
-	padding: 0.5rem;
+	padding: 0;
 	text-align: center;
-	height: 0.5rem;
+	position: relative;
+	min-height: $sk-color-block--min-height;
+	max-width: auto;
+	overflow: hidden;
+
+	transition: all .3s ease-out;
 }
 
 .sk-color-content {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	padding: 0.2rem;
+	left: 0;
+	text-align: center;
 	opacity: 0;
+
+	transition: all .3s ease-out;
+
+	& > span { display: inline-block; }
 }
-
-// .sk-palette--container {
-// 	display: flex;
-// 	justify-content: center;
-// 	align-items:stretch;
-// 	width: auto;
-
-// 	&.row {
-// 		flex-flow: column nowrap;
-
-// 		& .sk-palette {
-// 			flex: 1 0 auto;
-// 			flex-flow: row nowrap;
-// 		}
-// 	} 
-
-// 	&.column {
-// 		flex-flow: row wrap;
-
-// 		& .sk-palette {
-// 			flex: 1 0 auto;
-// 			flex-flow: column wrap;
-// 			display: flex;
-// 		}
-// 	}
-
-// 	@for $i from 1 through 4 {
-// 		&.gutter-#{$i} {
-// 			&.row .sk-palette + .sk-palette { margin-top: $i * 1rem; }
-// 			&.column .sk-palette + .sk-palette { margin-left: $i * 1rem; }
-// 		}
-// 	}
-// }
-
-// .sk-palette {
-// 	display: flex;
-
-// 	& .sk-color-block { height: $sk-color-block--min-height; }
-
-// 	&-static-blocks { height: $sk-color-block--height; }
-
-// 	&.none,
-// 	&.no-effect {
-// 		& .sk-color-content {
-// 			position: relative;
-// 			text-align: center;
-// 			opacity: 1;
-// 			bottom: auto;
-// 		}
-
-// 		& .sk-color-block:hover .sk-color-content {
-// 			bottom: auto;
-// 		}
-// 	}
-
-// 	&.slide {
-// 		&, &-blocks, &-all, &-all-text {
-// 			.sk-color-block {
-// 				height: $sk-color-block--min-height; 
-// 			}
-
-// 			.sk-color-content {
-// 				position: absolute;
-// 				overflow: hidden;
-// 			}
-
-// 			&:hover .sk-color-block {
-// 				height: $sk-color-block--height; 
-// 			}
-// 		}
-
-// 		& .sk-color-block:hover .sk-color-content, 
-// 		&-all .sk-color-block:hover .sk-color-content,
-// 		&-all-text.text-up:hover .sk-color-content {
-// 			bottom: 25%;
-// 			opacity: 1;
-// 		}
-
-// 		&-all-text:hover {
-// 			& .sk-color-content { opacity: 1; }
-// 		}
-
-// 		&-text {
-// 			& .sk-color-block:hover .sk-color-content { opacity: 1; }
-
-// 			&.text-up {
-// 				.sk-color-content { bottom: -10%; }
-// 				.sk-color-block:hover .sk-color-content { bottom: 25%; }
-// 			}
-
-// 			&.text-down {
-// 				.sk-color-content { top: -10%; }
-// 				.sk-color-block:hover .sk-color-content { top: 25%; }
-// 			}
-
-// 			&.text-left {
-// 				.sk-color-content { right: -50%; }
-// 				.sk-color-block:hover .sk-color-content { right: auto; left: 10%; }
-// 			}
-
-// 			&.text-right {
-// 				.sk-color-content { left: -50%; }
-// 				.sk-color-block:hover .sk-color-content { right: auto; left: 10%; }
-// 			}
-// 		}
-
-// 		&-all-text {
-// 			&.text-up {
-// 				.sk-color-content { bottom: -10%; }
-// 				&:hover .sk-color-content { bottom: 25%; }
-// 			}
-
-// 			&.text-down {
-// 				.sk-color-content { top: -10%; }
-// 				&:hover .sk-color-content { top: 25%; }
-// 			}
-
-// 			&.text-left {
-// 				.sk-color-content { right: -50%; }
-// 				&:hover .sk-color-content { right: auto; left: 10%; }
-// 			}
-
-// 			&.text-right {
-// 				.sk-color-content { left: -50%; }
-// 				&:hover .sk-color-content { right: auto; left: 10%; }
-// 			}
-// 		}
-// 	}
-
-// 	&.fade-text {
-// 		.sk-color-content { bottom: auto; opacity: 0; }
-// 		.sk-color-block:hover {
-// 			height: $sk-color-block--height;
-
-// 			.sk-color-content { bottom: auto; opacity: 1; }
-// 		}
-// 	}
-
-// 	&.fade-all-text {
-// 		.sk-color-content { bottom: auto; opacity: 0; }
-// 		&:hover .sk-color-block {
-// 			height: $sk-color-block--height;
-
-// 			.sk-color-content { bottom: auto; opacity: 1; }
-// 		}
-// 	}
-// }
-
-// [data-show-color-as="rgb"] .sk-palette,
-// [data-show-color-as="hsl"] .sk-palette {
-// 	flex-flow: row wrap;
-
-// 	& .sk-color-block { min-width: 1 / 6 * 100%; }
-// }
-
-// [data-show-color-as="name"] .sk-color-content {
-// 	text-transform: capitalize;
-// }
-
-// [data-show-color-as="rgb,hex"] .sk-palette .sk-color-content,
-// [data-show-color-as="rgb,hsl"] .sk-palette .sk-color-content,
-// [data-show-color-as="rgb,name"] .sk-palette .sk-color-content,
-// [data-show-color-as="hsl,hex"] .sk-palette .sk-color-content,
-// [data-show-color-as="hsl,rgb"] .sk-palette .sk-color-content,
-// [data-show-color-as="hsl,name"] .sk-palette .sk-color-content,
-// [data-show-color-as="hex,rgb"] .sk-palette .sk-color-content,
-// [data-show-color-as="hex,hsl"] .sk-palette .sk-color-content,
-// [data-show-color-as="hex,name"] .sk-palette .sk-color-content,
-// [data-show-color-as="name,hex"] .sk-palette .sk-color-content,
-// [data-show-color-as="name,rgb"] .sk-palette .sk-color-content,
-// [data-show-color-as="name,hsl"] .sk-palette .sk-color-content {
-// 	font-size: 0.7rem !important;
-// 	padding: 0;
-// }
-
-// @for $i from 1 through 12 {
-// 	.sk-colors--count-#{$i} .sk-color-block {
-// 		max-width: auto;
-// 		flex: 1 0 (($i / 12) * 100%) / 12;
-// 	}
-
-// 	.sk-colors--count-#{$i}.slide-blocks .sk-color-block:hover {
-// 		max-width: stretch;
-// 		flex: 1 0 (($i / 12) * 100%) / 2;
-// 	}
-
-// 	@if $i > 6 { 
-// 		.sk-colors--count-#{$i} .sk-color-block {
-// 			.sk-color-content { font-size: 0.65rem; }
-// 			&:hover .sk-color-content { font-size: 1.2rem; }
-// 		}
-// 	}
-// }
-
-// .sk-color-content {
-// 	opacity: 0;
-// 	text-transform: uppercase;
-// 	transition: all .3s ease-out;
-// 	margin: 2rem;
-// 	line-height: 1rem;
-// }
-
-// .sk-color-block {
-// 	position: relative;
-// 	flex: 1 1 auto;
-// 	width: auto;
-// 	text-align: center;
-
-// 	display: flex;
-// 	flex-flow: column nowrap;
-// 	justify-content: center;
-// 	align-items: center;
-
-// 	transition: all .3s ease-in;
-// }
-
-// .column .static-blocks .sk-color-block {
-// 	min-height: $sk-color-block--height;
-// 	width: auto;
-// }
