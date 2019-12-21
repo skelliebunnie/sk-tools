@@ -85,7 +85,7 @@ $sk-color-block--min-height: 1rem;
 
 .sk-palette {
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: row nowrap;
 
 	justify-content: center;
 	align-items: stretch;
