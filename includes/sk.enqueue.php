@@ -10,6 +10,8 @@ function sk_styles() {
 	wp_register_style('sk-breadcrumbs-styles', SK_ROOTURL ."includes/css/sk.breadcrumbs.styles.css");
 
 	wp_register_style('sk-notices-styles', SK_ROOTURL ."includes/css/sk.notices.styles.css");
+
+	wp_register_style('sk-colorpalettes-styles', SK_ROOTURL ."includes/css/sk.colorpalettes.styles.css");
 }
 add_action( 'wp_enqueue_scripts', 'sk_styles' );
 add_action( 'admin_enqueue_scripts', 'sk_styles' );
