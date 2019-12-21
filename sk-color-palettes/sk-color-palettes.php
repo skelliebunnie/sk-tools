@@ -34,7 +34,7 @@ function sk_color_palettes_shortcode($atts) {
 		'show_color_as'		=> 'hex', // hex, rgb, hsl, name
 		'direction' 			=> 'row', // row, column
 		'color_count'			=> '12', // max 12; how many color blocks per palette
-		'palette_count'		=> '4', // max 6; how many palettes side-by-side if dir = column
+		'palette_count'		=> '6', // palettes per column
 		'names'						=> '', // true, or list of names, or 'hex:name' / 'name:hex'
 		'palette_titles'	=> '',
 		'break'						=> '<br>',
@@ -46,7 +46,9 @@ function sk_color_palettes_shortcode($atts) {
 	if($sk_options['sk_enable_colorpalettes'] === 'true') {
 		wp_enqueue_style('sk-colorpalettes-styles');
 
-		echo sk_color_palette($a);
+		if($a['colors'] !== '') {
+			echo sk_color_palette($a);
+		}
 
 	} else {
 		echo "<p>sk_color_palette shortcode not enabled</p>";
@@ -58,13 +60,28 @@ function sk_color_palettes_shortcode($atts) {
 add_shortcode('sk_color_palette', 'sk_color_palettes_shortcode');
 
 function sk_color_palette($args) {
-	$colors = explode(",", $args['colors']);
+	$colors = $args['colors'];
 	$effect = getEffects(strtolower($args['effect']));
 	$gutter = is_numeric($args['gutter']) ? $args['gutter'] : '1';
 	$show_color = explode(",", strtolower($args['show_color_as']));
 	$direction = strtolower($args['direction']);
 	$names_list = $args['names'];
 	$break = $args['break'];
+	$palette_count = $args['palette_count'];
+
+	$palette_lists = array();
+	if( strpos($colors, ";") !== false ) {
+		$lists = explode(";", $args['colors']);
+
+		foreach($lists as $list) {
+			$colors = explode(",", $list);
+			array_push($palette_lists, $colors);
+		}
+				
+	} else {
+		$colors = explode(",", $args['colors']);
+
+	}
 
 	if( substr($direction, -1, 1) === "s" ) {
 		$direction = substr($direction, 0, strlen($direction) - 1);
@@ -89,50 +106,18 @@ function sk_color_palette($args) {
 
 	$count = count($colors);
 
-	$blocks = array();
-	foreach($colors as $index=>$color) {
-		$color = trim($color);
-		$name = "";
+	$blocks = array(); $palettes = array();
+	if( empty($palette_lists) || count($palette_lists) <= 1 ) {
+		$blocks = buildAllBlocks($colors, $names, $args['capitalize_name'], $show_color, $break);
 
-		if( $names !== null || strpos($color, ":") !== false ) {
-			$n = explode(":", $color);
+	} else {
+		foreach($palette_lists as $colors) {
+			
+			$list = buildAllBlocks($colors, $names, $args['capitalize_name'], $show_color, $break);
 
-			if($names === null) {
-				$name = $n[0];
-				$color = $n[1];
-
-			} else {
-				if( in_array("hex", $names) ) { 
-					$color = $n[array_search('hex', $names)];
-					$name = $n[array_search('name', $names)];
-				}
-
-				if( in_array("rgb", $names) ) { 
-					$color = $n[array_search('rgb', $names)];
-					$name = $n[array_search('name', $names)];
-				}
-
-				if( in_array("hsl", $names) ) { 
-					$color = $n[array_search('hsl', $names)];
-					$name = $n[array_search('name', $names)];
-				}
-
-			}
-
-		} elseif( isset($names[$index]) ) {
-			$name = $names[$index];
-
+			array_push($palettes, $list);
 		}
 
-		if(strpos($color, "#") === 0) {
-			$color = str_replace("#", "", $color);
-		}
-
-		if($args['capitalize_name'] == 'true') { $name = ucwords($name); }
-
-		$block = buildBlock($show_color, $color, $name, $break);
-
-		array_push($blocks, $block);
 	}
 
 	$palette_titles = array();
@@ -141,8 +126,7 @@ function sk_color_palette($args) {
 	}
 
 	$color_blocks = "";
-
-	if($count > $args['color_count']) {
+	if( $count > $args['color_count'] && empty($palettes) ) {
 		$lists = array_chunk($blocks, $args['color_count']);
 
 		foreach($lists as $index=>$list) {
@@ -156,7 +140,28 @@ function sk_color_palette($args) {
 			if( !empty($palette_titles) && isset($palette_titles[$index]) ) {
 				$title = ucwords($palette_titles[$index]);
 
-				$color_blocks .= "<div class='sk-palette--wrapper'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+				$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+
+			} else {
+
+				$color_blocks .= $palette;
+
+			}
+		}
+
+	} elseif($args['color_count'] === 'auto' || !empty($palettes)) {
+
+		foreach($palettes as $index=>$list) {
+			$count = count($list);
+
+			$palette = "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+			$palette .= implode("", $list);
+			$palette .= "</div>";
+
+			if( !empty($palette_titles) && isset($palette_titles[$index]) ) {
+				$title = ucwords($palette_titles[$index]);
+
+				$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
 
 			} else {
 
@@ -172,16 +177,17 @@ function sk_color_palette($args) {
 
 		if( !empty($palette_titles) && $palette_titles[0] !== '' ) {
 			$title = ucwords($palette_titles[0]);
-			$color_blocks .= "<div class='sk-palette--wrapper'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+			$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
 
 		} else {
 			$color_blocks .= $palette;
 
 		}
+
 	}
 
 	$show_as = implode(',', $show_color);
-	$color_palettes = "<div class='sk-grid sk-palette--container gutter-{$gutter} cols-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
+	$color_palettes = "<div class='sk-grid sk-palette--container grid-col-{$palette_count} gutter-{$gutter} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
@@ -260,4 +266,55 @@ function buildBlock($show_color, $color, $name, $break="<br>") {
 	$txt_clr = readableColor($color);
 
 	return "<div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_this}</span></div>";
+}
+
+function buildAllBlocks($colors, $names, $capitalize_name, $show_color, $break) {
+	$blocks = array();
+
+	foreach($colors as $index=>$color) {
+		$color = trim($color);
+		$name = "";
+
+		if( $names !== null || strpos($color, ":") !== false ) {
+			$n = explode(":", $color);
+
+			if($names === null) {
+				$name = $n[0];
+				$color = $n[1];
+
+			} else {
+				if( in_array("hex", $names) ) { 
+					$color = $n[array_search('hex', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+				if( in_array("rgb", $names) ) { 
+					$color = $n[array_search('rgb', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+				if( in_array("hsl", $names) ) { 
+					$color = $n[array_search('hsl', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+			}
+
+		} elseif( isset($names[$index]) ) {
+			$name = $names[$index];
+
+		}
+
+		if(strpos($color, "#") === 0) {
+			$color = str_replace("#", "", $color);
+		}
+
+		if($capitalize_name == 'true') { $name = ucwords($name); }
+
+		$block = buildBlock($show_color, $color, $name, $break);
+
+		array_push($blocks, $block);
+	}
+
+	return $blocks;
 }

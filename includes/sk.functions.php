@@ -19,7 +19,7 @@ function getLuma($hex) {
 }
 
 function hexToRGB($hex, $return_array=false) {
-  if($hex[0] == '#')
+  if( $hex[0] == '#')
     $hex = substr($hex, 1);
 
   if (strlen($hex) == 3) {

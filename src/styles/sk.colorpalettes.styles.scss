@@ -10,7 +10,7 @@ $sk-color-block--min-height: 1rem;
 	// auto-FIT will expand the *currently available* cols to fit the row
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	grid-template-rows: auto;
-	width: 100%;
+	max-width: 100%;
 
 	&.row { 
 		grid-template-columns: 1fr;
@@ -23,7 +23,7 @@ $sk-color-block--min-height: 1rem;
 
 @for $i from 1 through 12 {
 	.sk-grid.grid-col-#{$i} {
-		grid-template-columns: repeat(#{$i}, minmax(250px, 1fr));
+		grid-template-columns: repeat(#{$i}, 1fr);
 	}
 
 	.sk-grid.gutter-#{$i} {
@@ -124,13 +124,6 @@ $sk-color-block--min-height: 1rem;
 	.colors--#{$i}.slide-blocks .sk-color-block:hover {
 		flex: 1 0 (($i / 12) * 100%) / 2;
 	}
-
-	// @if $i > 6 { 
-	// 	.colors--#{$i} .sk-color-block {
-	// 		.sk-color-content { font-size: 0.65rem; }
-	// 		&:hover .sk-color-content { font-size: 1.2rem; }
-	// 	}
-	// }
 }
 
 .slide-blocks {
@@ -206,4 +199,12 @@ $sk-color-block--min-height: 1rem;
 	text-align: center;
 	padding: 0;
 	margin: 0;
+}
+
+@media all and (max-width: 1024px) {
+	@for $i from 1 through 12 {
+		.sk-grid.grid-col-#{$i} {
+			grid-template-columns: repeat(#{$i}, minmax(250px, 1fr));
+		}
+	}
 }
