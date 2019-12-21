@@ -12,7 +12,13 @@ $sk-color-block--min-height: 1rem;
 	grid-template-rows: auto;
 	width: 100%;
 
-	&.row { grid-template-columns: 1fr; }
+	&.row { 
+		grid-template-columns: 1fr;
+
+		& .sk-palette {
+			width: 100%;
+		}
+	}
 }
 
 @for $i from 1 through 12 {
