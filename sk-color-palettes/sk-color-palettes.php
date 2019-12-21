@@ -1,19 +1,46 @@
 <?php
 
 if( !defined( 'ABSPATH' ) ) { exit; }
-
+/**
+ * USING THE SHORTCODE
+ * 'colors' can be an array of colors as hex, rgb, or hsl values
+ * hsla & rgba (inclusion of alpha value) not yet supported
+ * 		EX.hex// #ff0000, 00ff00 (with or without the '#')
+ * 		EX.rgb// rgb(0,0,255), (255,255,0) ('rgb' not required)
+ * 		EX.hsl// hsl(300, 100%, 50%) ('hsl' & '%' not required)
+ * effects: default is 'slide', which is 'slide blocks, slide text up'
+ * 	all text effects have an 'all' variant (e.g. 'slide text' => 'slide all text')
+ * 	the 'all' variant displays all text on hover, rather than just the text for the
+ * 	individual block the cursor is over
+ * 	SLIDE 
+ * 		slide text (up), slide text down, slide text left, slide text right
+ * 		slide all text (up), slide all text down, slide all text left, 
+ * 			slide all text right
+ * 		slide blocks ( no slide / fade for text, static block height )
+ * 		slide all => slide blocks, slide all text up
+ * 	FADE
+ * 		fade text, fade all text (both apply static block height by default)
+ * 			override static block height using 'expand blocks'
+ * 	STATIC
+ * 		static blocks; block height does not expand on hover 
+ * 	EXPAND
+ * 		expand blocks ( fade text, block height expands )
+ */
 function sk_color_palettes_shortcode($atts) {
 	global $sk_options;
 
 	// effects: slide (= slide all)
 	$a = shortcode_atts( array(
-		'colors' 	=> '',
-		'effect'	=> 'slide', // slide, slide all, slide all text, slide blocks, &c.
-		'gutter'	=> '1', // 1 - 4
-		'show_color_as'		=> 'hex', // hex, rgb, hsl
-		'direction' => 'row',
-		'count'		=> '12',
-		'names'		=> ''
+		'colors' 					=> '', // as hex, or as name:hex
+		'effect'					=> 'slide',
+		'gutter'					=> '1', // max 4
+		'show_color_as'		=> 'hex', // hex, rgb, hsl, name
+		'direction' 			=> 'row', // row, column
+		'color_count'			=> '12', // max 12; how many color blocks per palette
+		'palette_count'		=> '4', // max 6; how many palettes side-by-side if dir = column
+		'names'						=> '', // true, or list of names, or 'hex:name' / 'name:hex'
+		'break'						=> '<br>',
+		'capitalize_name'	=> 'true'
 	), $atts );
 
 	ob_start();
@@ -39,6 +66,7 @@ function sk_color_palette($args) {
 	$show_color = explode(",", strtolower($args['show_color_as']));
 	$direction = strtolower($args['direction']);
 	$names_list = $args['names'];
+	$break = $args['break'];
 
 	if( substr($direction, -1, 1) === "s" ) {
 		$direction = substr($direction, 0, strlen($direction) - 1);
@@ -62,9 +90,13 @@ function sk_color_palette($args) {
 		}
 	}
 
-	$names = array();
-	if($names_list !== "") {
+	$names = null;
+	if($names_list !== "" && strpos($names_list, ":") === false) {
 		$names = explode(",", $names_list);
+
+	} elseif( strpos($names_list, ":") !== false ) {
+		$names = explode(":", $names_list);
+
 	}
 
 	$count = count($colors);
@@ -74,14 +106,32 @@ function sk_color_palette($args) {
 		$color = trim($color);
 		$name = "";
 
-		if($names_list === true || strpos($color, ":") !== false) {
+		if( $names !== null || strpos($color, ":") !== false ) {
 			$n = explode(":", $color);
-			$color = $n[1];
-			$name = $n[0];
 
-			if(!in_array("name", $show_color)) { array_push($show_color, "name"); }
+			if($names === null) {
+				$name = $n[0];
+				$color = $n[1];
 
-		} elseif(isset($names[$index])) {
+			} else {
+				if( in_array("hex", $names) ) { 
+					$color = $n[array_search('hex', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+				if( in_array("rgb", $names) ) { 
+					$color = $n[array_search('rgb', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+				if( in_array("hsl", $names) ) { 
+					$color = $n[array_search('hsl', $names)];
+					$name = $n[array_search('name', $names)];
+				}
+
+			}
+
+		} elseif( isset($names[$index]) ) {
 			$name = $names[$index];
 
 		}
@@ -90,14 +140,16 @@ function sk_color_palette($args) {
 			$color = str_replace("#", "", $color);
 		}
 
-		$block = buildBlock($show_color, $color, $name);
+		if($args['capitalize_name'] == 'true') { $name = ucwords($name); }
+
+		$block = buildBlock($show_color, $color, $name, $break);
 
 		array_push($blocks, $block);
 	}
 
 	$color_blocks = "";
-	if($count > $args['count']) {
-		$lists = array_chunk($blocks, $args['count']);
+	if($count > $args['color_count']) {
+		$lists = array_chunk($blocks, $args['color_count']);
 
 		foreach($lists as $index=>$list) {
 			$count = count($list);
@@ -113,7 +165,7 @@ function sk_color_palette($args) {
 	}
 
 	$show_as = implode(',', $show_color);
-	$color_palettes = "<div class='sk-palette--container gutter-{$gutter} {$direction}' data-show-color-as='{$show_as}'>";
+	$color_palettes = "<div class='sk-palette--container gutter-{$gutter} palettes-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
@@ -143,22 +195,25 @@ function getEffects($effect) {
 	}
 	$effect = implode(" ", $effects);
 
-	if($effect === "slide" || $effect === "slide-all") {
-		$effect = "slide-blocks slide-all-text";
+	if($effect === "slide") {
+		$effect = "slide-blocks slide-text text-up";
+
+	} elseif($effect === "slide-all") {
+		$effect = "slide-blocks slide-all-text text-up";
 	}
 
 	return $effect;
 }
 
-function buildBlock($show_color, $color, $name) {
+function buildBlock($show_color, $color, $name, $break="<br>") {
 	$rgb = hexToRGB($color, true);
 	$hsl = hexToHSL($color);
 
 	$list = array();
-	$list['rgb'] = "rgb(". implode($rgb) .")";
-	$list['hsl'] = "hsl({$hsl->hue}, {$hsl->saturation}, {$hsl->lightness})";
-	$list['name'] = $name;
-	$list['hex'] = "#{$color}";
+	$list['rgb'] = "<span class='color-rgb'>rgb({$rgb['red']},{$rgb['green']},{$rgb['blue']})</span>";
+	$list['hsl'] = "<span class='color-hsl'>hsl({$hsl->hue}, {$hsl->saturation}, {$hsl->lightness})</span>";
+	$list['name'] = "<span class='color-name'>{$name}</span>";
+	$list['hex'] = "<span class='color-hex'>#{$color}</span>";
 
 	$show_this = "";
 	foreach($show_color as $index=>$show) {
@@ -166,7 +221,7 @@ function buildBlock($show_color, $color, $name) {
 			$show_this .= "{$list[$show]}";
 
 		} else {
-			$show_this .= "<br>{$list[$show]}";
+			$show_this .= "{$break}{$list[$show]}";
 
 		}
 	}
