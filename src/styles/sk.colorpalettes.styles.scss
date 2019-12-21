@@ -2,21 +2,39 @@
 
 .sk-palette--container {
 	display: flex;
-	flex-flow: column nowrap;
 	justify-content: center;
 	align-items:stretch;
+	width: auto;
+
+	&.row {
+		flex-flow: column nowrap;
+
+		& .sk-palette {
+			flex: 1 0 auto;
+			flex-flow: row nowrap;
+		}
+	} 
+
+	&.column {
+		flex-flow: row wrap;
+
+		& .sk-palette {
+			flex: 1 0 auto;
+			flex-flow: column wrap;
+			display: flex;
+		}
+	}
 
 	@for $i from 1 through 4 {
-		&.gutter-#{$i} .sk-palette + .sk-palette {
-			margin-top: $i * 1rem;
+		&.gutter-#{$i} {
+			&.row .sk-palette + .sk-palette { margin-top: $i * 1rem; }
+			&.column .sk-palette + .sk-palette { margin-left: $i * 1rem; }
 		}
 	}
 }
 
 .sk-palette {
 	display: flex;
-	flex-flow: row nowrap;
-	width: 100%;
 
 	& .sk-color-block { height: $sk-color-block--min-height; }
 
@@ -40,6 +58,11 @@
 		&, &-blocks, &-all, &-all-text {
 			.sk-color-block {
 				height: $sk-color-block--min-height; 
+			}
+
+			.sk-color-content {
+				position: absolute;
+				overflow: hidden;
 			}
 
 			&:hover .sk-color-block {
@@ -103,9 +126,22 @@
 		}
 	}
 
-	&--fade-text {
+	&.fade-text {
 		.sk-color-content { bottom: auto; opacity: 0; }
-		.sk-color-block:hover .sk-color-content { bottom: auto; opacity: 1; }
+		.sk-color-block:hover {
+			height: $sk-color-block--height;
+
+			.sk-color-content { bottom: auto; opacity: 1; }
+		}
+	}
+
+	&.fade-all-text {
+		.sk-color-content { bottom: auto; opacity: 0; }
+		&:hover .sk-color-block {
+			height: $sk-color-block--height;
+
+			.sk-color-content { bottom: auto; opacity: 1; }
+		}
 	}
 }
 
@@ -116,15 +152,35 @@
 	& .sk-color-block { min-width: 1 / 6 * 100%; }
 }
 
+[data-show-color-as="name"] .sk-color-content {
+	text-transform: capitalize;
+}
+
+[data-show-color-as="rgb,hex"] .sk-palette .sk-color-content,
+[data-show-color-as="rgb,hsl"] .sk-palette .sk-color-content,
+[data-show-color-as="rgb,name"] .sk-palette .sk-color-content,
+[data-show-color-as="hsl,hex"] .sk-palette .sk-color-content,
+[data-show-color-as="hsl,rgb"] .sk-palette .sk-color-content,
+[data-show-color-as="hsl,name"] .sk-palette .sk-color-content,
+[data-show-color-as="hex,rgb"] .sk-palette .sk-color-content,
+[data-show-color-as="hex,hsl"] .sk-palette .sk-color-content,
+[data-show-color-as="hex,name"] .sk-palette .sk-color-content,
+[data-show-color-as="name,hex"] .sk-palette .sk-color-content,
+[data-show-color-as="name,rgb"] .sk-palette .sk-color-content,
+[data-show-color-as="name,hsl"] .sk-palette .sk-color-content {
+	font-size: 0.7rem !important;
+	padding: 0;
+}
+
 @for $i from 1 through 12 {
 	.sk-colors--count-#{$i} .sk-color-block {
 		max-width: auto;
-		width: (($i / 12) * 100%) / 12;
+		flex: 1 0 (($i / 12) * 100%) / 12;
 	}
 
 	.sk-colors--count-#{$i}.slide-blocks .sk-color-block:hover {
 		max-width: stretch;
-		width: (($i / 12) * 100%) / 2;
+		flex: 1 0 (($i / 12) * 100%) / 2;
 	}
 
 	@if $i > 6 { 
@@ -136,17 +192,18 @@
 }
 
 .sk-color-content {
-	position: absolute;
-	overflow: hidden;
 	opacity: 0;
 	text-transform: uppercase;
 	transition: all .3s ease-out;
+	margin: 2rem;
+	line-height: 1rem;
 }
 
 .sk-color-block {
 	position: relative;
 	flex: 1 1 auto;
 	width: auto;
+	text-align: center;
 
 	display: flex;
 	flex-flow: column nowrap;
@@ -154,4 +211,9 @@
 	align-items: center;
 
 	transition: all .3s ease-in;
+}
+
+.column .static-blocks .sk-color-block {
+	min-height: $sk-color-block--height;
+	width: auto;
 }

@@ -7,10 +7,13 @@ function sk_color_palettes_shortcode($atts) {
 
 	// effects: slide (= slide all)
 	$a = shortcode_atts( array(
-		'colors' 	=> "#ffffff, #77777, #000000",
+		'colors' 	=> '',
 		'effect'	=> 'slide', // slide, slide all, slide all text, slide blocks, &c.
 		'gutter'	=> '1', // 1 - 4
-		'show_color_as'		=> 'hex' // hex, rgb, hsl
+		'show_color_as'		=> 'hex', // hex, rgb, hsl
+		'direction' => 'row',
+		'count'		=> '12',
+		'names'		=> ''
 	), $atts );
 
 	ob_start();
@@ -33,26 +36,68 @@ function sk_color_palette($args) {
 	$colors = explode(",", $args['colors']);
 	$effect = getEffects(strtolower($args['effect']));
 	$gutter = is_numeric($args['gutter']) ? $args['gutter'] : '1';
-	$show_color = strtolower($args['show_color_as']);
+	$show_color = explode(",", strtolower($args['show_color_as']));
+	$direction = strtolower($args['direction']);
+	$names_list = $args['names'];
+
+	if( substr($direction, -1, 1) === "s" ) {
+		$direction = substr($direction, 0, strlen($direction) - 1);
+	}
+
+	if($direction === "col") { 
+		$direction === "column"; 
+
+	} elseif($direction !== "column" && $direction !== "row") {
+		$direction = "";
+
+	}
+
+	if($direction === "column") {
+		if( strpos($effect, "fade-all-text") !== false ) {
+			$effect = "fade-all-text static-blocks";
+
+		} else {
+			$effect = "fade-text static-blocks";
+
+		}
+	}
+
+	$names = array();
+	if($names_list !== "") {
+		$names = explode(",", $names_list);
+	}
 
 	$count = count($colors);
 
 	$blocks = array();
-	foreach($colors as $color) {
+	foreach($colors as $index=>$color) {
 		$color = trim($color);
+		$name = "";
+
+		if($names_list === true || strpos($color, ":") !== false) {
+			$n = explode(":", $color);
+			$color = $n[1];
+			$name = $n[0];
+
+			if(!in_array("name", $show_color)) { array_push($show_color, "name"); }
+
+		} elseif(isset($names[$index])) {
+			$name = $names[$index];
+
+		}
 
 		if(strpos($color, "#") === 0) {
 			$color = str_replace("#", "", $color);
 		}
 
-		$block = buildBlock($show_color, $color);
+		$block = buildBlock($show_color, $color, $name);
 
 		array_push($blocks, $block);
 	}
 
 	$color_blocks = "";
-	if($count > 12) {
-		$lists = array_chunk($blocks, 12);
+	if($count > $args['count']) {
+		$lists = array_chunk($blocks, $args['count']);
 
 		foreach($lists as $index=>$list) {
 			$count = count($list);
@@ -67,7 +112,8 @@ function sk_color_palette($args) {
 		$color_blocks .= "</div>";
 	}
 
-	$color_palettes = "<div class='sk-palette--container gutter-{$gutter}' data-show-color-as='{$show_color}'>";
+	$show_as = implode(',', $show_color);
+	$color_palettes = "<div class='sk-palette--container gutter-{$gutter} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
@@ -104,22 +150,28 @@ function getEffects($effect) {
 	return $effect;
 }
 
-function buildBlock($show_color, $color) {
-	if($show_color === 'rgb') {
-		$rgb = hexToRGB($color, true);
-		$show_color = implode(",", $rgb);
+function buildBlock($show_color, $color, $name) {
+	$rgb = hexToRGB($color, true);
+	$hsl = hexToHSL($color);
 
-		$show_color = "rgb({$show_color})";
+	$list = array();
+	$list['rgb'] = "rgb(". implode($rgb) .")";
+	$list['hsl'] = "hsl({$hsl->hue}, {$hsl->saturation}, {$hsl->lightness})";
+	$list['name'] = $name;
+	$list['hex'] = "#{$color}";
 
-	} elseif($show_color === "hsl") {
-		$hsl = hexToHSL($color);
-		$show_color = "hsl({$hsl->hue}, {$hsl->saturation}, {$hsl->lightness})";
+	$show_this = "";
+	foreach($show_color as $index=>$show) {
+		if($index === 0) {
+			$show_this .= "{$list[$show]}";
 
-	} else {
-		$show_color = "#{$color}";
+		} else {
+			$show_this .= "<br>{$list[$show]}";
+
+		}
 	}
 
 	$txt_clr = readableColor($color);
 
-	return "<div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_color}</span></div>";
+	return "<div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_this}</span></div>";
 }
