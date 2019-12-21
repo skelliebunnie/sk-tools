@@ -64,6 +64,7 @@ $sk-color-block--min-height: 1rem;
 	} 
 
 	@for $i from 1 through 12 {
+		&.colors--#{$i} .sk-color-block,
 		&.slide-blocks.colors--#{$i} .sk-color-block {
 			max-height: auto;
 			flex: 1 1 ($i / 12 * 100%) / 12;
@@ -171,6 +172,7 @@ $sk-color-block--min-height: 1rem;
 	text-align: center;
 	position: relative;
 	min-height: $sk-color-block--min-height;
+	min-width: 1rem;
 	max-width: auto;
 	overflow: hidden;
 
