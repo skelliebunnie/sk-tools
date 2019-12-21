@@ -1,29 +1,16 @@
-// SETTINGS
-$coreColors: (
-	'primary': 	 #F4EEB4,
-	'secondary': #942668,
-	'tertiary':  #E2DDD1,
-	'accent': 	 #B4D12B,
-	'active': 	 #00a0e0,
-	'neutral': 	 #414150,
-	// message colors
-	default: 		 #5D576B,
-	info: 			 #41D3BD,
-	success: 		 #A9E190,
-	alert: 			 #F4F1BB,
-	warn: 			 #ED6A5A
-) !default;
+// ===============================
+//	SETTINGS
+// ===============================
+@import "color/core";
 
-@import "color/functions";
-@import "color/mixins";
+// ===============================
+//	GENERAL
+// ===============================
+$sk-note--color: getColor('neutral-700');
 
-// quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
-// rangeType = adaptive | static | tintshade | default
-@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $rangeDepth: 9);
-
-/*
-	SK-FILTER VARIABLES
- */
+// ===============================
+//	SK-FILTER VARIABLES
+// ===============================
 $sk-filter-container--color: getColor('neutral-900');
 $sk-filter-title--bg-color: getColor('secondary-700');
 $sk-filter-title-hover--bg-color: getColor('accent-400');
@@ -46,9 +33,9 @@ $sk-filter-notice--border-color: getColor('alert-400');
 
 $sk-remove-filter--color: getColor('alert-400');
 
-/*
-	SK-NOTICES VARIABLES
- */
+// ===============================
+//	SK-NOTICES VARIABLES
+// ===============================
 $sk-notice-info--border-color: getColor('info-400');
 $sk-notice-info--bg-color: getColor('info-50');
 
@@ -67,4 +54,8 @@ $sk-notice-warn--bg-color: getColor('warn-50');
 $sk-notice-neutral--border-color: getColor('neutral-400');
 $sk-notice-neutral--bg-color: getColor('neutral-50');
 
-$sk-note--color: getColor('neutral-700');
+// ===============================
+//	SK-COLOR-PALETTES VARIABLES
+// ===============================
+$sk-color-block--height: 3rem;
+$sk-color-block--min-height: 1.5rem;
