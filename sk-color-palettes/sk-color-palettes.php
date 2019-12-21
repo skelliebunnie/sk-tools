@@ -36,6 +36,7 @@ function sk_color_palettes_shortcode($atts) {
 		'color_count'			=> '12', // max 12; how many color blocks per palette
 		'palette_count'		=> '4', // max 6; how many palettes side-by-side if dir = column
 		'names'						=> '', // true, or list of names, or 'hex:name' / 'name:hex'
+		'palette_titles'	=> '',
 		'break'						=> '<br>',
 		'capitalize_name'	=> 'true'
 	), $atts );
@@ -134,25 +135,53 @@ function sk_color_palette($args) {
 		array_push($blocks, $block);
 	}
 
+	$palette_titles = array();
+	if($args['palette_titles'] !== '') {
+		$palette_titles = explode(",", $args['palette_titles']);
+	}
+
 	$color_blocks = "";
+
 	if($count > $args['color_count']) {
 		$lists = array_chunk($blocks, $args['color_count']);
 
 		foreach($lists as $index=>$list) {
+		
 			$count = count($list);
-			$color_blocks .= "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
-			$color_blocks .= implode("", $list);
-			$color_blocks .= "</div>";
+
+			$palette = "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+			$palette .= implode("", $list);
+			$palette .= "</div>";
+
+			if( !empty($palette_titles) && isset($palette_titles[$index]) ) {
+				$title = ucwords($palette_titles[$index]);
+
+				$color_blocks .= "<div class='sk-palette--wrapper'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+
+			} else {
+
+				$color_blocks .= $palette;
+
+			}
 		}
 
 	} else {
-		$color_blocks = "<div class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
-		$color_blocks .= implode("", $blocks);
-		$color_blocks .= "</div>";
+		$palette = "<div class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+		$palette .= implode("", $blocks);
+		$palette .= "</div>";
+
+		if( !empty($palette_titles) && $palette_titles[0] !== '' ) {
+			$title = ucwords($palette_titles[0]);
+			$color_blocks .= "<div class='sk-palette--wrapper'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+
+		} else {
+			$color_blocks .= $palette;
+
+		}
 	}
 
 	$show_as = implode(',', $show_color);
-	$color_palettes = "<div class='sk-grid gutter-{$gutter} cols-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
+	$color_palettes = "<div class='sk-grid sk-palette--container gutter-{$gutter} cols-{$args['palette_count']} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
