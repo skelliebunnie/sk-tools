@@ -77,16 +77,6 @@ function sk_color_palette($args) {
 
 	}
 
-	if($direction === "column") {
-		if( strpos($effect, "fade-all-text") !== false ) {
-			$effect = "fade-all-text static-blocks";
-
-		} else {
-			$effect = "fade-text static-blocks";
-
-		}
-	}
-
 	$names = null;
 	if($names_list !== "" && strpos($names_list, ":") === false) {
 		$names = explode(",", $names_list);
