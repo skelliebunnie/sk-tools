@@ -70,8 +70,10 @@ function sk_color_palette($args) {
 	$palette_count = $args['palette_count'];
 
 	$palette_lists = array();
-	if( strpos($colors, ";") !== false ) {
-		$lists = explode(";", $args['colors']);
+	if( strpos($colors, ";") !== false || strpos($colors, "|") !== false ) {
+		$lists = array();
+		if( strpos($colors, ";") !== false) { $lists = explode(";", $args['colors']); }
+		if( strpos($colors, "|") !== false) { $lists = explode("|", $args['colors']); }
 
 		foreach($lists as $list) {
 			$colors = explode(",", $list);
