@@ -27,6 +27,7 @@ $demoColors: (
 		width: 0%;
 		min-width: 0;
 		padding: 0.4rem;
+		white-space: pre-wrap;
 	}
 }
 
@@ -107,11 +108,15 @@ $demoColors: (
 				background-color: $color;
 
 				&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+
+				.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+				.show-color-as--name-hex &::after { content: "#{$name} ( #{$color} )"; color: getContrast($color); width: auto; }
 				
-				$i: $i + 1;
-				@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 			}
-		} 
+		}
+
+		$i: $i + 1;
+		@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 	}
 }
 
@@ -138,11 +143,14 @@ $demoColors: (
 					padding: 0.4rem 0.2rem;
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
-					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} \A ( #{$color} )"; color: getContrast($color); width: auto; }
 				}
-			} 
+			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }
@@ -164,11 +172,15 @@ $demoColors: (
 					background-color: $color;
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
-					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} \A ( #{$color} )"; color: getContrast($color); width: auto; }
+
 				}
-			} 
+			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }
@@ -191,10 +203,13 @@ $demoColors: (
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
 					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} ( #{$color} )"; color: getContrast($color); width: auto; }
 				}
 			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }
@@ -217,10 +232,13 @@ $demoColors: (
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
 					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} ( #{$color} )"; color: getContrast($color); width: auto; }
 				}
 			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }
@@ -242,11 +260,14 @@ $demoColors: (
 					background-color: $color;
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
-					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} ( #{$color} )"; color: getContrast($color); width: auto; }
 				}
 			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }
@@ -268,11 +289,15 @@ $demoColors: (
 					background-color: $color;
 
 					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
-					
-					$i: $i + 1;
-					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+
+					.show-color-as--hex &::after { content: "#{$color}"; color: getContrast($color); width: auto; }
+					.show-color-as--name-hex &::after { content: "#{$name} ( #{$color} )"; color: getContrast($color); width: auto; }
+
 				}
 			}
+
+			$i: $i + 1;
+			@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
 		}
 	}
 }

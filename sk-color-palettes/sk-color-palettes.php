@@ -73,7 +73,7 @@ function sk_color_palettes_shortcode($atts) {
 			if($a['palette_titles'] !== '') { $show_titles = true; }
 
 			if($palette !== "") {
-				echo getBuiltInPalettes($palette, $type, $range, $show_titles);
+				echo getBuiltInPalettes($palette, $type, $range, $show_titles, $a['show_color_as']);
 
 			} else {
 				echo sk_color_palette($a);
@@ -356,7 +356,7 @@ function buildAllBlocks($colors, $names, $capitalize_name, $show_color, $break) 
 	return $blocks;
 }
 
-function getBuiltInPalettes($palette, $type, $range, $show_titles) {
+function getBuiltInPalettes($palette, $type, $range, $show_titles, $show_color_as) {
 	wp_enqueue_style('sk-defaultpalettes-styles');
 
 	$palette = str_replace(" ", "", $palette);
@@ -415,9 +415,19 @@ function getBuiltInPalettes($palette, $type, $range, $show_titles) {
 		$triad_hidden = true; $split_hidden = true;
 	}
 
+	$show = " show-color-as--name";
+	$show_as = explode(",", $show_color_as);
+	if( in_array("hex", $show_as) && in_array("name", $show_as) ) {
+		$show = " show-color-as--name-hex";
+
+	} elseif( in_array("hex", $show_as) ) {
+		$show = " show-color-as--hex";
+
+	}
+
 	ob_start();
 ?>
-<div class="sk-default-palette--container palette-type--<?php echo $type; ?> palette-range--<?php echo $type; ?>">
+<div class="sk-default-palette--container palette-type--<?php echo $type; ?> palette-range--<?php echo $range; ?><?php if($show !== '') echo $show; ?>">
 	<div class="sk-default-palette--wrapper<?php if($base_hidden) { echo ' hidden'; } ?>">
 		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Base / Default Palette -- Core Colors</h2>
 		<div id="palette-base" class="sk-default-palette">
