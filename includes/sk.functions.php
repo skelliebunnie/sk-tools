@@ -1,29 +1,5 @@
 <?php
 
-function hexToDec($hex,$segments=1) {
-  $hexChart = array("0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 8, "9" => 9, "A" => 10, "B" => 11, "C" => 12, "D" => 13, "E" => 14, "F" => 15);
-  
-  $hex = array_reverse(str_split(strtoupper($hex)));
-
-  $dec = array();
-  foreach($hex as $index=>$char) {
-    $char = $hexChart[$char];
-
-    $c = $char * pow(16, $index);
-    $dec = $dec + $c;
-  }
-
-  return $dec;
-}
-
-function decToHex($dec) {
-  $hexChart = array("0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 8, "9" => 9, "A" => 10, "B" => 11, "C" => 12, "D" => 13, "E" => 14, "F" => 15);
-
-  $hex = null;
-
-  return $hex;
-}
-
 // https://stackoverflow.com/questions/12228644/how-to-detect-light-colors-with-php
 function getColorLightness($hex) {
 	$hex = strpos($hex, "#") === 0 ? str_replace("#", "", $hex) : $hex;
@@ -40,6 +16,27 @@ function getLuma($hex) {
 	$rgb = hexToRGB($hex, true);
 
 	return (0.2126 * $rgb['red'] + 0.7152 * $rgb['green'] + 0.0722 * $rgb['blue']) / 255;
+}
+
+function rgbToHex($color) {
+  $regex = '/rgba?\(\s?([0-9]{1,3}),\s?([0-9]{1,3}),\s?([0-9]{1,3})/i';
+
+  preg_match($regex, $color, $matches);
+
+  if(count($matches) != 4) {
+    die('color not valid RGB format');
+  }
+
+  $r = (int)$matches[1] <= 255 ? (int)$matches[1] : 255;
+  $g = (int)$matches[2] <= 255 ? (int)$matches[2] : 255;
+  $b = (int)$matches[3] <= 255 ? (int)$matches[3] : 255;
+
+  $R = dechex($r); $G = dechex($g); $B = dechex($b);
+  if($R === "0") { $R = "00"; }
+  if($G === "0") { $G = "00"; }
+  if($B === "0") { $B = "00"; }
+
+  return strtoupper("{$R}{$G}{$B}");
 }
 
 function hexToRGB($hex, $return_array=false) {
@@ -114,14 +111,70 @@ function hexToHSL($hex) {
   return (object) Array('hue' => $h, 'saturation' => $s, 'lightness' => $l);
 }
 
-function rgbToHex($color) {
-  $regex = '/rgba?\(\s?([0-9]{1,3}),\s?([0-9]{1,3}),\s?([0-9]{1,3})/i';
+function hslToHex($hsl) {
+  $rgb = hslToRGB($hsl);
 
-  preg_match($regex, $color, $matches);
+  return rgbToHex($rgb);
+}
 
-  if(count($matches) != 4) {
-    die('color not valid RGB format');
+function hslToRGB($hsl) {
+  $r = 0; $g = 0; $b = 0;
+
+  $hslArray = array('hue' => 0, 'saturation' => 0, 'lightness' => 0);
+
+  if( !is_array($hsl) ) {
+    if( strpos($hsl, "%") !== false ) { $hsl = str_replace("%", "", $hsl); }
+
+    $regex = '/hsla?\(\s?([0-9]{1,3}),\s?([0-9]{1,3}),\s?([0-9]{1,3})/i';
+
+    preg_match($regex, $hsl, $matches);
+
+    $hslArray = array( 'hue' => $matches[1], 'saturation' => $matches[2], 'lightness' => $matches[3] );
+
+  } else {
+    if( !array_key_exists('hue', $hsl) ) {
+      $hslArray = array('hue' => $hsl[0], 'saturation' => $hsl[1], 'lightness' => $hsl[2]);
+
+    } else {
+      $hslArray = $hsl;
+
+    }
+
   }
+
+  $h = $hslArray['hue']; $s = $hslArray['saturation']; $l = $hslArray['lightness'];
+    
+  if( $hslArray['hue'] > 1 ) { $h = $hslArray['hue'] / 360; }
+  if( $hslArray['saturation'] > 1 ) { $s = $hslArray['saturation'] / 100; }
+  if( $hslArray['lightness'] > 1 ) { $l = $hslArray['lightness'] / 100; }
+
+  if( $s == 0 ) { 
+    $r = $g = $b = $l;
+
+  } else {
+
+    $q = $l < 0.5 ? $l * ( 1.0 + $s ) : $l + $s - $l * $s; // 1
+
+    $p = 2.0 * $l - $q; // 0
+    $r = hueToRGB($p, $q, $h + 1.0 / 3.0) * 255;
+    $g = hueToRGB($p, $q, $h) * 255;
+    $b = hueToRGB($p, $q, $h - 1.0 / 3.0) * 255;
+
+  }
+
+  return "rgb({$r}, {$g}, {$b})";
+
+}
+
+function hueToRGB($p,$q,$t) {
+  if($t < 0) $t += 1.0;
+  if($t > 1.0) $t -= 1.0;
+
+  if($t < 1.0 / 6.0) return $p + ($q - $p) * 6.0 * $t;
+  if($t < 1.0 / 2.0) return $q;
+  if($t < 2.0 / 3.0) return $p + ($q - $p) * (2.0 / 3.0 - $t) * 6.0;
+
+  return $p;
 }
 
 // https://stackoverflow.com/a/8468448
