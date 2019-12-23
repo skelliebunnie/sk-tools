@@ -50,10 +50,7 @@ function sk_color_palettes_shortcode($atts) {
 		$types = array('default', 'static', 'adaptive');
 		$ranges = array(0, 3, 5, 7, 9);
 
-		$colors = array();
-		if(strpos($a['colors'], ",") !== false) {
-			$colors = explode(",", $a['colors']);
-		}
+		$colors = explode(",", $a['colors']);
 
 		if($a['colors'] !== '' && !in_array($colors[0], $palettes) ) {
 			echo sk_color_palette($a);
