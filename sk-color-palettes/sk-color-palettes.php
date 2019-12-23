@@ -423,6 +423,9 @@ function getBuiltInPalettes($palette, $type, $range, $show_titles, $show_color_a
 	} elseif( in_array("hex", $show_as) ) {
 		$show = " show-color-as--hex";
 
+	} elseif( in_array("none", $show_as) ) {
+		$show = " show-color-as--none";
+		
 	}
 
 	ob_start();
