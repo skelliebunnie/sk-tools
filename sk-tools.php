@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.3.2
+ * Version: 4.4.0
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
@@ -80,7 +80,7 @@ foreach(glob(SK_ROOTDIR ."sk-datetime/*.php") as $filename) {
 }
 
 // SKB-DATETIME
-foreach(glob(SK_ROOTDIR ."sk-color-palettes/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."sk-colors/*.php") as $filename) {
 	require_once($filename);
 }
 

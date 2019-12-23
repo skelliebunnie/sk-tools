@@ -1,5 +1,29 @@
 <?php
 
+function hexToDec($hex,$segments=1) {
+  $hexChart = array("0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 8, "9" => 9, "A" => 10, "B" => 11, "C" => 12, "D" => 13, "E" => 14, "F" => 15);
+  
+  $hex = array_reverse(str_split(strtoupper($hex)));
+
+  $dec = array();
+  foreach($hex as $index=>$char) {
+    $char = $hexChart[$char];
+
+    $c = $char * pow(16, $index);
+    $dec = $dec + $c;
+  }
+
+  return $dec;
+}
+
+function decToHex($dec) {
+  $hexChart = array("0" => 0, "1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 8, "9" => 9, "A" => 10, "B" => 11, "C" => 12, "D" => 13, "E" => 14, "F" => 15);
+
+  $hex = null;
+
+  return $hex;
+}
+
 // https://stackoverflow.com/questions/12228644/how-to-detect-light-colors-with-php
 function getColorLightness($hex) {
 	$hex = strpos($hex, "#") === 0 ? str_replace("#", "", $hex) : $hex;
@@ -88,6 +112,16 @@ function hexToHSL($hex) {
   $l = (int)round(255.0 * $l);
 
   return (object) Array('hue' => $h, 'saturation' => $s, 'lightness' => $l);
+}
+
+function rgbToHex($color) {
+  $regex = '/rgba?\(\s?([0-9]{1,3}),\s?([0-9]{1,3}),\s?([0-9]{1,3})/i';
+
+  preg_match($regex, $color, $matches);
+
+  if(count($matches) != 4) {
+    die('color not valid RGB format');
+  }
 }
 
 // https://stackoverflow.com/a/8468448
