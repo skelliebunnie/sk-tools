@@ -46,8 +46,43 @@ function sk_color_palettes_shortcode($atts) {
 	if($sk_options['sk_enable_colorpalettes'] === 'true') {
 		wp_enqueue_style('sk-colorpalettes-styles');
 
-		if($a['colors'] !== '') {
+		$palettes = array('default', 'base', 'compound', 'tetrad1', 'tetrad2', 'quad', 'triad', 'split', 'analogous', 'all');
+		$types = array('default', 'static', 'adaptive');
+		$ranges = array(0, 3, 5, 7, 9);
+
+		$colors = array();
+		if(strpos($a['colors'], ",") !== false) {
+			$colors = explode(",", $a['colors']);
+		}
+
+		if($a['colors'] !== '' && !in_array($colors[0], $palettes) ) {
 			echo sk_color_palette($a);
+
+		} elseif( !empty($colors) && in_array($colors[0], $palettes) ) {
+			$check = explode(":", $a['colors']);
+
+			$palette = $a['colors']; $type = "default"; $range = 0;
+			if( is_array($check) && count($check) > 1 ) {
+				if( in_array($check[0], $types) ) { $type = $check[0]; $palette = $check[1]; }
+				if( in_array($check[1], $types) ) { $type = $check[1]; $palette = $check[0]; }
+				if(count($check) === 3) { $range = $check[2]; }
+
+			} else {
+				$type = 'static'; $range = 9;
+
+			}
+
+			$show_titles = false;
+			if($a['palette_titles'] !== '') { $show_titles = true; }
+
+			if($palette !== "") {
+				echo getBuiltInPalettes($palette, $type, $range, $show_titles);
+
+			} else {
+				echo sk_color_palette($a);
+
+			}
+
 		}
 
 	} else {
@@ -135,14 +170,14 @@ function sk_color_palette($args) {
 		
 			$count = count($list);
 
-			$palette = "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+			$palette = "<div id='sk-palette--{$index}' class='sk-palette colors--{$count} {$effect}'>";
 			$palette .= implode("", $list);
 			$palette .= "</div>";
 
 			if( !empty($palette_titles) && isset($palette_titles[$index]) ) {
 				$title = ucwords($palette_titles[$index]);
 
-				$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+				$color_blocks .= "<div class='sk-palette--wrapper '><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
 
 			} else {
 
@@ -156,14 +191,14 @@ function sk_color_palette($args) {
 		foreach($palettes as $index=>$list) {
 			$count = count($list);
 
-			$palette = "<div id='sk-palette--{$index}' class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+			$palette = "<div id='sk-palette--{$index}' class='sk-palette colors--{$count} {$effect}'>";
 			$palette .= implode("", $list);
 			$palette .= "</div>";
 
 			if( !empty($palette_titles) && isset($palette_titles[$index]) ) {
 				$title = ucwords($palette_titles[$index]);
 
-				$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+				$color_blocks .= "<div class='sk-palette--wrapper '><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
 
 			} else {
 
@@ -173,13 +208,13 @@ function sk_color_palette($args) {
 		}
 
 	} else {
-		$palette = "<div class='sk-grid-col sk-palette colors--{$count} {$effect}'>";
+		$palette = "<div class='sk-palette colors--{$count} {$effect}'>";
 		$palette .= implode("", $blocks);
 		$palette .= "</div>";
 
 		if( !empty($palette_titles) && $palette_titles[0] !== '' ) {
 			$title = ucwords($palette_titles[0]);
-			$color_blocks .= "<div class='sk-palette--wrapper sk-grid-col'><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
+			$color_blocks .= "<div class='sk-palette--wrapper '><h3 class='sk-palette--title'>{$title}</h3>". $palette ."</div>";
 
 		} else {
 			$color_blocks .= $palette;
@@ -189,16 +224,17 @@ function sk_color_palette($args) {
 	}
 
 	$show_as = implode(',', $show_color);
-	$color_palettes = "<div class='sk-grid sk-palette--container grid-col-{$palette_count} gutter-{$gutter} {$direction}' data-show-color-as='{$show_as}'>";
+	$color_palettes = "<div class='sk-palette--container palette-col-{$palette_count} gutter-{$gutter} {$direction}' data-show-color-as='{$show_as}'>";
 	$color_palettes .= $color_blocks;
 	$color_palettes .= "</div>";
 
 	return $color_palettes;
 }
 
+// return string
 function getEffects($effect) {
+	
 	$effects = array();
-
 	$list = explode(",", $effect);
 	foreach($list as $e) {
 		$e = trim($e);
@@ -229,6 +265,7 @@ function getEffects($effect) {
 	return $effect;
 }
 
+// returns string
 function buildBlock($show_color, $color, $name, $break="<br>") {
 	$rgb = hexToRGB($color, true);
 	$hsl = hexToHSL($color);
@@ -267,9 +304,10 @@ function buildBlock($show_color, $color, $name, $break="<br>") {
 
 	$txt_clr = readableColor($color);
 
-	return "<div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_this}</span></div>";
+	return "<div class='sk-color-block--wrapper'><div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_this}</span></div></div>";
 }
 
+// returns array of strings (each from buildBlock)
 function buildAllBlocks($colors, $names, $capitalize_name, $show_color, $break) {
 	$blocks = array();
 
@@ -319,4 +357,176 @@ function buildAllBlocks($colors, $names, $capitalize_name, $show_color, $break) 
 	}
 
 	return $blocks;
+}
+
+function getBuiltInPalettes($palette, $type, $range, $show_titles) {
+	wp_enqueue_style('sk-defaultpalettes-styles');
+
+	$palette = str_replace(" ", "", $palette);
+
+	$list = array();
+	if( strpos($palette, ",") !== false ) {
+		$list = explode(",", $palette);
+
+	}
+
+	$base_hidden = true; $analogous_hidden = true;
+	$compound_hidden = true; $tetrad1_hidden = true;
+	$tetrad2_hidden = true; $triad_hidden = true; $split_hidden = true;
+
+	if( $palette === 'all' || (!empty($list) && in_array("all", $list) ) ) {
+		$base_hidden = false; $analogous_hidden = false;
+		$compound_hidden = false; $tetrad1_hidden = false;
+		$tetrad2_hidden = false; $triad_hidden = false; $split_hidden = false;
+
+	} elseif( !empty($list) ) {
+
+		if( in_array("base", $list) || in_array("default", $list) ) { $base_hidden = false; }
+		if( in_array("compound", $list) ) { $compound_hidden = false; }
+		if( in_array("analogous", $list) ) { $analogous_hidden = false; }
+		if( in_array("tetrad1", $list) ) { $tetrad1_hidden = false; }
+		if( in_array("tetrad2", $list) || in_array("quad", $list) || in_array("quadratic", $list) ) { $tetrad2_hidden = false; }
+		if( in_array("triad", $list) ) { $triad_hidden = false; }
+		if( in_array("split", $list) ) { $split_hidden = false; }
+
+	} elseif( empty($list) && $palette !== '' ) {
+		switch($palette) {
+			case 'base': 
+			case 'default':
+				$base_hidden = false; break;
+			case 'compound':
+				$compound_hidden = false; break;
+			case 'analogous':
+				$analogous_hidden = false; break;
+			case 'triad':
+				$triad_hidden = false; break;
+			case 'split':
+				$split_hidden = false; break;
+			case 'tetrad1':
+				$tetrad1_hidden = false; break;
+			case 'quad':
+			case 'tetrad2':
+				$tetrad2_hidden = false; break;
+			default:
+				$base_hidden = false; break;
+		}
+	} else {
+		$base_hidden = false; 
+		$analogous_hidden = true;
+		$compound_hidden = true; 
+		$tetrad1_hidden = true; $tetrad2_hidden = true;
+		$triad_hidden = true; $split_hidden = true;
+	}
+
+	ob_start();
+?>
+<div class="sk-default-palette--container palette-type--<?php echo $type; ?> palette-range--<?php echo $type; ?>">
+	<div class="sk-default-palette--wrapper<?php if($base_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Base / Default Palette -- Core Colors</h2>
+		<div id="palette-base" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($analogous_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Analogous Harmony Palette</h2>
+		<div id="palette-analogous" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($tetrad1_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Tetrad (Rectangular) Harmony Palette</h2>
+		<div id="palette-tetrad1" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($tetrad2_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Tetrad (Square) "Quadratic" Harmony Palette</h2>
+		<div id="palette-tetrad2" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($triad_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Triad Harmony Palette</h2>
+		<div id="palette-triad" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($split_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Split Harmony Palette</h2>
+		<div id="palette-split" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+	<div class="sk-default-palette--wrapper<?php if($compound_hidden) { echo ' hidden'; } ?>">
+		<h2<?php if($show_titles == false) echo " class='hidden'"; ?>>Compound Harmony (based on Adobe's Compound Harmony) Palette</h2>
+		<div id="palette-compound" class="sk-default-palette">
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php
+	return ob_get_clean();
 }

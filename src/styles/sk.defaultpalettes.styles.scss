@@ -1,0 +1,278 @@
+@import "settings";
+
+$demoColors: (
+	'primary': 		#2C8DAD, //#D7C71D
+	'accent': 		#FB6132,
+	'neutral': 		#A3ACB5,
+);
+
+%wrapper-with-content {
+	flex: 1 0 auto;
+	width: auto;
+	margin: 0.15rem 0.4rem;
+}
+
+%color {
+	flex: 1 1 auto;
+	width: 0%;
+	text-align: center;
+	position: relative;
+	display: block;
+	padding: 0;
+	margin: 0;
+	min-width: 0;
+	// border: 2px solid rebeccapurple;
+
+	&::after {
+		width: 0%;
+		min-width: 0;
+		padding: 0.4rem;
+	}
+}
+
+%color-with-content {
+	@extend %color;
+
+	flex: 1 0 auto;
+	width: auto;
+	padding: 0.4rem 0.2rem;
+}
+
+.hidden { display: none !important; }
+
+.sk-default-palette--container {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	// border: 4px solid black; 
+}
+.sk-default-palette--wrapper {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-top: 1rem;
+	// border: 3px solid red;
+}
+
+.sk-default-palette--container h2 {
+	flex: 1 0 100%;
+	min-width: 100%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.sk-default-palette {
+	flex: 1;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: center;
+	margin: 0.15rem;
+	// border: 2px solid rebeccapurple;
+}
+
+.sk-color--wrapper {
+	flex: 0;
+	width: 0%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: stretch;
+	padding: 0;
+	margin: 0;
+	min-width: 0;
+	// border: 2px solid dodgerblue;
+
+	& .color { @extend %color; }
+}
+
+
+#palette-base {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1;
+	@each $name,$color in $palette {
+
+		.sk-color--wrapper:nth-child(#{$w}) {
+			@extend %wrapper-with-content;
+			min-width: 1 / length($palette) * 100%;
+
+			.color:nth-child(#{$i}) {
+				@extend %color-with-content;
+				background-color: $color;
+
+				&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+				
+				$i: $i + 1;
+				@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+			}
+		} 
+	}
+}
+
+#palette-analogous {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-analogous1-50' { $start: true; }
+
+		@if $start == true {
+
+			.sk-color--wrapper:nth-child(#{$w}) {
+				flex: 1 0 auto;
+				width: auto;
+				min-width: 1 / length($palette) * 100%;
+				margin: 0.15rem 0.4rem;
+
+				.color:nth-child(#{$i}) {
+					@extend %color;
+					flex: 1 0 auto;
+					width: auto;
+					background-color: $color;
+					padding: 0.4rem 0.2rem;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			} 
+		}
+	}
+}
+
+#palette-compound {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'compound', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-compound1-50' { $start: true; }
+
+		@if $start == true {
+			.sk-color--wrapper:nth-child(#{$w}) {
+				@extend %wrapper-with-content;
+				min-width: 1 / length($palette) * 100%;
+
+				.color:nth-child(#{$i}) {
+					@extend %color-with-content;
+					background-color: $color;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			} 
+		}
+	}
+}
+
+#palette-tetrad1 {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'tetrad', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-tetrad1-50' { $start: true; }
+
+		@if $start == true {
+			.sk-color--wrapper:nth-child(#{$w}) {
+				@extend %wrapper-with-content;
+				min-width: 1 / length($palette) * 100%;
+
+				.color:nth-child(#{$i}) {
+					@extend %color-with-content;
+					background-color: $color;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			}
+		}
+	}
+}
+
+#palette-tetrad2 {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'quadratic', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-tetrad1-50' { $start: true; }
+
+		@if $start == true {
+			.sk-color--wrapper:nth-child(#{$w}) {
+				@extend %wrapper-with-content;
+				min-width: 1 / length($palette) * 100%;
+
+				.color:nth-child(#{$i}) {
+					@extend %color-with-content;
+					background-color: $color;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			}
+		}
+	}
+}
+
+#palette-triad {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'triad', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-triad1-50' { $start: true; }
+
+		@if $start == true {
+			.sk-color--wrapper:nth-child(#{$w}) {
+				@extend %wrapper-with-content;
+				min-width: 1 / length($palette) * 100%;
+
+				.color:nth-child(#{$i}) {
+					@extend %color-with-content;
+					background-color: $color;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			}
+		}
+	}
+}
+
+#palette-split {
+	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'split', $rangeDepth: 9, $colorMap: $demoColors);
+
+	$w: 1; $i: 1; $start: false;
+	@each $name,$color in $palette {
+		@if $name == 'primary-split1-50' { $start: true; }
+
+		@if $start == true {
+			.sk-color--wrapper:nth-child(#{$w}) {
+				@extend %wrapper-with-content;
+				min-width: 1 / length($palette) * 100%;
+
+				.color:nth-child(#{$i}) {
+					@extend %color-with-content;
+					background-color: $color;
+
+					&::after { content: "#{$name}"; color: getContrast($color); width: auto; }
+					
+					$i: $i + 1;
+					@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+				}
+			}
+		}
+	}
+}
