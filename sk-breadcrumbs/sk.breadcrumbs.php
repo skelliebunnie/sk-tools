@@ -1,5 +1,7 @@
 <?php
 
+if( !defined( 'ABSPATH' ) ) { exit; }
+
 function sk_breadcrumbs_shortcode($atts) {
 	global $sk_options;
 

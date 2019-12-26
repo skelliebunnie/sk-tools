@@ -1,5 +1,9 @@
 <?php
 
+if( !defined( 'ABSPATH' ) ) { exit; }
+
+if( !defined( 'ABSPATH' ) ) { exit; }
+
 function sk_datetime_shortcode($atts) {
 	global $sk_options;
 

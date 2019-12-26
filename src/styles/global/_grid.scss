@@ -1,0 +1,47 @@
+/*
+	GENERAL GRID
+ */
+.sk-grid {
+	position: relative;
+	display: grid;
+	// auto-FILL will *add* (empty) columns to fit as many cols as possible into the row
+	// auto-FIT will expand the *currently available* cols to fit the row
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	grid-template-rows: auto;
+	max-width: 100%;
+
+	&.row { 
+		grid-template-columns: 1fr;
+
+		& .sk-palette {
+			width: 100%;
+		}
+	}
+}
+
+@for $i from 1 through 12 {
+	.sk-grid.grid-col-#{$i} {
+		grid-template-columns: repeat(#{$i}, 1fr);
+	}
+
+	.sk-grid.gutter-#{$i} {
+		grid-gap: 0.5rem * $i;
+	}
+
+	.sk-grid-col.width-#{$i} {
+		grid-column: span $i;
+	}
+
+	.sk-grid-col.height-#{$i} {
+		grid-row: span 2;
+	}
+
+	.sk-grid-col.start-col-#{$i} {
+		grid-column: $i;
+	}
+}
+
+.sk-grid-col {
+	box-sizing: border-box;
+	padding: 0.25rem 0.5rem;
+}

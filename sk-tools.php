@@ -20,19 +20,20 @@ define( 'SK_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
-	'sk_enable_breadcrumbs'		=> 'true',
-	'sk_enable_notices'				=> 'true',
+	'sk_enable_breadcrumbs'			=> 'true',
+	'sk_enable_notices'					=> 'true',
 	'sk_enable_filter'					=> 'true',
 	'sk_enable_datetime'				=> 'true',
-	'sk-bc-show_home'					=> 'true',
+	'sk_enable_colorpalettes'		=> 'true',
+	'sk-bc-show_home'						=> 'true',
 	'sk-bc-show_home_icon'			=> 'true',
 	'sk-bc-home_icon_only'			=> 'false',
 	'sk-bc-show_current'				=> 'true',
-	'sk-bc-current_url'				=> 'false',
+	'sk-bc-current_url'					=> 'false',
 	'sk-n-default_message'			=> 'Notice',
 	'sk-n-default_date_format'	=> 'l, F j, Y',
 	'sk-n-default_message_type' => 'simple',
-	'sk-n-default_weekdays'		=> array('mon','tue','wed','thu','fri'),
+	'sk-n-default_weekdays'			=> array('mon','tue','wed','thu','fri'),
 	'sk-dt-default_date_format' => 'l, F j, Y', // e.g. Monday, November 18, 2019
 	'sk-dt-default_time_format' => 'h:i A', // e.g. 07:12 AM; g/G no leading 0, h/H leading 0 (12/24)
 );
@@ -75,6 +76,11 @@ foreach(glob(SK_ROOTDIR ."sk-notices/*.php") as $filename) {
 
 // SKB-DATETIME
 foreach(glob(SK_ROOTDIR ."sk-datetime/*.php") as $filename) {
+	require_once($filename);
+}
+
+// SKB-DATETIME
+foreach(glob(SK_ROOTDIR ."sk-colors/*.php") as $filename) {
 	require_once($filename);
 }
 
