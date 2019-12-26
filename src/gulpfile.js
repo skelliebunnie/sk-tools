@@ -38,18 +38,18 @@ const server = browserSync.create();
 
 const paths = {
 	styles: {
-		src:  ROOT + '/src/styles/**/!(#)*.scss',
-		dest:  ROOT + '/includes/css'
+		src:   `${ROOT}/src/styles/**/!(#)*.scss`,
+		dest:  `${ROOT}/includes/css`
 	},
 	scripts: {
-		src:  ROOT + '/src/scripts/**/!(_)*.js',
-		dest:  ROOT + '/includes/js'
+		src:  `${ROOT}/src/scripts/**/!(_)*.js`,
+		dest: `${ROOT}/includes/js`
 	},
 	images: {
-		src:  ROOT + '/src/images/**/!(_)*.{jpg,JPG,jpeg,JPEG,png,PNG}',
-		dest:  ROOT + '/includes/images'
+		src:  `${ROOT}/src/images/**/!(_)*.{jpg,JPG,jpeg,JPEG,png,PNG}`,
+		dest: `${ROOT}/includes/images`
 	},
-	public: ROOT + '/**/*.{html,php,js}'
+	public: `${ROOT}/**/*.{html,php,js}`
 }
 
 console.log(paths.styles.src);

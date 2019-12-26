@@ -1,4 +1,4 @@
-@import "round-dec", "pow",
+@import "decimal-round", "pow",
 				"luminance";
 
 //stackoverflow 40389319, Kodie Grantham
@@ -15,8 +15,25 @@
 @function getColor($colorName, $map: $palette) {
 	@return map-get($map, $colorName);
 }
+
 @function getVal($valName, $map) {
 	@return map-get($map, $valName);
+}
+
+@function getRGB($color) {
+	$red: decimal-round(red($color), 1);
+	$blue: decimal-round(blue($color), 1);
+	$green: decimal-round(green($color), 1);
+
+	@return unquote("rgb(#{$red}, #{$blue}, #{$green})");
+}
+
+@function getRGBA($color, $alpha: 50%) {
+	$red: decimal-round(red($color), 0);
+	$blue: decimal-round(blue($color), 0);
+	$green: decimal-round(green($color), 0);
+
+	@return unquote("rgba(#{$red}, #{$blue}, #{$green}, #{$alpha})");
 }
 
 @function lightenColor($color, $amount: 16.5, $clampAmount: 87) {
