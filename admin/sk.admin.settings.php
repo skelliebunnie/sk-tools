@@ -29,23 +29,6 @@ function sk_admin_settings() {
 							<h3 class='no-pad no-margin'>Enable / Disable Tools</h3>
 						</th>
 					</tr>
-					<!-- enable sk-butterflies -->
-					<tr class='no-pad'>
-						<th scope="row">
-							<label for="sk_settings[sk_enable_butterflies]"><?php _e('Enable Butterflies AirPress', 'sk_domain'); ?></label>
-						</th>
-						<td>
-							<input type="hidden" name="sk_settings[sk_enable_butterflies]" value="false">
-							<input type="checkbox" name="sk_settings[sk_enable_butterflies]" value="true" <?php if ($sk_options['sk_enable_butterflies'] == "true" ) { echo "checked"; } ?> >
-						</td>
-					</tr>
-					<tr class="no-pad-top">
-						<td colspan="2">
-							<p class="description">
-								<?php _e("Should the SKB-Tools Butterflies (data from AirPress) shortcode be available?", "sk_domain"); ?>
-							</p>
-						</td>
-					</tr>
 					<!-- enable sk-breadcrumbs -->
 					<tr class='no-pad'>
 						<th scope="row">
@@ -59,7 +42,7 @@ function sk_admin_settings() {
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Breadcrumbs be available?", "sk_domain"); ?>
+								<?php _e("Should the SK-Tools Breadcrumbs be available?", "sk_domain"); ?>
 							</p>
 						</td>
 					</tr>
@@ -76,7 +59,7 @@ function sk_admin_settings() {
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Notices be available?", "sk_domain"); ?>
+								<?php _e("Should the SK-Tools Notices be available?", "sk_domain"); ?>
 							</p>
 						</td>
 					</tr>
@@ -93,7 +76,7 @@ function sk_admin_settings() {
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Date/Time be available?", "sk_domain"); ?>
+								<?php _e("Should the SK-Tools Date/Time be available?", "sk_domain"); ?>
 							</p>
 						</td>
 					</tr>
@@ -110,7 +93,41 @@ function sk_admin_settings() {
 					<tr class="no-pad-top">
 						<td colspan="2">
 							<p class="description">
-								<?php _e("Should the SKB-Tools Filter be available?", "sk_domain"); ?>
+								<?php _e("Should the SK-Tools Filter be available?", "sk_domain"); ?>
+							</p>
+						</td>
+					</tr>
+					<!-- enable sk-color-palettes -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="sk_settings[sk_enable_colorpalettes]"><?php _e('Enable Color Palettes', 'sk_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="sk_settings[sk_enable_colorpalettes]" value="false">
+							<input type="checkbox" name="sk_settings[sk_enable_colorpalettes]" value="true" <?php if ($sk_options['sk_enable_colorpalettes'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SK-Tools Color Palettes be available?", "sk_domain"); ?>
+							</p>
+						</td>
+					</tr>
+					<!-- enable sk-checklists -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="sk_settings[sk_enable_checklists]"><?php _e('Enable Checklists', 'sk_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="sk_settings[sk_enable_checklists]" value="false">
+							<input type="checkbox" name="sk_settings[sk_enable_checklists]" value="true" <?php if ($sk_options['sk_enable_checklists'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SK-Tools Checklists be available?", "sk_domain"); ?>
 							</p>
 						</td>
 					</tr>

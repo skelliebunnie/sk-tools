@@ -1,0 +1,40 @@
+@import "settings";
+
+.sk-checklist {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-indent: 0;
+
+	& li input {
+		margin-right: 1rem;
+		opacity: 0;
+	}
+
+	& li,
+	& li > input {
+		position: relative;
+	}
+
+	& li::before {
+		position: absolute;
+		display: inline-block;
+		content: "";
+		width: 1.2rem;
+		height: 1.2rem;
+		bottom: 9px;
+		left: -1px;
+		background-color: gainsboro;
+		border: 1px solid #777;
+		border-radius: 4px;
+	}
+
+	& li.checked > i {
+		position: absolute;
+		display: inline-block;
+		bottom: 10px;
+		left: 1px;
+		font-size: 1.4rem;
+		color: limegreen;
+	}
+}

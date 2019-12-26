@@ -5,8 +5,8 @@ if( !defined( 'ABSPATH' ) ) { exit; }
 function sk_tools_admin_menu() {
 	// MAIN MENU ITEM: Shortcode samples & list of categories
 	add_menu_page(
-		'SKB Tools', // $page_title
-		'SKB Tools', // $menu_title
+		'SK Tools', // $page_title
+		'SK Tools', // $menu_title
 		'manage_options', // $capability; manage_options restricts to Administrator Role
 		'sk_admin', // $menu_slug
 		'sk_admin', // $function
@@ -14,13 +14,13 @@ function sk_tools_admin_menu() {
 	);
 
 	// SLIDERS SUBMENU PAGE
-	add_submenu_page(
-		'sk_admin', // $parent_slug
-		'Sliders', // $page_title
-		'Sliders', // $menu_title
-		'manage_options', // $capability
-		'edit.php?post_type=sk_slider' // $callback
-	);
+	// add_submenu_page(
+	// 	'sk_admin', // $parent_slug
+	// 	'Sliders', // $page_title
+	// 	'Sliders', // $menu_title
+	// 	'manage_options', // $capability
+	// 	'edit.php?post_type=sk_slider' // $callback
+	// );
 
 	// SKB-TOOLS SETTINGS
 	add_submenu_page(
@@ -36,9 +36,9 @@ function sk_tools_admin_menu() {
 add_action('admin_menu', 'sk_tools_admin_menu');
 
 function sk_admin_enqueue() {
-	$script_misha = SK_ROOTURL . 'admin/js/misha-image-upload.js';
+	$script_misha = "{SK_ROOTURL}/admin/js/misha-image-upload.js";
 
-	wp_register_script('sk-misha-script', $script_misha);
+	wp_register_script('sk-misha-script', $script_misha, array('jquery'), null, true);
 }
 add_action( 'admin_enqueue_scripts', 'sk_admin_enqueue', 50 );
 

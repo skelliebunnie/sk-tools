@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.0.2
+ * Version: 4.1.0
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
@@ -14,9 +14,9 @@ date_default_timezone_set('America/Los_Angeles');
 register_activation_hook( __FILE__, 'flush_rewrite_rules' );
 
 define( 'SK_ROOTDIR', plugin_dir_path(__FILE__) );
-define( 'SK_ROOTURL', plugins_url() .'/sk-tools/' );
+define( 'SK_ROOTURL', plugins_url() .'/sk-tools' );
 define( 'SK_SITE_URL', get_site_url() .'/' );
-define( 'SK_SITE_ADMIN_URL', get_site_url() .'/wp-admin/' );
+define( 'SK_SITE_ADMIN_URL', get_site_url() .'/wp-admin' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
@@ -25,6 +25,7 @@ $defaults = array(
 	'sk_enable_filter'					=> 'true',
 	'sk_enable_datetime'				=> 'true',
 	'sk_enable_colorpalettes'		=> 'true',
+	'sk_enable_checklists'			=> 'true',
 	'sk-bc-show_home'						=> 'true',
 	'sk-bc-show_home_icon'			=> 'true',
 	'sk-bc-home_icon_only'			=> 'false',
@@ -39,48 +40,48 @@ $defaults = array(
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
+// global options variable; note SINGULAR get_option!
 $sk_options = wp_parse_args(get_option('sk_settings'), $defaults);
 
-// global options variable; note SINGULAR get_option!
-$vp_defaults = array(
-	'sk-vp-url_slug'				=> 'virtual',
-	'sk-vp-post_title'			=> 'Virtual Post Title',
-	'sk-vp-post_content'		=> 'Virtual Post Content'
-);
-// wp_parse_args is REQUIRED when assigning an ARRAY of default values
-// Also, $defaults is in wp_parse_args(), NOT get_option() ...
-$sk_virtualpost_options = wp_parse_args(get_option('sk_virtualpost_settings'), $vp_defaults);
+// $vp_defaults = array(
+// 	'sk-vp-url_slug'				=> 'virtual',
+// 	'sk-vp-post_title'			=> 'Virtual Post Title',
+// 	'sk-vp-post_content'		=> 'Virtual Post Content'
+// );
+// // wp_parse_args is REQUIRED when assigning an ARRAY of default values
+// // Also, $defaults is in wp_parse_args(), NOT get_option() ...
+// $sk_virtualpost_options = wp_parse_args(get_option('sk_virtualpost_settings'), $vp_defaults);
 
 require_once('includes/sk.functions.php');
 require_once('includes/sk.enqueue.php');
 
 // SKB-ADMIN
-foreach(glob(SK_ROOTDIR ."admin/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/admin/*.php") as $filename) {
 	require_once($filename);
 }
 
 // SKB-FILTER
-foreach(glob(SK_ROOTDIR ."sk-filter/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/sk-filter/*.php") as $filename) {
 	require_once($filename);
 }
 
 // SKB-BREADCRUMBS
-foreach(glob(SK_ROOTDIR ."sk-breadcrumbs/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/sk-breadcrumbs/*.php") as $filename) {
 	require_once($filename);
 }
 
 // SKB-NOTICES
-foreach(glob(SK_ROOTDIR ."sk-notices/*.php") as $filename) {
+foreach(glob("/sk-notices/*.php") as $filename) {
 	require_once($filename);
 }
 
 // SKB-DATETIME
-foreach(glob(SK_ROOTDIR ."sk-datetime/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/sk-datetime/*.php") as $filename) {
 	require_once($filename);
 }
 
 // SKB-DATETIME
-foreach(glob(SK_ROOTDIR ."sk-colors/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/sk-colors/*.php") as $filename) {
 	require_once($filename);
 }
 
