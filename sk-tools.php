@@ -55,33 +55,38 @@ $sk_options = wp_parse_args(get_option('sk_settings'), $defaults);
 require_once('includes/sk.functions.php');
 require_once('includes/sk.enqueue.php');
 
-// SKB-ADMIN
+// SK-ADMIN
 foreach(glob(SK_ROOTDIR ."/admin/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-FILTER
+// SK-FILTER
 foreach(glob(SK_ROOTDIR ."/sk-filter/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-BREADCRUMBS
+// SK-BREADCRUMBS
 foreach(glob(SK_ROOTDIR ."/sk-breadcrumbs/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-NOTICES
+// SK-NOTICES
 foreach(glob("/sk-notices/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-DATETIME
+// SK-DATETIME
 foreach(glob(SK_ROOTDIR ."/sk-datetime/*.php") as $filename) {
 	require_once($filename);
 }
 
-// SKB-DATETIME
+// SK-COLORS
 foreach(glob(SK_ROOTDIR ."/sk-colors/*.php") as $filename) {
+	require_once($filename);
+}
+
+// SK-CHECKLISTS
+foreach(glob(SK_ROOTDIR ."/sk-checklists/*.php") as $filename) {
 	require_once($filename);
 }
 

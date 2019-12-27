@@ -4,15 +4,47 @@
 
 @import "global/functions",
 				"global/grid",
-				"global/sass-mq",
-				"global/helper-classes";
+				"global/sass-mq";
 
-@import "color/core";
+//* ====================================
+//		COLOR SETTINGS
+//		If using a different name for the map, update @include palette();
+//* ====================================
+$coreColors: (
+	'primary': 	 #F4EEB4,
+	'secondary': #942668,
+	'tertiary':  #E2DDD1,
+	'accent': 	 #B4D12B,
+	'active': 	 #00a0e0,
+	'neutral': 	 #414150,
+	// message colors
+	default: 		 #5D576B,
+	info: 			 #41D3BD,
+	success: 		 #A9E190,
+	alert: 			 #F4F1BB,
+	hi-alert: 	 #fe7f2d,
+	warn: 			 #ED6A5A
+) !default;
+
+// MUST be imported AFTER defining $coreColors!
+@import "color/functions";
+@import "color/mixins";
+
+// quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
+// rangeType = adaptive | static | tintshade | default
+@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9);
 
 // ===============================
 //	GENERAL VARIABLES
 // ===============================
 $sk-note--color: getColor('neutral-700');
+
+// ===============================
+//	GLOBAL HELPER CLASSES
+//	*must* be imported AFTER colors
+//	are defined & $palette created!
+// ===============================			
+@import "global/helper-classes";
 
 // ===============================
 //	SK-FILTER VARIABLES
@@ -65,3 +97,19 @@ $sk-notice-neutral--bg-color: getColor('neutral-50');
 // ===============================
 $sk-color-block--height: 3rem;
 $sk-color-block--min-height: 1.5rem;
+
+// ===============================
+//	SK-CHECKLISTS VARIABLES
+// ===============================
+$save-checklist--bg-color: getColor('success-400');
+$save-cert--color: getColor('success-600');
+$clear-checklist--bg-color: getColor('alert-400');
+$clear-cert--color: getColor('alert-500');
+$remove-checklist--bg-color: getColor('hi-alert-400');
+$remove-cert--color: getColor('hi-alert-600');
+$clear-storage--bg-color: getColor('warn-400');
+$clear-storage-cert--color: getColor('warn-600');
+
+$checklist-checkbox--bg-color: getColor('neutral-50');
+$checklist-checkbox--border-color: getColor('neutral-400');
+$checklist-checkmark--color: getColor('success-400');

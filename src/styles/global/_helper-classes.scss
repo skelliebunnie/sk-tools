@@ -1,3 +1,16 @@
-.hidden {
-	display: none;
-}
+.hidden { display: none !important; }
+.note { color: $sk-note--color; }
+
+// @each $name,$color in $palette {
+// 	.color-#{$name} { color: $color; }
+// 	.bg-#{$name} { background-color: $color; }
+// 	.bg-25-#{$name} { background-color: getRGBA($color, 0.25); }
+// 	.bg-50-#{$name} { background-color: getRGBA($color, 0.5); }
+// 	.bg-75-#{$name} { background-color: getRGBA($color, 0.75); }
+// 	.bg-color-#{$name} { background-color: $color; color: getContrast($color); }
+// 	.color-bg-#{$name} { color: $color; background-color: getContrast($color); }
+// 	.border-sm-#{$name} { border: 1px solid $color; }
+// 	.border-md-#{$name} { border: 2px solid $color; }
+// 	.border-lg-#{$name} { border: 3px solid $color; }
+// 	.border-xl-#{$name} { border: 4px solid $color; }
+// }

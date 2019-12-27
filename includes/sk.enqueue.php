@@ -52,7 +52,8 @@ function sk_scripts() {
 	wp_register_script('sk-filter-color-script', SK_ROOTURL ."/sk-filter/sk.filter-color.js", array('sk-functions-script'), null, true);
 
 	if($sk_options['sk_enable_checklists'] === 'true') {
-		wp_enqueue_script('sk-checklists-script');
+		wp_enqueue_script( 'sk-checklists-scripts', SK_ROOTURL .'/includes/js/sk.checklists.js', array('jquery'), false, true );
+  wp_localize_script( 'sk-checklists-scripts', 'ajaxChecklistsObject', array( 'checklists_ajax_url' => admin_url('admin-ajax.php') ));
 	}
 
 }
