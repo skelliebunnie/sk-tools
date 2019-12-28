@@ -199,7 +199,7 @@ function sk_notices_shortcode($atts) {
 		}
 	} else {
 		echo "<p>sk_notices shortcode not enabled</p>";
-	} // end if sk_enable_directory check
+	} // end if sk_enable_notices check
 
 	return ob_get_clean();
 }

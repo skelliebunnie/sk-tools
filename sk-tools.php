@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.1.0
+ * Version: 4.1.1
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
@@ -71,7 +71,7 @@ foreach(glob(SK_ROOTDIR ."/sk-breadcrumbs/*.php") as $filename) {
 }
 
 // SK-NOTICES
-foreach(glob("/sk-notices/*.php") as $filename) {
+foreach(glob(SK_ROOTDIR ."/sk-notices/*.php") as $filename) {
 	require_once($filename);
 }
 
