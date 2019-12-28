@@ -1,5 +1,10 @@
 <?php
 
+// function sk_admin_enqueue() {
+
+// }
+// add_action( 'admin_enqueue_scripts', 'sk_admin_enqueue' );
+
 function sk_styles() {
 	global $sk_options;
 	
@@ -34,7 +39,6 @@ function sk_styles() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'sk_styles' );
-add_action( 'admin_enqueue_scripts', 'sk_styles' );
 
 function sk_scripts() {
 	global $sk_options;
@@ -53,9 +57,8 @@ function sk_scripts() {
 
 	if($sk_options['sk_enable_checklists'] === 'true') {
 		wp_enqueue_script( 'sk-checklists-scripts', SK_ROOTURL .'/includes/js/sk.checklists.js', array('jquery'), false, true );
-  wp_localize_script( 'sk-checklists-scripts', 'ajaxChecklistsObject', array( 'checklists_ajax_url' => admin_url('admin-ajax.php') ));
+  	wp_localize_script( 'sk-checklists-scripts', 'ajaxChecklistsObject', array( 'checklists_ajax_url' => admin_url('admin-ajax.php') ));
 	}
 
 }
 add_action( 'wp_enqueue_scripts', 'sk_scripts', 50 );
-add_action( 'admin_enqueue_scripts', 'sk_scripts' );

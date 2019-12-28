@@ -1,7 +1,8 @@
 jQuery(document).ready(function($) {
   var myStorage = window.localStorage;
   var outputTarget = $("#output");
-  var lists = getAllListsInStorage(), foundChecklists = false;
+  var lists = getAllListsInStorage()['lists'], 
+      foundChecklists = getAllListsInStorage()['found'];
 
   var postID = $("main > article").attr("id");
   postID = postID.split("-")[1];
@@ -19,12 +20,8 @@ jQuery(document).ready(function($) {
           var json = JSON.parse(lists[k]);
           var id = json['checklist_id'];
 
-          delete json['action'];
-
           var keys = Object.keys(json);
           keys.shift();
-
-          console.log(keys);
 
           if( arraysEqual(keys, items) ) {
             console.log("BUILDING List ...");
@@ -42,43 +39,9 @@ jQuery(document).ready(function($) {
     });
   }
 
-  function checkMeta(postID) {
-    var page_lists = [], n = 0;
-    while( n < $(".sk-checklist").length - 1 ) {
-      page_lists[n] = [];
-
-      $(".sk-checklist li").each(function() {
-        var item = $(this).text().trim();
-        if( !page_lists[n].includes(item) && !arraysEqual(page_lists[n - 1], page_lists[n]) ) {
-          page_lists[n].push(item);
-        }
-      });
-      n++;
-    }
-
-    jQuery.ajax({
-      url: ajaxChecklistsObject.checklists_ajax_url, // this is the object instantiated in wp_localize_script function
-      type: 'POST',
-      data: { 
-        'action': 'sk_find_checklists',
-        'post_id': postID,
-        'current_lists': page_lists
-      },
-      success: function(data) {
-        console.log("success!");
-        console.log(data);
-      },
-      error: function(data) {
-        console.log("::ERROR::");
-        console.log(data);
-      }
-    });
-  }
-  checkMeta(postID);
-
   function createChecklist(el) {
 
-    id = getRandomInt(0,9999);
+    id = getRandomInt(0,9999) +"-"+ postID;
 
     var checklist = checklistButtons(id);
 
@@ -100,7 +63,6 @@ jQuery(document).ready(function($) {
   function buildChecklist(el,json) {
     var id = json['checklist_id'];
     delete json['checklist_id'];
-    delete json['action'];
 
     el.hide();
 
@@ -114,19 +76,22 @@ jQuery(document).ready(function($) {
 
     el.after(checklist);
 
+    saveChecklist(id);
+
     defineClicks();
   }
 
   function checklistButtons(id) {
+    var list_id = id.split("-")[0];
     var checklist = "<div class='sk-checklist-container'>";
-    checklist += "<h3 class='sk-checklist-title'>Checklist ["+ id +"]</h3>";
-    checklist += " <div class='button-container'><input type='button' name='clear-checklist' class='clear-checklist' value='Clear Checklist' id='clear-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
+    checklist += "<h3 class='sk-checklist-title'>Checklist ["+ list_id +"]</h3>";
+    checklist += " <div class='button-container'><input type='button' name='clear-checklist' class='clear-checklist' value='Clear' id='clear-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
     if($("body").hasClass("logged-in")) {
-      checklist += "<div class='button-container'><input type='button' name='save-checklist' class='save-checklist' value='Save Checklist' id='save-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
+      // checklist += "<div class='button-container'><input type='button' name='save-checklist' class='save-checklist' value='Save Checklist' id='save-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
 
-      checklist += " <div class='button-container'><input type='button' name='remove-checklist' class='remove-checklist' value='Remove Checklist' id='remove-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
+      // checklist += " <div class='button-container'><input type='button' name='remove-checklist' class='remove-checklist' value='Remove Checklist' id='remove-checklist-"+ id +"' data-checklist-id='"+ id +"'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
 
-      checklist += " <div class='button-container'><input type='button' name='clear-storage' class='clear-storage' value='Clear Storage'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
+      // checklist += " <div class='button-container'><input type='button' name='clear-storage' class='clear-storage' value='Clear Storage'><span class='cert-check' style='display: none;'><i class='fas fa-check'></i><i class='fas fa-certificate'></i></span></div>";
     }
 
     checklist += "<ul id='sk-checklist-"+ id +"' class='sk-checklist' data-checklist-id='"+ id +"'>";
@@ -208,7 +173,7 @@ jQuery(document).ready(function($) {
   }
 
   function saveChecklist(id) {
-    var items = {'checklist_id': id, 'action': 'sk_save_checklist'};
+    var items = {'checklist_id': id};
 
     $("#sk-checklist-"+ id +" input").each(function() {
       items[$(this).val()] = $(this).is(":checked") ? "complete" : "";
@@ -220,19 +185,19 @@ jQuery(document).ready(function($) {
 
     myStorage.setItem('sk-checklist-'+ id, jsonStr);
 
-    jQuery.ajax({
-      url: ajaxChecklistsObject.checklists_ajax_url, // this is the object instantiated in wp_localize_script function
-      type: 'POST',
-      data: json,
-      success: function(data) {
-        console.log("success!");
-        console.log(data);
-      },
-      error: function(data) {
-        console.log("::ERROR::");
-        console.log(data);
-      }
-    });
+    // jQuery.ajax({
+    //   url: ajaxChecklistsObject.checklists_ajax_url, // this is the object instantiated in wp_localize_script function
+    //   type: 'POST',
+    //   data: json,
+    //   success: function(data) {
+    //     console.log("success!");
+    //     console.log(data);
+    //   },
+    //   error: function(data) {
+    //     console.log("::ERROR::");
+    //     console.log(data);
+    //   }
+    // });
 
     if( getChecklist(id) ) {
       return true;
@@ -293,6 +258,9 @@ jQuery(document).ready(function($) {
   }
 
   function getAllListsInStorage() {
+    var post_id = $("main > article").attr("id");
+    post_id = post_id.split("-")[1];
+
     var values = {},
         keys = Object.keys(localStorage),
         i = keys.length;
@@ -301,17 +269,18 @@ jQuery(document).ready(function($) {
       values[keys[i]] = localStorage.getItem(keys[i]);
     }
 
-    lists = values;
     $.each(values, function(k,v) {
-      if( !k.includes("sk-checklist") ) {
-        delete lists[k];
+      if( k.includes("sk-checklist") && k.includes(post_id) ) {
+        foundChecklists = true;
 
       } else {
-        foundChecklists = true;
+        delete values[k];
+
       }
     });
 
-    return foundChecklists;
+    var results = {'lists': values, 'found': foundChecklists};
+    return results;
   }
 
   function getRandomInt(min=0,max=100) {
