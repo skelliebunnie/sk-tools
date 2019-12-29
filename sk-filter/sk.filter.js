@@ -11,8 +11,8 @@ jQuery(document).ready( function($) {
 	defineFilters(); // get a list of the filters
 	createFilters();
 
-	$(".skb-filter").click(function() {
-		$(this).parents(".skb-filter-list").hide();
+	$(".sk-filter").click(function() {
+		$(this).parents(".sk-filter-list").hide();
 	});
 
 	// WHEN CLICKING ON A FILTER
@@ -24,7 +24,7 @@ jQuery(document).ready( function($) {
 	} else {
 		$(".sk-filter").click(function() {
 
-			$(this).toggleClass('skb-active-filter');
+			$(this).toggleClass('sk-active-filter');
 
 			multiFilter( $(this), filter_type );
 		});
@@ -44,49 +44,20 @@ jQuery(document).ready( function($) {
 		}
 	});
 
-	function createFilters() {
-
-		$("#sk-filter-container").empty(); // empty out the container
-
-		var keys = Object.keys(filters_list);
-
-		$.each(keys, function(n,k) {
-			// sort alphabetically
-			filters_list[k] = filters_list[k].sort(function(a, b){
-		    if(a.name < b.name) { return -1; }
-		    if(a.name > b.name) { return 1; }
-		    return 0;
-			});
-		});
-
-		// add the filters to the container
-		$.each(keys, function(i, key) {
-			if( filters_list[key].length !== 0 ) {
-				
-				var title = key;
-				if( strpos(key, "_") ) {
-					title = ucFirst(key.replace(/\_/g, " "));
-				}
-
-				$("#sk-filter-container").append(`<section id='sk-wrapper-${key}' class='sk-wrapper'><span class='sk-filter-title' data-filtertype='${key}'>${title}</span><ul class='sk-filter-list' data-filtertype='${key}'></ul></section>`);
-
-				$.each( filters_list[key], function(i, obj) {
-					if( obj.name !== "" && obj.name !== " " ) {
-						$(`.sk-filter-list[data-filtertype='${key}']`).append(`<li class='sk-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='sk-filter-count'>${obj.count}</span></li>`);
-					}
-				});
-			}
-
-			if( $(`.sk-filter-list[data-filtertype='${key}'`).length > 0 ) {
-				$(`.sk-filter-list[data-filtertype='${key}'`).hide();
-			}
-		});
-	}
-
 	function defineFilters() {
-		data_list = []; var colorFilter = $("#sk-filter-container").data('colorfilter');
+		data_list = []; 
+		var colorFilter = $("#sk-filter-container").data('colorfilter'),
+				filter_items_target = "";
 
-		$(".sk-filter-item").each(function() {
+		if( $(".sk-filter-item").length ) {
+			filter_items_target = ".sk-filter-item";
+
+		} else if( $(".sk-filter--items-list").length ) {
+			filter_items_target = ".sk-filter--items-list > *";
+
+		}
+
+		$(filter_items_target).each(function() {
 			var data = $(this).data();
 
 			data_list.push(data);
@@ -140,6 +111,45 @@ jQuery(document).ready( function($) {
 		});
 	}
 
+	function createFilters() {
+
+		$("#sk-filter-container").empty(); // empty out the container
+
+		var keys = Object.keys(filters_list);
+
+		$.each(keys, function(n,k) {
+			// sort alphabetically
+			filters_list[k] = filters_list[k].sort(function(a, b){
+		    if(a.name < b.name) { return -1; }
+		    if(a.name > b.name) { return 1; }
+		    return 0;
+			});
+		});
+
+		// add the filters to the container
+		$.each(keys, function(i, key) {
+			if( filters_list[key].length !== 0 ) {
+				
+				var title = key;
+				if( strpos(key, "_") ) {
+					title = ucFirst(key.replace(/\_/g, " "));
+				}
+
+				$("#sk-filter-container").append(`<section id='sk-wrapper-${key}' class='sk-wrapper'><span class='sk-filter-title' data-filtertype='${key}'>${title}</span><ul class='sk-filter-list' data-filtertype='${key}'></ul></section>`);
+
+				$.each( filters_list[key], function(i, obj) {
+					if( obj.name !== "" && obj.name !== " " ) {
+						$(`.sk-filter-list[data-filtertype='${key}']`).append(`<li class='sk-filter' data-filter="${obj.name}" data-filtertype="${key}">${obj.name} <span class='sk-filter-count'>${obj.count}</span></li>`);
+					}
+				});
+			}
+
+			if( $(`.sk-filter-list[data-filtertype='${key}'`).length > 0 ) {
+				$(`.sk-filter-list[data-filtertype='${key}'`).hide();
+			}
+		});
+	}
+
 	function handleSingleFilter(el) {
 
 		var filter_tag = el.data("filter");
@@ -173,7 +183,7 @@ jQuery(document).ready( function($) {
 			target_type_title = ucFirstWords(target_type_title);
 
 
-			$("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only <strong>${target_type_title} : ${ucFirstWords(filter_tag)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			$("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently showing only <strong>${target_type_title} : ${ucFirstWords(filter_tag)}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		} else {
 			$('.sk-filter-item').each(function() {
@@ -215,15 +225,30 @@ jQuery(document).ready( function($) {
 	function multiFilter(el, multiType) {
 		$("#sk-filter-notice").remove();
 
-		var filters_list = []; var filters_notice = []; var filters_message = "";
+		var filters_list = [], 
+				filters_notice = [], 
+				filters_message = "",
+				filter_items = [];
 
-		$(".skb-active-filter").each(function() {
+		if($(".sk-filter-item").length) {
+			$(".sk-filter-item").each(function() {
+				filter_items.push( $(this) );
+			});
+
+		} else if($(".sk-filter--items-list").length) {
+			$(".sk-filter--items-list > *").each(function() {
+				$(this).addClass('sk-filter-item');
+				filter_items.push( $(this) );
+			});
+		}
+
+		$(".sk-active-filter").each(function() {
 			filters_list.push($(this).data());
 		});
 
 		if(multiType === "add" || multiType === "additive") {
 			
-			$(".skb-filter-item").each(function() {
+			$.each(filter_items, function() {
 				var item = $(this);
 				item.hide();
 
@@ -245,10 +270,10 @@ jQuery(document).ready( function($) {
 
 			filters_notice = filters_notice.join(", ");
 
-			filters_message = $("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only items that contain at least <em>one (1)</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			filters_message = $("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently showing only items that contain at least <em>one (1)</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
 
 		} else {
-			$(".skb-filter-item").each(function() {
+			$.each(filter_items, function() {
 				var item = $(this);
 
 				var show = 0; var count = 0;
@@ -273,7 +298,7 @@ jQuery(document).ready( function($) {
 
 			filters_notice = filters_notice.join(", ");
 
-			filters_message = $("#skb-filter-container").after(`<p id='skb-filter-notice'><span>Currently showing only items that contain <em>all</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='skb-remove-filter' class='fas fa-times-circle'></i></p>`);
+			filters_message = $("#sk-filter-container").after(`<p id='sk-filter-notice'><span>Currently showing only items that contain <em>all</em> of the following tags: <strong>${ucFirstWords(filters_notice)}</strong></span><i id='sk-remove-filter' class='fas fa-times-circle'></i></p>`);
 		}
 
 		$("#sk-remove-filter").click(function() { clearFilter(); });
@@ -307,11 +332,25 @@ jQuery(document).ready( function($) {
 	}
 
 	function clearFilter() {
+		var filter_items = [];
+
+		if($(".sk-filter-item").length) {
+			$(".sk-filter-item").each(function() {
+				filter_items.push( $(this) );
+			});
+			
+		} else if($(".sk-filter--items-list").length) {
+			$(".sk-filter--items-list > *").each(function() {
+				$(this).addClass('sk-filter-item');
+				filter_items.push( $(this) );
+			});
+		}
+
 		$("#sk-filter-notice").remove();
 
 		$(".sk-filter").each(function() { $(this).removeClass("sk-active-filter"); });
 
-		$(".sk-filter-item").each(function() {
+		$.each(filter_items, function() {
 			$(this).show();
 			$(this).parent("p").show();
 		});

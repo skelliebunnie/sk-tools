@@ -1,5 +1,13 @@
 <?php
 
+/*
+	TO USE:
+	- anything that should be affected by the filter MUST have the class "sk-filter-item"
+	- use data-ABC="XYZ" to define the key (ABC) and the value (XYZ)
+		> anything with a dash (e.g. 'food-group') will assume it's 2 words & separate them
+		EX1// data-color="red" => "Color": "Red"
+		EX2// data-food-group="fruit" => "Food Group": "Fruit"
+ */
 function sk_filter_shortcode($atts) {
 	global $sk_options;
 
