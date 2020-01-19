@@ -97,6 +97,9 @@ function sk_datetime_shortcode($atts) {
 			$separator = str_pad($separator, strlen($separator) + 2, " ", STR_PAD_BOTH);
 		}
 
+		if($a['date'] == 'false') { $date = NULL; }
+		if($a['time'] == 'false') { $time = NULL; }
+
 		if($a['bold_date'] == 'true' && $date !== NULL) { $date = "<strong>{$date}</strong>"; }
 		if($a['bold_time'] == 'true' && $time !== NULL) { $time = "<strong>{$time}</strong>"; }
 
