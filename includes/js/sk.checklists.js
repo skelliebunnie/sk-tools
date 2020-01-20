@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
       foundChecklists = getAllListsInStorage()['found'];
 
   var postID = $("main > article").attr("id");
-  postID = postID.split("-")[1];
+  postID = postID !== undefined ? postID.split("-")[1] : null;
 
   if( $(".sk-checklist").length ) {
     $(".sk-checklist").each(function() {
@@ -259,28 +259,33 @@ jQuery(document).ready(function($) {
 
   function getAllListsInStorage() {
     var post_id = $("main > article").attr("id");
-    post_id = post_id.split("-")[1];
+    
+    if(post_id !== undefined) {
+      post_id = post_id.split("-")[1];
 
-    var values = {},
-        keys = Object.keys(localStorage),
-        i = keys.length;
+      var values = {},
+          keys = Object.keys(localStorage),
+          i = keys.length;
 
-    while ( i-- ) {
-      values[keys[i]] = localStorage.getItem(keys[i]);
-    }
-
-    $.each(values, function(k,v) {
-      if( k.includes("sk-checklist") && k.includes(post_id) ) {
-        foundChecklists = true;
-
-      } else {
-        delete values[k];
-
+      while ( i-- ) {
+        values[keys[i]] = localStorage.getItem(keys[i]);
       }
-    });
 
-    var results = {'lists': values, 'found': foundChecklists};
-    return results;
+      $.each(values, function(k,v) {
+        if( k.includes("sk-checklist") && k.includes(post_id) ) {
+          foundChecklists = true;
+
+        } else {
+          delete values[k];
+
+        }
+      });
+
+      var results = {'lists': values, 'found': foundChecklists};
+      return results;
+    }
+    
+    return {};
   }
 
   function getRandomInt(min=0,max=100) {
