@@ -1,9 +1,11 @@
 @import "settings";
 
 $demoColors: (
-	'primary': 		#2C8DAD, //#D7C71D
-	'accent': 		#FB6132,
-	'neutral': 		#A3ACB5,
+	'tea': 				#e1f0c4, // fab3a9
+	'pewter': 		#8da7be, // 70ae6e
+	'lavender': 	#efbdeb, // 157a6e
+	'infrared': 	#ef476f, // 5f24bf
+	'neutral': 		#424c55, // 30343f
 );
 
 %wrapper-with-content {
@@ -97,7 +99,7 @@ $demoColors: (
 
 
 #palette-base {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1;
 	@each $name,$color in $palette {
@@ -124,11 +126,11 @@ $demoColors: (
 }
 
 #palette-analogous {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-analogous1-50' { $start: true; }
+		@if $name == 'pewter-analogous1-50' { $start: true; }
 
 		@if $start == true {
 
@@ -159,11 +161,11 @@ $demoColors: (
 }
 
 #palette-compound {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'compound', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'compound', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-compound1-50' { $start: true; }
+		@if $name == 'pewter-compound1-50' { $start: true; }
 
 		@if $start == true {
 			.sk-color--wrapper:nth-child(#{$w}) {
@@ -189,11 +191,11 @@ $demoColors: (
 }
 
 #palette-tetrad1 {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'tetrad', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'tetrad', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-tetrad1-50' { $start: true; }
+		@if $name == 'pewter-tetrad1-50' { $start: true; }
 
 		@if $start == true {
 			.sk-color--wrapper:nth-child(#{$w}) {
@@ -218,11 +220,11 @@ $demoColors: (
 }
 
 #palette-tetrad2 {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'quadratic', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'quadratic', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-tetrad1-50' { $start: true; }
+		@if $name == 'pewter-tetrad1-50' { $start: true; }
 
 		@if $start == true {
 			.sk-color--wrapper:nth-child(#{$w}) {
@@ -247,11 +249,11 @@ $demoColors: (
 }
 
 #palette-triad {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'triad', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'triad', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-triad1-50' { $start: true; }
+		@if $name == 'pewter-triad1-50' { $start: true; }
 
 		@if $start == true {
 			.sk-color--wrapper:nth-child(#{$w}) {
@@ -276,11 +278,11 @@ $demoColors: (
 }
 
 #palette-split {
-	@include palette($color: 'primary', $include-complement: false, $rangeType: 'static', $harmony: 'split', $rangeDepth: 9, $colorMap: $demoColors);
+	@include palette($color: 'pewter', $include-complement: false, $rangeType: 'static', $harmony: 'split', $rangeDepth: 9, $colorMap: $demoColors);
 
 	$w: 1; $i: 1; $start: false;
 	@each $name,$color in $palette {
-		@if $name == 'primary-split1-50' { $start: true; }
+		@if $name == 'pewter-split1-50' { $start: true; }
 
 		@if $start == true {
 			.sk-color--wrapper:nth-child(#{$w}) {

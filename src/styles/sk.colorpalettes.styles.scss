@@ -1,8 +1,5 @@
 @import "settings";
 
-$sk-color-block--height: 4rem;
-$sk-color-block--min-height: 1rem;
-
 .sk-palette--container {
 	display: flex;
 	flex-flow: row wrap;
@@ -19,10 +16,6 @@ $sk-color-block--min-height: 1rem;
 		height: auto;
 		width: auto;
 		text-align: center;
-	}
-
-	.sk-palette {
-
 	}
 
 	&.column {
