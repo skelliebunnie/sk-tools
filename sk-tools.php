@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.2.1
+ * Version: 4.2.2
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
@@ -25,7 +25,6 @@ $defaults = array(
 	'sk_enable_filter'					=> 'true',
 	'sk_enable_datetime'				=> 'true',
 	'sk_enable_colorpalettes'		=> 'true',
-	'sk_enable_checklists'			=> 'true',
 	'sk-bc-show_home'						=> 'true',
 	'sk-bc-show_home_icon'			=> 'true',
 	'sk-bc-home_icon_only'			=> 'false',
@@ -82,11 +81,6 @@ foreach(glob(SK_ROOTDIR ."/sk-datetime/*.php") as $filename) {
 
 // SK-COLORS
 foreach(glob(SK_ROOTDIR ."/sk-colors/*.php") as $filename) {
-	require_once($filename);
-}
-
-// SK-CHECKLISTS
-foreach(glob(SK_ROOTDIR ."/sk-checklists/*.php") as $filename) {
 	require_once($filename);
 }
 

@@ -114,23 +114,6 @@ function sk_admin_settings() {
 							</p>
 						</td>
 					</tr>
-					<!-- enable sk-checklists -->
-					<tr class='no-pad'>
-						<th scope="row">
-							<label for="sk_settings[sk_enable_checklists]"><?php _e('Enable Checklists', 'sk_domain'); ?></label>
-						</th>
-						<td>
-							<input type="hidden" name="sk_settings[sk_enable_checklists]" value="false">
-							<input type="checkbox" name="sk_settings[sk_enable_checklists]" value="true" <?php if ($sk_options['sk_enable_checklists'] == "true" ) { echo "checked"; } ?> >
-						</td>
-					</tr>
-					<tr class="no-pad-top">
-						<td colspan="2">
-							<p class="description">
-								<?php _e("Should the SK-Tools Checklists be available?", "sk_domain"); ?>
-							</p>
-						</td>
-					</tr>
 					<!-- SETTINGS PER TOOL -->
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
