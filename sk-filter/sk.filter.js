@@ -2,6 +2,9 @@ jQuery(document).ready( function($) {
 
 	var selected_filter = 'all';
 	var filter_type = $("#sk-filter-container").data("type");
+	var filter_class = $("#sk-filter-container").data("filter-class");
+
+	console.log(filter_class);
 
 	//var singular = $("#sk-filter-container").data("singular")
 	//var plural = $("#sk-filter-container").data("plural")
@@ -49,8 +52,9 @@ jQuery(document).ready( function($) {
 		var colorFilter = $("#sk-filter-container").data('colorfilter'),
 				filter_items_target = "";
 
-		if( $(".sk-filter-item").length ) {
-			filter_items_target = ".sk-filter-item";
+		console.log()
+		if( $(`.${filter_class}`).length ) {
+			filter_items_target = `.${filter_class}`;
 
 		} else if( $(".sk-filter--items-list").length ) {
 			filter_items_target = ".sk-filter--items-list > *";
@@ -69,41 +73,43 @@ jQuery(document).ready( function($) {
 				var key = lcFirst(key);
 				var value = lcFirst(value);
 
-				if( (colorFilter !== true && !(key in filters_list)) || 
+				if( key !== 'filterClass' && key !== 'type' ) {
+					if( (colorFilter !== true && !(key in filters_list)) || 
 						(colorFilter === true && key !== "color" && !(key in filters_list)) ) {
-					filters_list[key] = [];
+						filters_list[key] = [];
 
-				}
+					}
 
-				if( (colorFilter === true && key !== "color" && value !== "") || (colorFilter !== true && value !== "") ) {
+					if( (colorFilter === true && key !== "color" && value !== "") || (colorFilter !== true && value !== "") ) {
 
-					if( !strpos(value, ',') ) {
-						var value_obj = { "name": value, "count": 1 };
+						if( !strpos(value, ',') ) {
+							var value_obj = { "name": value, "count": 1 };
 
-						var check = findObjByProperty(filters_list[key], value);
-						if( check === null ) {
-							filters_list[key].push(value_obj);
-
-						} else {
-							filters_list[key][check].count++;
-						}
-
-					} else {
-						var val_list = value.split(",");
-						val_list = lcTrimArray(val_list);
-
-						$.each(val_list, function(index, prop) {
-							var value_obj = { "name": prop, "count": 1 };
-
-							var check = findObjByProperty(filters_list[key], prop);
+							var check = findObjByProperty(filters_list[key], value);
 							if( check === null ) {
 								filters_list[key].push(value_obj);
 
 							} else {
 								filters_list[key][check].count++;
 							}
-						});
 
+						} else {
+							var val_list = value.split(",");
+							val_list = lcTrimArray(val_list);
+
+							$.each(val_list, function(index, prop) {
+								var value_obj = { "name": prop, "count": 1 };
+
+								var check = findObjByProperty(filters_list[key], prop);
+								if( check === null ) {
+									filters_list[key].push(value_obj);
+
+								} else {
+									filters_list[key][check].count++;
+								}
+							});
+
+						}
 					}
 				}
 
@@ -161,7 +167,7 @@ jQuery(document).ready( function($) {
 		$("#sk-remove-filter").remove();
 
 		if( selected_filter !== "all" ) {
-			$(".sk-filter-item").each(function() {
+			$(`.${filter_class}`).each(function() {
 				var item = $(this);
 				var match = ($(this).data(target_type)).toLowerCase();
 
@@ -211,7 +217,7 @@ jQuery(document).ready( function($) {
 			el.removeClass("sk-active-filter");
 			$("#sk-filter-notice").remove();
 
-			$(".sk-filter-item").each(function() { $(this).show(); });
+			$(`.${filter_class}`).each(function() { $(this).show(); });
 
 			selected_filter = "all";
 
@@ -230,8 +236,8 @@ jQuery(document).ready( function($) {
 				filters_message = "",
 				filter_items = [];
 
-		if($(".sk-filter-item").length) {
-			$(".sk-filter-item").each(function() {
+		if($(`.${filter_class}`).length) {
+			$(`.${filter_class}`).each(function() {
 				filter_items.push( $(this) );
 			});
 
@@ -334,8 +340,8 @@ jQuery(document).ready( function($) {
 	function clearFilter() {
 		var filter_items = [];
 
-		if($(".sk-filter-item").length) {
-			$(".sk-filter-item").each(function() {
+		if($(`.${filter_class}`).length) {
+			$(`.${filter_class}`).each(function() {
 				filter_items.push( $(this) );
 			});
 			
