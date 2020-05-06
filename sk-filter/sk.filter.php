@@ -87,7 +87,8 @@ function sk_filter_shortcode($atts) {
 	<?php
 
 	if( !empty($auto_list) ) {
-		$list = "<ul>";
+		$list = "<ul>"; 
+
 		foreach($auto_list as $filter_title=>$items) {
 			// $items = array of objects; we need the title and guid
 			foreach($items as $item) {
@@ -107,9 +108,10 @@ function sk_filter_shortcode($atts) {
 				}
 
 				$data_tags = "";
-				if( !empty($tags) )
+				if( !empty($tags) ) {
 					$tags = implode($tags, ",");
 					$data_tags = "data-grade_level='{$tags}'";
+				}
 
 				$list .= "<li class='{$a['class']}' data-{$filter_title}='{$filter_item}' {$data_tags}><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
 			}
