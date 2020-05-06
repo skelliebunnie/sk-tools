@@ -25,7 +25,7 @@ function sk_filter_shortcode($atts) {
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		// ===============
 		// auto-generate-list: type:name:title /EX/ post_type:course:subject
-		// filter-tags: terms,for,filter,comp,to,auto-listed,items /EX/ k-2,3-5,6-8
+		// filter-tags: list title:terms,for,filter,comp,to,auto-listed,items /EX/ grade level:k-2,3-5,6-8
 		$a = shortcode_atts( array(
 			'type'								=> 'default',
 			'class'								=> 'sk-filter-item',
@@ -97,9 +97,21 @@ function sk_filter_shortcode($atts) {
 				if( $item->parent === NULL )
 					$filter_item = $item->title;
 
-				$tags = array();
+				$tags_title = ""; $tags = array();
 				if($a['filter-tags'] !== false) {
-					$filter_tags = explode(",", $a['filter-tags']);
+					$filter_tags = array();
+
+					if( strpos($a['filter-tags'], ":") !== false ) {
+						$title_tags = explode(":", $a['filter-tags']);
+					
+						$tags_title = str_replace(" ", "_", $title_tags[0]);
+						$filter_tags = explode(",", $title_tags[1]);
+
+					} else {
+						$tags_title = "tags";
+						$filter_tags = explode(",", $a['filter-tags']);
+						
+					}
 
 					foreach( $item->tags as $tag ) {
 						if( in_array($tag, $filter_tags) )
@@ -110,7 +122,8 @@ function sk_filter_shortcode($atts) {
 				$data_tags = "";
 				if( !empty($tags) ) {
 					$tags = implode($tags, ",");
-					$data_tags = "data-grade_level='{$tags}'";
+
+					$data_tags = "data-{$tags_title}='{$tags}'";
 				}
 
 				$list .= "<li class='{$a['class']}' data-{$filter_title}='{$filter_item}' {$data_tags}><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
