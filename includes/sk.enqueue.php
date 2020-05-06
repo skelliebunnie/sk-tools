@@ -33,10 +33,10 @@ function sk_styles() {
 	wp_register_style('sk-color-styles', SK_ROOTURL ."/includes/css/sk.colors.styles.css");
 
 	// CHECKLIST STYLES
-	wp_register_style('sk-checklists-styles', SK_ROOTURL ."/includes/css/sk.checklists.styles.css");
-	if($sk_options['sk_enable_checklists'] === 'true') {
-		wp_enqueue_style('sk-checklists-styles');
-	}
+	// wp_register_style('sk-checklists-styles', SK_ROOTURL ."/includes/css/sk.checklists.styles.css");
+	// if($sk_options['sk_enable_checklists'] === 'true') {
+	// 	wp_enqueue_style('sk-checklists-styles');
+	// }
 }
 add_action( 'wp_enqueue_scripts', 'sk_styles' );
 
@@ -55,10 +55,10 @@ function sk_scripts() {
 	// ../sk-filter/skb.filter-color.js
 	wp_register_script('sk-filter-color-script', SK_ROOTURL ."/sk-filter/sk.filter-color.js", array('sk-functions-script'), null, true);
 
-	if($sk_options['sk_enable_checklists'] === 'true') {
-		wp_enqueue_script( 'sk-checklists-scripts', SK_ROOTURL .'/includes/js/sk.checklists.js', array('jquery'), false, true );
-  	wp_localize_script( 'sk-checklists-scripts', 'ajaxChecklistsObject', array( 'checklists_ajax_url' => admin_url('admin-ajax.php') ));
-	}
+	// if($sk_options['sk_enable_checklists'] === 'true') {
+	// 	wp_enqueue_script( 'sk-checklists-scripts', SK_ROOTURL .'/includes/js/sk.checklists.js', array('jquery'), false, true );
+ //  	wp_localize_script( 'sk-checklists-scripts', 'ajaxChecklistsObject', array( 'checklists_ajax_url' => admin_url('admin-ajax.php') ));
+	// }
 
 }
 add_action( 'wp_enqueue_scripts', 'sk_scripts', 50 );
