@@ -87,9 +87,6 @@ function sk_filter_shortcode($atts) {
 	<?php
 
 	if( !empty($auto_list) ) {
-echo "<pre>";
-var_dump($auto_list["subject"][0]->tags);
-echo "</pre><br>";
 		$list = "<ul>"; 
 
 		foreach($auto_list as $filter_title=>$items) {
