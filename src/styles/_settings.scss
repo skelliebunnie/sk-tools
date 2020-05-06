@@ -11,11 +11,11 @@
 //		If using a different name for the map, update @include palette();
 //* ====================================
 $coreColors: (
-	'primary': 	 #F4EEB4,
-	'secondary': #942668,
-	'tertiary':  #E2DDD1,
-	'accent': 	 #B4D12B,
-	'active': 	 #00a0e0,
+	'primary': 	 #E2DDD1,
+	'secondary': #003A5D,
+	'tertiary':  #F6BD60,
+	'accent': 	 #00a0e0,
+	'active': 	 #B4D12B,
 	'neutral': 	 #414150,
 	// message colors
 	default: 		 #5D576B,
@@ -55,7 +55,7 @@ $sk-filter-title-hover--bg-color: getColor('accent-400');
 $sk-filter-title--color: getContrast( $sk-filter-title--bg-color );
 $sk-filter-title-hover--color: getContrast( $sk-filter-title-hover--bg-color );
 $sk-filter-list--box-shadow-color: getColor('neutral-400');
-$sk-filter-list--bg-color: getColor('neutral-50');
+$sk-filter-list--bg-color: getColor('neutral-100');
 
 $sk-filter-hover--bg-color: getColor('accent-400');
 $sk-filter-hover--color: getContrast($sk-filter-hover--bg-color);

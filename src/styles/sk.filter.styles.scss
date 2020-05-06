@@ -37,16 +37,16 @@
 
 .sk-filter-list {
 	box-shadow: inset 0 6px 3px -2px $sk-filter-list--box-shadow-color;
-	position: absolute;
-	top: 2.2rem;
+	// position: absolute;
+	// top: 3rem;
 	z-index: 50;
 	flex: 1;
 	list-style-type: none;
 	display: flex;
 	flex-flow: column nowrap;
 	width: 100%;
-	margin: 0;
-	padding: 0.25rem 0 0;
+	margin: 0 !important;
+	padding: 0.5rem 0.25rem;
 	background-color: $sk-filter-list--bg-color;
 }
 
@@ -61,7 +61,7 @@
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0.4rem 0.5rem;
+	padding: 0.4rem 2.5rem;
 	line-height: 1.2rem;
 
 	&.sk-active-filter {
@@ -83,7 +83,7 @@
 	background-color: $sk-filter-count--bg-color;
 	color: $sk-filter-count--color;
 	border-radius: 0.15rem;
-	padding: 2px 0 0;
+	padding: 2px;
 	flex: 1 0 10%;
 	max-width: 2.5rem;
 	text-align: center;
