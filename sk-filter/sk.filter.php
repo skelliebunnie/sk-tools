@@ -25,10 +25,12 @@ function sk_filter_shortcode($atts) {
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		// ===============
 		// auto-generate-list: type:name:title /EX/ post_type:course:subject
+		// filter-tags: terms,for,filter,comp,to,auto-listed,items /EX/ k-2,3-5,6-8
 		$a = shortcode_atts( array(
 			'type'								=> 'default',
 			'class'								=> 'sk-filter-item',
 			'auto-generate-list'	=> 'false',
+			'filter-tags'					=> 'false',
 			'colorblocks'					=> 'false'
 		), $atts );
 		
@@ -78,10 +80,6 @@ function sk_filter_shortcode($atts) {
 				$auto_list[$set[2]] = $results;
 			}
 		}
-// echo "<pre>";
-// 		var_dump($auto_list['subject'][0]);
-// echo "</pre>";
-
 
 	?>
 		<div id="sk-filter-container" data-type="<?php echo $a['type']; ?>" data-colorfilter="<?php echo $a['colorblocks']; ?>" data-filter-class="<?php echo $a['class']; ?>"></div>
@@ -90,10 +88,30 @@ function sk_filter_shortcode($atts) {
 
 	if( !empty($auto_list) ) {
 		$list = "<ul>";
-		foreach($auto_list as $title=>$items) {
-			// $items = array of objects; we need the ptitle and guid
+		foreach($auto_list as $filter_title=>$items) {
+			// $items = array of objects; we need the title and guid
 			foreach($items as $item) {
-				$list .= "<li class='{$a['class']}' data-subject='{$item->subject}'><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
+				$filter_item = $item->parent;
+
+				if( $item->parent === NULL )
+					$filter_item = $item->title;
+
+				$tags = array();
+				if($a['filter-tags'] !== false) {
+					$filter_tags = explode(",", $a['filter-tags']);
+
+					foreach( $item->tags as $tag ) {
+						if( in_array($tag, $filter_tags) )
+							array_push($tags, $tag);
+					}
+				}
+
+				$data_tags = "";
+				if( !empty($tags) )
+					$tags = implode($tags, ",");
+					$data_tags = "data-grade_level='{$tags}'";
+
+				$list .= "<li class='{$a['class']}' data-{$filter_title}='{$filter_item}' {$data_tags}><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
 			}
 		}
 		$list .= "</ul>";
@@ -147,12 +165,45 @@ function sk_auto_generate_from_post_type($post_type) {
 
 			$course_id = intval( get_post_meta( $id, '_lesson_course', true ) );
 			// $course_guid = esc_url( get_permalink( $course_id ) );
-			$course_title = esc_html( get_the_title( $course_id ) );
 
+			// if the post_type of the course_id post is not a course,
+			// check to see if this post is a course
+			if( get_post($course_id)->post_type === "course" ) {
+				$course_title = esc_html( get_the_title( $course_id ) );
+
+			} elseif( $post->post_type === "course" ) {
+				$course_title = esc_html( $post->post_title );
+
+			} else {
+				$course_title = NULL;
+			}
+
+			$tags = array();
+			if( $course_title !== NULL ) {
+				$tags_list = get_the_terms( $id, 'lesson-tag' );
+
+				if( is_array($tags_list) && !empty($tags_list) ) {
+					foreach($tags_list as $tag) {
+						array_push($tags, $tag->name);
+					}
+				}
+
+			} else {
+				$tags_list = get_the_tags($id);
+
+				if( is_array($tags_list) && !empty($tags_list) ) {
+					foreach($tags_list as $tag) {
+						array_push($tags, $tag->name);
+					}
+				}
+
+			}
+			
 			$item = (object)[
 				'title'		=> $post->post_title,
 				'guid'		=> $post->guid,
-				'subject'	=> $course_title
+				'parent'	=> $course_title,
+				'tags'		=> $tags
 			];
 
 			array_push($results, $item);
