@@ -133,8 +133,15 @@
 	$luminance: null; $clr: null;
 	$luminance-comp: 0.37;
 
+	$dark: getColor('neutral-700');
+	$light: getColor('neutral-100');
+
+	@if $dark == null { $dark: #333; }
+	@if $light == null { $light: #ccc; }
+
 	@if type_of($color) == color {
 		$luminance: luminance($color);
+
 		@if lightness($color) > $luminance-comp {
 			$clr: scale-color($color, $lightness: -95);
 		} @else {
@@ -143,12 +150,13 @@
 	} @else {
 		$color: getColor($color, $map);
 		$luminance: luminance($color);
+
 	}
 
 	@if $luminance >= $luminance-comp {
-		$clr: darkenColor(getColor('neutral-700'), 80);
+		$clr: darkenColor( $dark, 80 );
 	} @else {
-		$clr: lightenColor(getColor('neutral-100'), 80);
+		$clr: lightenColor( $light, 80 );
 	}
 
 	//@debug $color $luminance $luminance-comp $clr;
@@ -248,6 +256,8 @@
 		$color: nth($values,$i);
 		$name: nth($names,$i);
 
+		$name: str-replace($name, " ", "-");
+
 		$l: luminance($color);
 
 		$s1: $scaleColors * $scaleRatio;
@@ -297,15 +307,15 @@
 		$r5: (
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c2,
-			unquote("#{$name}")-400: $c4,
-			unquote("#{$name}")-600: $c6,
-			unquote("#{$name}")-700: $c7
+			unquote("#{$name}")-300: $c4,
+			unquote("#{$name}")-400: $c6,
+			unquote("#{$name}")-500: $c7
 		);
 
 		$r3: (
 			unquote("#{$name}")-100: $c1,
-			unquote("#{$name}")-400: $c4,
-			unquote("#{$name}")-700: $c7
+			unquote("#{$name}")-200: $c4,
+			unquote("#{$name}")-300: $c7
 		);
 
 		@if $depth == 7 {
@@ -341,6 +351,8 @@
 		$color: nth($values,$i);
 		$l: luminance($color);
 		$name: nth($names,$i);
+
+		$name: str-replace($name, " ", "-");
 
 		// make sure colors don't "duplicate"
 		@for $n from 2 through 6 {
@@ -433,8 +445,8 @@
 
 		$r3: (
 			unquote("#{$name}")-100: $c1,
-			unquote("#{$name}")-400: $c4,
-			unquote("#{$name}")-700: $c7
+			unquote("#{$name}")-200: $c4,
+			unquote("#{$name}")-300: $c7
 		);
 
 		@if $depth == 7 {
@@ -469,6 +481,8 @@
 
 		$color: nth($values,$i);
 		$name: nth($names,$i);
+
+		$name: str-replace($name, " ", "-");
 
 		$min: 5%;
 		$min: 50%;
@@ -575,6 +589,9 @@
 		$color: nth($values,$i);
 		$l: luminance($color);
 		$name: nth($names,$i);
+
+		$name: str-replace($name, " ", "-");
+
 		// make sure colors don't "duplicate"
 		@for $n from 2 through 6 {
 			@if(($scale * $n) > 100) {

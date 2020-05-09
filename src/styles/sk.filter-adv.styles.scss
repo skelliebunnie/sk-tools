@@ -1,0 +1,120 @@
+@import "settings";
+
+@include palette($color: 'dark blue', $colorMap: $PacSciBrandColors, $complement-name: 'complement', $rangeType: 'static', $harmony: 'none', $rangeDepth: 5);
+
+$tag-bg-color: getColor('dark-blue-100');
+$tag-color: getContrast($tag-bg-color);
+
+$tooltip-bg-color: getColor('acid-100');
+$tooltip-color: getContrast($tooltip-bg-color);
+$tooltip-shadow-color: getColor('acid-300');
+$tooltip-border: "12px solid transparent";
+
+%arrow {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-top: unquote($tooltip-border);
+  border-bottom: unquote($tooltip-border);
+  border-left: unquote($tooltip-border);
+  border-right: unquote($tooltip-border);
+}
+
+.arrow-left {
+  @extend %arrow;
+  border-right-color: $tooltip-bg-color;
+  top: 2px;
+  left: -8px;
+}
+
+.arrow-down {
+  @extend %arrow;
+  border-top-color: $tooltip-bg-color;
+  left: 35%;
+}
+
+.arrow-down-with-border {
+	border: 3px solid $tooltip-shadow-color;
+
+	&::before {
+		@extend .arrow-down;
+		border-width: 13px;
+		border-top-color: $tooltip-shadow-color;
+		bottom: -1.7rem;
+		left: 34%;
+	}
+
+	&::after {
+		@extend .arrow-down;
+		border-top-color: $tooltip-bg-color;
+		z-index: 10;
+	}
+}
+
+.arrow-up {
+  @extend %arrow;
+  border-bottom-color: $tooltip-bg-color;
+  top: -2rem;
+}
+
+.arrow-right {
+  @extend %arrow;
+  border-left-color: $tooltip-bg-color;
+  top: 2px;
+  right: -8px;
+}
+
+.sk-tag-cloud {
+	position: relative;
+	display: flex;
+	flex-flow: row wrap;
+
+	.sk-tag-container {
+		position: relative;
+		flex: 1 0 auto;
+		max-width: 5.5rem;
+		margin: 0.3rem;
+		padding: 0.3rem;
+		background-color: $tag-bg-color;
+		color: $tag-color;
+		border-radius: 5px;
+		cursor: pointer;
+
+		// &[data-count="0"] { background-color: red; color: white; }
+		// &[data-count="1"] { background-color: orange; color: white; }
+		// &[data-count="2"] { background-color: #dfbb27; color: white; }
+		// &[data-count="3"] { background-color: forestgreen; color: white; }
+		// &[data-count="4"] { background-color: midnightblue; color: white; }
+		// &[data-count="5"] { background-color: lightsalmon; color: black; }
+		// &[data-count="6"] { background-color: sandybrown; color: black; }
+		// &[data-count="7"] { background-color: yellow; color: black; }
+		// &[data-count="8"] { background-color: chartreuse; color: black; }
+		// &[data-count="9"] { background-color: skyblue; color: black; }
+		// &[data-count="9+"] { background-color: rebeccapurple; color: white; }
+	}
+
+	.sk-tag {
+		display: block;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.sk-tag-tooltip {
+		display: none;
+	}
+
+	.sk-tag-container:hover > .sk-tag-tooltip,
+	.sk-tag-container:focus > .sk-tag-tooltip {
+		display: inline-block;
+		position: absolute;
+		bottom: 2.4rem;
+		left: 0;
+		background-color: $tooltip-bg-color;
+		color: $tooltip-color;
+		padding: 0.1rem 0.5rem;
+		border-radius: 3px;
+	}
+}

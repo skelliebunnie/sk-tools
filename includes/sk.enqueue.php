@@ -16,6 +16,8 @@ function sk_styles() {
 
 	// FILTER STYLES
 	wp_register_style('sk-filters-styles', SK_ROOTURL ."/includes/css/sk.filter.styles.css");
+	// FILTER ADVANCED STYLES
+	wp_register_style('sk-filters-adv-styles', SK_ROOTURL ."/includes/css/sk.filter-adv.styles.css");
 	
 	// BREADCRUMB STYLES
 	wp_register_style('sk-breadcrumbs-styles', SK_ROOTURL ."/includes/css/sk.breadcrumbs.styles.css");

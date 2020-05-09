@@ -26,6 +26,18 @@ $coreColors: (
 	warn: 			 #ED6A5A
 ) !default;
 
+$PacSciBrandColors: (
+	'dark blue': 	#003A5D,
+	'light blue': #00A0E0,
+	'grey': 			#D2D2D2,
+	// secondary colors
+	'acid': 		#c6ca53,
+	'midnight': #702670,
+	'coyote': 	#885a3a,
+	'salmon':		#ffa07a,
+	'pine': 		#01796f,
+);
+
 // MUST be imported AFTER defining $coreColors!
 @import "color/functions";
 @import "color/mixins";

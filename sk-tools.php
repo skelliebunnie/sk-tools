@@ -23,6 +23,7 @@ $defaults = array(
 	'sk_enable_breadcrumbs'			=> 'true',
 	'sk_enable_notices'					=> 'true',
 	'sk_enable_filter'					=> 'true',
+	'sk_enable_filter_advanced'	=> 'true',
 	'sk_enable_datetime'				=> 'true',
 	'sk_enable_colorpalettes'		=> 'true',
 	'sk-bc-show_home'						=> 'true',

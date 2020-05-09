@@ -97,6 +97,23 @@ function sk_admin_settings() {
 							</p>
 						</td>
 					</tr>
+					<!-- enable sk-filter-advanced -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="sk_settings[sk_enable_filter_advanced]"><?php _e('Enable Advanced Filter', 'sk_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="sk_settings[sk_enable_filter_advanced]" value="false">
+							<input type="checkbox" name="sk_settings[sk_enable_filter_advanced]" value="true" <?php if ($sk_options['sk_enable_filter_advanced'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SK-Tools Advanced Filter be available?", "sk_domain"); ?>
+							</p>
+						</td>
+					</tr>
 					<!-- enable sk-color-palettes -->
 					<tr class='no-pad'>
 						<th scope="row">
