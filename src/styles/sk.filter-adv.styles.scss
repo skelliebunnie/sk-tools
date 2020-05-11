@@ -2,13 +2,15 @@
 
 @include palette($color: 'dark blue', $colorMap: $PacSciBrandColors, $complement-name: 'complement', $rangeType: 'static', $harmony: 'none', $rangeDepth: 5);
 
-$tag-bg-color: getColor('dark-blue-100');
-$tag-color: getContrast($tag-bg-color);
+$term-bg-color: getColor('dark-blue-100');
+$term-color: getContrast($term-bg-color);
 
 $tooltip-bg-color: getColor('acid-100');
 $tooltip-color: getContrast($tooltip-bg-color);
 $tooltip-shadow-color: getColor('acid-300');
 $tooltip-border: "12px solid transparent";
+
+$highlight-bg-color: getColor('light-blue-100');
 
 %arrow {
   display: block;
@@ -66,48 +68,56 @@ $tooltip-border: "12px solid transparent";
   right: -8px;
 }
 
-.sk-tag-cloud {
+.sk-term-cloud {
 	position: relative;
 	display: flex;
 	flex-flow: row wrap;
 
-	.sk-tag-container {
+	.sk-term-container {
 		position: relative;
 		flex: 1 0 auto;
-		max-width: 5.5rem;
 		margin: 0.3rem;
 		padding: 0.3rem;
-		background-color: $tag-bg-color;
-		color: $tag-color;
+		text-align: center;
+		text-transform: capitalize;
+		background-color: $term-bg-color;
+		color: $term-color;
 		border-radius: 5px;
 		cursor: pointer;
 
-		// &[data-count="0"] { background-color: red; color: white; }
-		// &[data-count="1"] { background-color: orange; color: white; }
-		// &[data-count="2"] { background-color: #dfbb27; color: white; }
-		// &[data-count="3"] { background-color: forestgreen; color: white; }
-		// &[data-count="4"] { background-color: midnightblue; color: white; }
-		// &[data-count="5"] { background-color: lightsalmon; color: black; }
-		// &[data-count="6"] { background-color: sandybrown; color: black; }
-		// &[data-count="7"] { background-color: yellow; color: black; }
-		// &[data-count="8"] { background-color: chartreuse; color: black; }
-		// &[data-count="9"] { background-color: skyblue; color: black; }
-		// &[data-count="9+"] { background-color: rebeccapurple; color: white; }
+		&.color-code[data-count="0"] { background-color: red; color: white; }
+		&.color-code[data-count="1"] { background-color: orange; color: white; }
+		&.color-code[data-count="2"] { background-color: #dfbb27; color: white; }
+		&.color-code[data-count="3"] { background-color: forestgreen; color: white; }
+		&.color-code[data-count="4"] { background-color: midnightblue; color: white; }
+		&.color-code[data-count="5"] { background-color: lightsalmon; color: black; }
+		&.color-code[data-count="6"] { background-color: sandybrown; color: black; }
+		&.color-code[data-count="7"] { background-color: yellow; color: black; }
+		&.color-code[data-count="8"] { background-color: chartreuse; color: black; }
+		&.color-code[data-count="9"] { background-color: skyblue; color: black; }
+		&.color-code[data-count="9+"] { background-color: rebeccapurple; color: white; }
 	}
 
-	.sk-tag {
+	&.ellipsis {
+		max-width: 5.5rem;
+	}
+
+	.sk-term {
 		display: block;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
+
+		.sk-term-container.ellipsis > & {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
 	}
 
-	.sk-tag-tooltip {
+	.sk-term-tooltip {
 		display: none;
 	}
 
-	.sk-tag-container:hover > .sk-tag-tooltip,
-	.sk-tag-container:focus > .sk-tag-tooltip {
+	.sk-term-container:hover > .sk-term-tooltip,
+	.sk-term-container:focus > .sk-term-tooltip {
 		display: inline-block;
 		position: absolute;
 		bottom: 2.4rem;
@@ -117,4 +127,10 @@ $tooltip-border: "12px solid transparent";
 		padding: 0.1rem 0.5rem;
 		border-radius: 3px;
 	}
+}
+
+.highlight {
+
+	background-color: $highlight-bg-color;
+	color: getContrast($highlight-bg-color);
 }

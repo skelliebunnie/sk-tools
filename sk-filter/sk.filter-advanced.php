@@ -1,8 +1,11 @@
 <?php
 
 class SK_FilterAdvanced {
+	public $functions;
 	
 	public function __construct() {
+		$this->functions = new SK_Functions;
+
 		add_shortcode( 'sk_filter_advanced', array( $this, 'sk_filter_advanced_shortcode' ) );
 	}
 
@@ -14,35 +17,157 @@ class SK_FilterAdvanced {
 		if($sk_options['sk_enable_filter_advanced'] === 'true') {
 			wp_enqueue_style('sk-filters-adv-styles');
 
-			wp_enqueue_script('sk-functions-script');
+			// wp_enqueue_script('sk-functions-script');
+			wp_enqueue_script('sk-filter-adv-script');
+			
+			/*
+			 * comma-separated list of (string) values for:
+			 * 		taxonomy, post_type, limit_to, exclude
+			 * 		OR "all" / "none"
+			 * 		format can include section names
+			 * 		EX// section:post_tag,section:post
+			 * 		if the same section name is listed for 
+			 * 		multiple taxonomies / post_types, the results
+			 * 		will be joined under a single section header
+			 * tag_cloud: (bool) false
+			 * tooltip: (bool) false
+			 * class: (string) sk-filter-item
+			 */
 
-			global $wp;
-			$current_url = add_query_arg( $wp->query_vars, home_url( '/', $wp->request ) );
+			$a = shortcode_atts( array(
+			'taxonomy'	=> 'all',
+			'post_type'	=> 'all',
+			'limit_to'	=> 'none',
+			'exclude'		=> 'none',
+			'tag_cloud'	=> 'false',
+			'tooltip'		=> 'false',
+			'custom'		=> '',
+			'class'			=> 'sk-filter-item'
+			), $atts );
 
-			$tags = $this->sk_get_filters_by_taxonomy('post_tag');
-			$categories = $this->sk_get_filters_by_taxonomy('category');
-
-			$lesson_tags = $this->sk_get_filters_by_taxonomy('lesson-tag');
-			$course_categories = $this->sk_get_filters_by_taxonomy('course-category');
-			// $lessons = $this->sk_get_filters_by_post_type('lesson');
-			// $courses = $this->sk_get_filters_by_post_type('course');
-
-			$grade_levels = array("k-2", "3-5", "6-8");
-
-			$tags_list = array_merge($lesson_tags, $tags);
+			$current_url = $this->functions->get_current_url();
 		
-			$tag_cloud = array();
-			foreach($tags as $tag) {
-				$count = $tag->count;
-				if($count > 9)
-					$count = "9+";
+			$taxonomy = explode(",", $a['taxonomy']);
+			$post_type = explode(",", $a['post_type']);
 
-				$t = "<p id='tag-{$tag->name}' class='sk-tag-container' data-tag='{$tag->name}' data-count='{$count}'><span class='sk-tag'>{$tag->name}</span><span class='sk-tag-tooltip arrow-down-with-border tag-{$tag->name}'>{$tag->name}</span></p>";
+			$exclude = explode(",", strtoupper($a['exclude']));
 
-				array_push($tag_cloud, $t);
+			$filter_types = array();
+
+			$results = array();
+			
+			// FILTERS BY TAXONOMY
+			if( $a['tag_cloud'] == 'true' ) {
+				$tooltip = $a['tooltip'] == 'true' ? true : false;
+
+				$term_cloud = $this->create_term_cloud($taxonomy, $tooltip);
+				$cloud = "N0THING FOUND";
+
+				if( !empty($term_cloud) && $term_cloud !== null )
+					$cloud = implode("", $term_cloud);
+				echo "<div class='sk-term-cloud'>". $cloud ."</div>";
+
+			} elseif( $a['taxonomy'] !== 'none' && $a['taxonomy'] !== '' ) {
+				$terms = $this->functions->get_terms_by_taxonomy($taxonomy);
+
+				foreach( $terms as $section=>$list ) {
+					$class = $list[0]->taxonomy;
+
+					$tx = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
+					$tx .= "<ul class='sk-filter-list'>";
+					foreach( $list as $item ) {
+						if( !in_array($item->taxonomy, $filter_types) )
+							array_push( $filter_types, $item->taxonomy );
+
+						if( !in_array(strtoupper($item->name), $exclude) ) {
+							$name = strtolower(str_replace(" ", "-", $item->name));
+							$tx .= "<li class='{$a['class']}' data-filter-type='{$item->taxonomy}' data-filter='{$name}'>{$item->name}</li>";
+						}
+					}
+					$tx .= "</ul></div>";
+				}
+				
+				array_push($results, $tx);
 			}
 
-			echo "<div class='sk-tag-cloud'>". implode("", $tag_cloud) ."</div>";
+			// FILTERS BY POST_TYPE
+			if( $a['post_type'] !== 'none' && $a['post_type'] !== '' ) {
+				$post_types = $this->functions->get_posts_by_type($post_type);
+
+				foreach( $post_types as $section=>$list ) {
+					$class = $list[0]->post_type;
+
+					$pt = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
+					$pt .= "<ul class='sk-filter-list'>";
+
+					if( is_array($list) ) {
+						foreach( $list as $item ) {
+							if( !in_array($item->post_type, $filter_types) )
+								array_push( $filter_types, $item->post_type );
+
+							if( !in_array(strtoupper($item->title), $exclude) )
+								$title = strtolower(str_replace(" ", "-", $item->title));
+								$pt .= "<li class='{$a['class']}' data-filter-type='{$item->post_type}' data-filter='{$title}'>{$item->title}</li>";
+						}
+
+					} elseif( is_object($list) ) {
+						if( !in_array($item->post_type, $filter_types) )
+							array_push( $filter_types, $item->post_type );
+						
+						$title = 	strtolower(str_replace(" ", "-", $item->title));
+						$pt .= "<li class='{$a['class']}' data-filter-type='{$item->post_type}' data-filter='{$title}'>{$list->title}</li>";
+
+					} 
+
+					$pt .= "</ul></div>";
+
+					array_push($results, $pt);
+				}
+			}
+
+			// create the filters list before the custom list,
+			// so we can check all items against everything in custom
+			$filters = implode(",", $filter_types);
+			
+			// if a user is specifying a custom list of section:items,
+			// assume that commas separate the values in each section list
+			// and that semi-colons separate each section
+			if( $a['custom'] !== '' ) {
+				$section_lists = explode(";", $a['custom']);
+
+				if( count($section_lists) > 1 ) {
+					foreach($section_lists as $section_list) {
+						$set = explode(":", $section_list);
+
+						
+					}
+				} else {
+					$section_list = explode(":", $section_lists[0]);
+					$section = $section_list[0];
+					$list = explode(",", $section_list[1]);
+
+					$class = $section;
+
+					$ct = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
+					"<ul class='sk-filter-list'>";
+
+					if( count($list) > 1 ) {
+						foreach( $list as $item ) {
+							$item_name = strtolower(str_replace(" ", "-", $item));
+							$ct .= "<li class='{$a['class']}' data-filter-type='{$filters}' data-filter='{$item_name}'>{$item}</li>";
+						}
+					} else {
+						$item_name = strtolower(str_replace(" ", "-", $item[0]));
+						$ct .= "<li class='{$a['class']}' data-filter-type='{$filters}' data-filter='{$item_name}'>{$list[0]}</li>";
+					}
+
+					$ct .= "</ul></div>";
+
+					array_push($results, $ct);
+				}
+			}
+
+			echo "<div class='sk-filter-advanced' data-filters='{$filters}'>". implode("", $results) ."</div>";
 
 		} else {
 			echo "<p>sk_filter_advanced shortcode not enabled</p>";
@@ -50,58 +175,29 @@ class SK_FilterAdvanced {
 
 		return ob_get_clean();
 	}
-	
 
-	private function sk_get_filters_by_taxonomy($term) {
-		$results = array();
+	private function create_term_cloud($taxonomy, $tooltip) {
+		$terms = $this->functions->get_terms_by_taxonomy($taxonomy);
+		
+		// $this->functions->sk_pre($terms);
 
-		$terms = get_terms(
-			array(
-				'taxonomy'		=> $term,
-				'hide_empty'	=> false
-			)
-		);
+		$term_cloud = array();
+		foreach($terms as $term) {
+			$count = $term->count;
+			if($count > 9)
+				$count = "9+";
 
-		if( (is_array($terms) && !empty($terms)) || (is_object($terms) && !property_exists($terms, "errors")) ) {
-			foreach($terms as $term) {
-				$filter = (object)[
-					'name' 			=> $term->name,
-					'taxonomy'	=> $term->taxonomy,
-					'count'			=> $term->count
-				];
+			$t = "<p id='term-{$term->name}' class='sk-term-container' data-term='{$term->name}' data-count='{$count}'><span class='sk-term'>{$term->name}</span>";
 
-				array_push($results, $filter);
-			}
+			if( $tooltip )
+				$t .= "<span class='sk-term-tooltip arrow-down-with-border term-{$term->name}'>{$term->name}</span>";
+
+			$t .= "</p>";
+
+			array_push($term_cloud, $t);
 		}
 
-		return $results;
-	}
-
-	private function sk_get_filters_by_post_type($post_type) {
-		$results = array();
-
-		$args = array(
-			'post_type'		=> $post_type,
-			'order'				=> 'ASC',
-			'post_status'	=> 'publish'
-		);
-
-		$the_query = new WP_Query( $args );
-
-		if( $the_query->have_posts() ) {
-			// return $the_query->posts;
-			foreach( $the_query->posts as $post ) {
-				$item = (object)[
-					'title' 		=> $post->post_title,
-					'guid'			=> $post->guid,
-					'post_type'	=> $post->post_type
-				];
-
-				array_push($results, $item);
-			}
-		}
-
-		return $results;
+		return $term_cloud;
 	}
 }
 

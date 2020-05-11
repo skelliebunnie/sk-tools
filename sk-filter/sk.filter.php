@@ -16,21 +16,16 @@ function sk_filter_shortcode($atts) {
 	if($sk_options['sk_enable_filter'] === 'true') {
 		wp_enqueue_style('sk-filters-styles');
 
-		wp_enqueue_script('sk-functions-script');
+		// wp_enqueue_script('sk-functions-script');
 		wp_enqueue_script('sk-filter-script');
 
 		// types are: 
 		//	* default ( 1 filter at a time )
 		//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
-		// ===============
-		// auto-generate-list: type:name:title /EX/ post_type:course:subject
-		// filter-tags: list title:terms,for,filter,comp,to,auto-listed,items /EX/ grade level:k-2,3-5,6-8
 		$a = shortcode_atts( array(
 			'type'								=> 'default',
 			'class'								=> 'sk-filter-item',
-			'auto-generate-list'	=> 'false',
-			'filter-tags'					=> 'false',
 			'colorblocks'					=> 'false'
 		), $atts );
 		
@@ -38,101 +33,101 @@ function sk_filter_shortcode($atts) {
 
 		$auto_list = array();
 
-		if( $a['auto-generate-list'] !== 'false' ) {
-			$auto = $a['auto-generate-list'];
+		// if( $a['auto-generate-list'] !== 'false' ) {
+		// 	$auto = $a['auto-generate-list'];
 
-			if( strpos($auto, ",") ) {
-				$sets = explode(",", $auto);
+		// 	if( strpos($auto, ",") ) {
+		// 		$sets = explode(",", $auto);
 
-				foreach( $sets as $set ) {
-					$set = explode(":", $set);
+		// 		foreach( $sets as $set ) {
+		// 			$set = explode(":", $set);
 
-					if( !array_key_exists($set[2], $auto_list) )
-						$auto_list[$set[2]] = array();
+		// 			if( !array_key_exists($set[2], $auto_list) )
+		// 				$auto_list[$set[2]] = array();
 
-					if( $set[0] === 'post_type' || $set[0] === 'post type' ) {
-						$results = sk_auto_generate_from_post_type($set[1]);
+		// 			if( $set[0] === 'post_type' || $set[0] === 'post type' ) {
+		// 				$results = sk_auto_generate_from_post_type($set[1]);
 
-						array_push($auto_list[$set[2]], $results);
-					}
+		// 				array_push($auto_list[$set[2]], $results);
+		// 			}
 
-					if( $set[0] === 'taxonomy' || $set[0] === 'category' || $set[0] === 'tag' ) {
-						$results = sk_auto_generate_from_taxonomy($set[1]);
+		// 			if( $set[0] === 'taxonomy' || $set[0] === 'category' || $set[0] === 'tag' ) {
+		// 				$results = sk_auto_generate_from_taxonomy($set[1]);
 
-						array_push($auto_list[$set[2]], $results);
-					}
+		// 				array_push($auto_list[$set[2]], $results);
+		// 			}
 
-				}
+		// 		}
 
-			} else {
-				$set = explode(":", $auto);
+		// 	} else {
+		// 		$set = explode(":", $auto);
 
-				$results = '';
+		// 		$results = '';
 
-				if( $set[0] === 'post_type' || $set[0] === 'post type' ) {
-					$results = sk_auto_generate_from_post_type($set[1]);
+		// 		if( $set[0] === 'post_type' || $set[0] === 'post type' ) {
+		// 			$results = sk_auto_generate_from_post_type($set[1]);
 
-				} elseif( $set[0] === 'taxonomy' || $set[0] === 'category' || $set[0] === 'tag' ) {
-					$results = sk_auto_generate_from_taxonomy($set[1]);
+		// 		} elseif( $set[0] === 'taxonomy' || $set[0] === 'category' || $set[0] === 'tag' ) {
+		// 			$results = sk_auto_generate_from_taxonomy($set[1]);
 
-				}
+		// 		}
 
-				$auto_list[$set[2]] = $results;
-			}
-		}
+		// 		$auto_list[$set[2]] = $results;
+		// 	}
+		// }
 
 	?>
 		<div id="sk-filter-container" data-type="<?php echo $a['type']; ?>" data-colorfilter="<?php echo $a['colorblocks']; ?>" data-filter-class="<?php echo $a['class']; ?>"></div>
 
 	<?php
 
-	if( !empty($auto_list) ) {
-		$list = "<ul>"; 
+	// if( !empty($auto_list) ) {
+	// 	$list = "<ul>"; 
 
-		foreach($auto_list as $filter_title=>$items) {
-			// $items = array of objects; we need the title and guid
-			foreach($items as $item) {
-				$filter_item = $item->parent;
+	// 	foreach($auto_list as $filter_title=>$items) {
+	// 		// $items = array of objects; we need the title and guid
+	// 		foreach($items as $item) {
+	// 			$filter_item = $item->parent;
 
-				if( $item->parent === NULL )
-					$filter_item = $item->title;
+	// 			if( $item->parent === NULL )
+	// 				$filter_item = $item->title;
 
-				$tags_title = ""; $tags = array();
-				if($a['filter-tags'] !== false) {
-					$filter_tags = array();
+	// 			$tags_title = ""; $tags = array();
+	// 			if($a['filter-tags'] !== false) {
+	// 				$filter_tags = array();
 
-					if( strpos($a['filter-tags'], ":") !== false ) {
-						$title_tags = explode(":", $a['filter-tags']);
+	// 				if( strpos($a['filter-tags'], ":") !== false ) {
+	// 					$title_tags = explode(":", $a['filter-tags']);
 					
-						$tags_title = str_replace(" ", "_", $title_tags[0]);
-						$filter_tags = explode(",", $title_tags[1]);
+	// 					$tags_title = str_replace(" ", "_", $title_tags[0]);
+	// 					$filter_tags = explode(",", $title_tags[1]);
 
-					} else {
-						$tags_title = "tags";
-						$filter_tags = explode(",", $a['filter-tags']);
+	// 				} else {
+	// 					$tags_title = "tags";
+	// 					$filter_tags = explode(",", $a['filter-tags']);
 						
-					}
+	// 				}
 
-					foreach( $item->tags as $tag ) {
-						if( in_array($tag, $filter_tags) )
-							array_push($tags, $tag);
-					}
-				}
+	// 				foreach( $item->tags as $tag ) {
+	// 					if( in_array($tag, $filter_tags) )
+	// 						array_push($tags, $tag);
+	// 				}
+	// 			}
 
-				$data_tags = "";
-				if( !empty($tags) ) {
-					$tags = implode($tags, ",");
+	// 			$data_tags = "";
+	// 			if( !empty($tags) ) {
+	// 				$tags = implode($tags, ",");
 
-					$data_tags = "data-{$tags_title}='{$tags}'";
-				}
+	// 				$data_tags = "data-{$tags_title}='{$tags}'";
+	// 			}
 
-				$list .= "<li class='{$a['class']}' data-{$filter_title}='{$filter_item}' {$data_tags}><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
-			}
-		}
-		$list .= "</ul>";
+	// 			$list .= "<li class='{$a['class']}' data-{$filter_title}='{$filter_item}' {$data_tags}><a href='{$item->guid}' target='_blank'>{$item->title}</a></li>";
+	// 		}
+	// 	}
+	// 	$list .= "</ul>";
 
-		echo $list;
-	}
+	// 	echo $list;
+	// }
 
 	} else {
 		echo "<p>sk_filter shortcode not enabled</p>";
@@ -142,90 +137,88 @@ function sk_filter_shortcode($atts) {
 }
 add_shortcode('sk_filter', 'sk_filter_shortcode');
 
-function sk_auto_generate_from_taxonomy($term) {
-	// get the list of terms
-	$term_list = get_terms(
-		array(
-			'taxonomy'		=> $term,
-			'hide_empty'	=> false
-		)
-	);
+// function sk_auto_generate_from_taxonomy($term) {
+// 	// get the list of terms
+// 	$term_list = get_terms(
+// 		array(
+// 			'taxonomy'		=> $term,
+// 			'hide_empty'	=> false
+// 		)
+// 	);
 
-	// make sure term exists
-	if( is_array($term_list) && !empty($term_list) )
-		return $terms_list;
+// 	// make sure term exists
+// 	if( is_array($term_list) && !empty($term_list) )
+// 		return $terms_list;
 
-	return false;
-}
+// 	return false;
+// }
 
-function sk_auto_generate_from_post_type($post_type) {
-	$results = array();
+// function sk_auto_generate_from_post_type($post_type) {
+// 	$results = array();
 
-	$args = array(
-		'post_type'		=> $post_type,
-		'post_status' => 'publish',
-		'order'				=> 'ASC'
-	);
+// 	$args = array(
+// 		'post_type'		=> $post_type,
+// 		'post_status' => 'publish',
+// 		'order'				=> 'ASC'
+// 	);
 
-	$the_query = new WP_Query( $args );
+// 	$the_query = new WP_Query( $args );
 
-	if( $the_query->have_posts() ) {
-		$posts = $the_query->posts;
+// 	if( $the_query->have_posts() ) {
+// 		$posts = $the_query->posts;
 
-		foreach($posts as $post) {
-// echo "<pre>";
-// var_dump($post);
-// echo "</pre>";
-			$id = $post->ID;
+// 		foreach($posts as $post) {
 
-			$course_id = intval( get_post_meta( $id, '_lesson_course', true ) );
-			// $course_guid = esc_url( get_permalink( $course_id ) );
+// 			$id = $post->ID;
 
-			// if the post_type of the course_id post is not a course,
-			// check to see if this post is a course
-			if( get_post($course_id)->post_type === "course" ) {
-				$course_title = esc_html( get_the_title( $course_id ) );
+// 			$course_id = intval( get_post_meta( $id, '_lesson_course', true ) );
+// 			// $course_guid = esc_url( get_permalink( $course_id ) );
 
-			} elseif( $post->post_type === "course" ) {
-				$course_title = esc_html( $post->post_title );
+// 			// if the post_type of the course_id post is not a course,
+// 			// check to see if this post is a course
+// 			if( get_post($course_id)->post_type === "course" ) {
+// 				$course_title = esc_html( get_the_title( $course_id ) );
 
-			} else {
-				$course_title = NULL;
-			}
+// 			} elseif( $post->post_type === "course" ) {
+// 				$course_title = esc_html( $post->post_title );
 
-			$tags = array();
-			if( $course_title !== NULL ) {
-				$tags_list = get_the_terms( $id, 'lesson-tag' );
+// 			} else {
+// 				$course_title = NULL;
+// 			}
 
-				if( is_array($tags_list) && !empty($tags_list) ) {
-					foreach($tags_list as $tag) {
-						array_push($tags, $tag->name);
-					}
-				}
+// 			$tags = array();
+// 			if( $course_title !== NULL ) {
+// 				$tags_list = get_the_terms( $id, 'lesson-tag' );
 
-			} else {
-				$tags_list = get_the_tags($id);
+// 				if( is_array($tags_list) && !empty($tags_list) ) {
+// 					foreach($tags_list as $tag) {
+// 						array_push($tags, $tag->name);
+// 					}
+// 				}
 
-				if( is_array($tags_list) && !empty($tags_list) ) {
-					foreach($tags_list as $tag) {
-						array_push($tags, $tag->name);
-					}
-				}
+// 			} else {
+// 				$tags_list = get_the_tags($id);
 
-			}
+// 				if( is_array($tags_list) && !empty($tags_list) ) {
+// 					foreach($tags_list as $tag) {
+// 						array_push($tags, $tag->name);
+// 					}
+// 				}
+
+// 			}
 			
-			$item = (object)[
-				'title'		=> $post->post_title,
-				'guid'		=> $post->guid,
-				'parent'	=> $course_title,
-				'tags'		=> $tags
-			];
+// 			$item = (object)[
+// 				'title'		=> $post->post_title,
+// 				'guid'		=> $post->guid,
+// 				'parent'	=> $course_title,
+// 				'tags'		=> $tags
+// 			];
 
-			array_push($results, $item);
-		}
+// 			array_push($results, $item);
+// 		}
 
-		return $results;
-	}
+// 		return $results;
+// 	}
 	
-	return false;
-}
+// 	return false;
+// }

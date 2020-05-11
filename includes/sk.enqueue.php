@@ -54,6 +54,9 @@ function sk_scripts() {
 	// ../sk-filter/skb.filter.js
 	wp_register_script('sk-filter-script', SK_ROOTURL ."/sk-filter/sk.filter.js", array('sk-functions-script'), null, true);
 
+	// ../sk-filter/skb.filter-adv.js
+	wp_register_script('sk-filter-adv-script', SK_ROOTURL ."/sk-filter/sk.filter-advanced.js", array('sk-functions-script'), null, true);
+
 	// ../sk-filter/skb.filter-color.js
 	wp_register_script('sk-filter-color-script', SK_ROOTURL ."/sk-filter/sk.filter-color.js", array('sk-functions-script'), null, true);
 
