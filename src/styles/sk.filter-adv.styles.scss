@@ -12,6 +12,9 @@ $tooltip-border: "12px solid transparent";
 
 $highlight-bg-color: getColor('light-blue-100');
 
+$filter-item-border-color: getColor('light-blue-200');
+$filter-item-hover-bg-color: getColor('light-blue-200');
+
 %arrow {
   display: block;
   content: "";
@@ -130,7 +133,38 @@ $highlight-bg-color: getColor('light-blue-100');
 }
 
 .highlight {
-
 	background-color: $highlight-bg-color;
 	color: getContrast($highlight-bg-color);
+}
+
+#left-area ul.sk-filter-list,
+.sk-filter-list,
+ul.sk-filter-list,
+.sk-filter-list-container .sk-filter-list {
+	list-style-type: none;
+	columns: 2;
+	column-gap: 0.25rem;
+	margin: 0;
+	padding: 0;
+
+	& > li {
+		list-style-type: none;
+		margin: 0;
+		padding: 0 0.2rem;
+		text-align: center;
+		text-transform: capitalize;
+		cursor: pointer;
+		border: 1px solid $filter-item-border-color;
+		border-radius: 5px;
+
+		&:not(:first-child) {
+			margin: 0.5rem 0;
+		}
+
+		&:hover,
+		&:focus {
+			background-color: $filter-item-hover-bg-color;
+			color: getContrast($filter-item-hover-bg-color);
+		}
+	}
 }

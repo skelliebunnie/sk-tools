@@ -35,22 +35,23 @@ class SK_FilterAdvanced {
 			 */
 
 			$a = shortcode_atts( array(
-			'taxonomy'	=> 'all',
-			'post_type'	=> 'all',
-			'limit_to'	=> 'none',
-			'exclude'		=> 'none',
-			'tag_cloud'	=> 'false',
-			'tooltip'		=> 'false',
-			'custom'		=> '',
-			'class'			=> 'sk-filter-item'
-			), $atts );
+				'type'			=> 'default',
+				'taxonomy'	=> 'all',
+				'post_type'	=> 'all',
+				'limit_to'	=> 'none',
+				'exclude'		=> 'none',
+				'tag_cloud'	=> 'false',
+				'tooltip'		=> 'false',
+				'custom'		=> '',
+				'class'			=> 'sk-filter-item'
+				), $atts );
 
 			$current_url = $this->functions->get_current_url();
 		
 			$taxonomy = explode(",", $a['taxonomy']);
 			$post_type = explode(",", $a['post_type']);
 
-			$exclude = explode(",", strtoupper($a['exclude']));
+			$exclude = explode(",", strtolower($a['exclude']));
 
 			$filter_types = array();
 
@@ -71,7 +72,7 @@ class SK_FilterAdvanced {
 				$terms = $this->functions->get_terms_by_taxonomy($taxonomy);
 
 				foreach( $terms as $section=>$list ) {
-					$class = $list[0]->taxonomy;
+					$class = "taxonomy--{$list[0]->taxonomy}";
 
 					$tx = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
 					$tx .= "<ul class='sk-filter-list'>";
@@ -79,15 +80,15 @@ class SK_FilterAdvanced {
 						if( !in_array($item->taxonomy, $filter_types) )
 							array_push( $filter_types, $item->taxonomy );
 
-						if( !in_array(strtoupper($item->name), $exclude) ) {
-							$name = strtolower(str_replace(" ", "-", $item->name));
-							$tx .= "<li class='{$a['class']}' data-filter-type='{$item->taxonomy}' data-filter='{$name}'>{$item->name}</li>";
+						if( !in_array($item->slug, $exclude) && !in_array(strtolower($item->name), $exclude) ) {
+							$tx .= "<li class='{$a['class']}' data-filter-type='{$item->taxonomy}' data-filter='{$item->slug}'>{$item->name}</li>";
 						}
 					}
 					$tx .= "</ul></div>";
+
+					array_push($results, $tx);
 				}
-				
-				array_push($results, $tx);
+			
 			}
 
 			// FILTERS BY POST_TYPE
@@ -95,7 +96,7 @@ class SK_FilterAdvanced {
 				$post_types = $this->functions->get_posts_by_type($post_type);
 
 				foreach( $post_types as $section=>$list ) {
-					$class = $list[0]->post_type;
+					$class = "post_type--{$list[0]->post_type}";
 
 					$pt = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
 					$pt .= "<ul class='sk-filter-list'>";
@@ -146,19 +147,19 @@ class SK_FilterAdvanced {
 					$section = $section_list[0];
 					$list = explode(",", $section_list[1]);
 
-					$class = $section;
+					$class = "section--{$section}";
 
 					$ct = "<div class='sk-filter-list-container {$class}'><p><strong>{$section}</strong></p>";
-					"<ul class='sk-filter-list'>";
+					$ct .= "<ul class='sk-filter-list'>";
 
 					if( count($list) > 1 ) {
 						foreach( $list as $item ) {
 							$item_name = strtolower(str_replace(" ", "-", $item));
-							$ct .= "<li class='{$a['class']}' data-filter-type='{$filters}' data-filter='{$item_name}'>{$item}</li>";
+							$ct .= "<li class='{$a['class']} sk-custom-filter' data-filter-type='{$filters}' data-filter='{$item_name}'>{$item}</li>";
 						}
 					} else {
 						$item_name = strtolower(str_replace(" ", "-", $item[0]));
-						$ct .= "<li class='{$a['class']}' data-filter-type='{$filters}' data-filter='{$item_name}'>{$list[0]}</li>";
+						$ct .= "<li class='{$a['class']} sk-custom-filter' data-filter-type='{$filters}' data-filter='{$item_name}'>{$list[0]}</li>";
 					}
 
 					$ct .= "</ul></div>";
@@ -167,7 +168,7 @@ class SK_FilterAdvanced {
 				}
 			}
 
-			echo "<div class='sk-filter-advanced' data-filters='{$filters}'>". implode("", $results) ."</div>";
+			echo "<div class='sk-filter-advanced' data-filters='{$filters}' data-filter-type='{$a['type']}'>". implode("", $results) ."</div>";
 
 		} else {
 			echo "<p>sk_filter_advanced shortcode not enabled</p>";

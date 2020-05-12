@@ -49,6 +49,7 @@ class SK_Functions {
         foreach($terms as $term) {
           $filter = (object)[
             'name'      => $term->name,
+            'slug'      => $term->slug,
             'taxonomy'  => $term->taxonomy,
             'count'     => $term->count
           ];

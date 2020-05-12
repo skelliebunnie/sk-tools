@@ -159,3 +159,10 @@ function isColor(strColor) {
   s.color = strColor;
   return s.color !== '';
 }
+
+// https://stackoverflow.com/a/5086487
+function toTitleCase(str) {
+  return str.replace(/(?:^|\s)\w/g, function(match) {
+    return match.toUpperCase();
+  });
+}
