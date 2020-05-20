@@ -27,16 +27,30 @@ $coreColors: (
 ) !default;
 
 $PacSciBrandColors: (
-	'dark blue': 	#003A5D,
-	'light blue': #00A0E0,
+	'light-blue': #00A0E0,
+	'dark-blue': 	#003A5D,
 	'grey': 			#D2D2D2,
 	// secondary colors
 	'acid': 		#c6ca53,
-	'midnight': #702670,
+	'eggplant': #75485E,
 	'coyote': 	#885a3a,
-	'salmon':		#ffa07a,
-	'pine': 		#01796f,
+	'flame':		#E44001,
+	'olive': 		#858503,
+	'keppel': 	#58AF9E,
+	'manatee': 	#8E96A1,
 );
+
+$SKColors: (
+	'tea': 				#e1f0c4, // fab3a9
+	'pewter': 		#8da7be, // 70ae6e
+	'lavender': 	#efbdeb, // 157a6e
+	'infrared': 	#ef476f, // 5f24bf
+	'neutral': 		#424c55, // 30343f
+) !default;
+
+$targetColor: 'pewter' !default;
+$depth: 9 !default;
+$type: 'static' !default;
 
 // MUST be imported AFTER defining $coreColors!
 @import "color/functions";

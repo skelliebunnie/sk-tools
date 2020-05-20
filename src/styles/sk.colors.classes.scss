@@ -1,0 +1,39 @@
+@import "settings";
+
+.sk-color-default {
+	@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9);
+
+	@each $name,$color in $palette {
+		//@debug "text-#{$name}";
+
+		&.text-#{$name} { color: unquote("#{$color}"); }
+		&.background-#{$name} {
+			background-color: unquote("#{$color}");
+			color: getContrast($color);
+		}
+	}
+}
+
+.sk-color-psc {
+	@include palette($colorMap: $PacSciBrandColors, $color: 'light-blue', $complement-name: 'complement', $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $include-complement: false);
+
+	@each $name,$color in $palette {
+		&.text-#{$name} { color: unquote("#{$color}"); }
+		&.background-#{$name} {
+			background-color: unquote("#{$color}");
+			color: getContrast($color);
+		}
+	}
+}
+
+.sk-color-sk {
+	@include palette($colorMap: $SKColors, $color: 'light-blue', $complement-name: 'complement', $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $include-complement: false);
+
+	@each $name,$color in $palette {
+		&.text-#{$name} { color: unquote("#{$color}"); }
+		&.background-#{$name} {
+			background-color: unquote("#{$color}");
+			color: getContrast($color);
+		}
+	}
+}

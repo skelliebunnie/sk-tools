@@ -34,6 +34,9 @@ function sk_styles() {
 	// COLORS STYLES
 	wp_register_style('sk-color-styles', SK_ROOTURL ."/includes/css/sk.colors.styles.css");
 
+	// COLOR CLASSES (enqueue here, so they're available any time)
+	wp_enqueue_style('sk-color-classes', SK_ROOTURL .'/includes/css/sk.colors.classes.css');
+
 	// CHECKLIST STYLES
 	// wp_register_style('sk-checklists-styles', SK_ROOTURL ."/includes/css/sk.checklists.styles.css");
 	// if($sk_options['sk_enable_checklists'] === 'true') {

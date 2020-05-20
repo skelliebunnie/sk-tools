@@ -449,6 +449,21 @@ function getBuiltInPalettes($palette, $type, $range, $show_titles, $show_color_a
 			<div class="sk-color--wrapper">
 				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
 			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
+			<div class="sk-color--wrapper">
+				<span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span><span class="color"></span>
+			</div>
 		</div>
 	</div>
 	<div class="sk-default-palette--wrapper<?php if($analogous_hidden) { echo ' hidden'; } ?>">
