@@ -9,6 +9,11 @@
 
 	&.no-margin { margin: 0; }
 
+	&--overlay {
+		position: absolute;
+		z-index: 10;
+	}
+
 	& h1, & h2, & h3,
 	& h4, & h5, & h6 {
 		padding: 0;
@@ -49,6 +54,7 @@
 		border-color: $sk-notice-neutral--border-color;
 		background-color: $sk-notice-neutral--bg-color;
 	}
+
 	&--simple {
 		border: none;
 		background-color: transparent;
@@ -60,6 +66,33 @@
 .sk-notice--date {
 	&-bold { font-weight: bold; }
 	&-large { font-size: larger; }
+}
+
+.transparent.sk-notice {
+	&--info {
+		border-color: $sk-notice-info--border-color;
+		background-color: getRGBA($sk-notice-info--bg-color, 0.85);
+	}
+	&--success {
+		border-color: $sk-notice-success--border-color;
+		background-color: getRGBA($sk-notice-success--bg-color, 0.85);
+	}
+	&--warn {
+		border-color: $sk-notice-warn--border-color;
+		background-color: getRGBA($sk-notice-warn--bg-color, 0.85);
+	}
+	&--alert {
+		border-color: $sk-notice-alert--border-color;
+		background-color: getRGBA($sk-notice-alert--bg-color, 0.85);
+	}
+	&--hi-alert {
+		border-color: $sk-notice-hi-alert--border-color;
+		background-color: getRGBA($sk-notice-hi-alert--bg-color, 0.85);
+	}
+	&--neutral {
+		border-color: $sk-notice-neutral--border-color;
+		background-color: getRGBA($sk-notice-neutral--bg-color, 0.85);
+	}
 }
 
 .sk-note {

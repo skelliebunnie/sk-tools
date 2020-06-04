@@ -27,7 +27,9 @@ function sk_notices_shortcode($atts) {
 			'on'						=> null,
 			'off'						=> null,
 			'debug'					=> 'false',
-			'margin'				=> 'true'
+			'margin'				=> 'true',
+			'overlay'				=> 'false',
+			'transparent'		=> 'false'
 		), $atts );
 
 		if($a['date_location'] == 'first') { $a['date_location'] = 'before'; }
@@ -150,9 +152,14 @@ function sk_notices_shortcode($atts) {
 		}
 
 		if($show_notice) {
-			$margin = $a['margin'] == 'true' ?? 'no-margin';
+			$margin = $a['margin'] == 'true' ? '' : ' no-margin';
+			$transparent = $a['transparent'] == 'true' ? ' transparent' : '';
+
+			if($a['overlay'] == 'true')
+				echo "<div class='sk-notice--overlay'>";
 		?>
-<div class="sk-notice sk-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " sk-notice--centered"; }; echo " sk-notice--font-{$a['font_size']}"; echo $margin; ?>">
+
+<div class="sk-notice sk-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " sk-notice--centered"; }; echo " sk-notice--font-{$a['font_size']}"; echo $margin; echo $transparent; ?>">
 <?php
 	$bold = ""; $date_large = "";
 	if($a['date_bold'] == 'true') { $bold = "sk-notice--date-bold"; }
@@ -174,6 +181,9 @@ function sk_notices_shortcode($atts) {
 ?>
 </div>
 		<?php
+			if($a['overlay'] == 'true')
+				echo "</div>";
+
 		} elseif($a['debug'] === 'true') {
 			echo "<p class='note'>This message is scheduled to show only ";
 			if( substr($schedule[0], -3) == 'day' ) {
