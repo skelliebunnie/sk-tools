@@ -26,7 +26,8 @@ function sk_notices_shortcode($atts) {
 			'end_schedule'	=> 'never',
 			'on'						=> null,
 			'off'						=> null,
-			'debug'					=> 'false'
+			'debug'					=> 'false',
+			'margin'				=> 'true'
 		), $atts );
 
 		if($a['date_location'] == 'first') { $a['date_location'] = 'before'; }
@@ -149,8 +150,9 @@ function sk_notices_shortcode($atts) {
 		}
 
 		if($show_notice) {
+			$margin = $a['margin'] == 'true' ?? 'no-margin';
 		?>
-<div class="sk-notice sk-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " sk-notice--centered"; }; echo " sk-notice--font-{$a['font_size']}"; ?>">
+<div class="sk-notice sk-notice--<?php echo $a['type']; if($a['center'] == 'true') { echo " sk-notice--centered"; }; echo " sk-notice--font-{$a['font_size']}"; echo $margin; ?>">
 <?php
 	$bold = ""; $date_large = "";
 	if($a['date_bold'] == 'true') { $bold = "sk-notice--date-bold"; }
