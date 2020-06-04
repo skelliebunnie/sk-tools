@@ -7,6 +7,12 @@
 	border: 2px solid #333;
 	background-color: gainsboro;
 
+	& h1, & h2, & h3,
+	& h4, & h5, & h6 {
+		padding: 0;
+		margin: 0;
+	}
+
 	&--centered { text-align: center; }
 
 	&--font-xx-small { font-size: xx-small; }
@@ -32,6 +38,10 @@
 	&--alert {
 		border-color: $sk-notice-alert--border-color;
 		background-color: $sk-notice-alert--bg-color;
+	}
+	&--hi-alert {
+		border-color: $sk-notice-hi-alert--border-color;
+		background-color: $sk-notice-hi-alert--bg-color;
 	}
 	&--neutral {
 		border-color: $sk-notice-neutral--border-color;
