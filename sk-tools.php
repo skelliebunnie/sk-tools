@@ -20,6 +20,7 @@ define( 'SK_SITE_ADMIN_URL', get_site_url() .'/wp-admin' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
+	'sk_enable_addressbook'			=> 'true',
 	'sk_enable_breadcrumbs'			=> 'true',
 	'sk_enable_notices'					=> 'true',
 	'sk_enable_filter'					=> 'true',
@@ -82,6 +83,11 @@ foreach(glob(SK_ROOTDIR ."/sk-datetime/*.php") as $filename) {
 
 // SK-COLORS
 foreach(glob(SK_ROOTDIR ."/sk-colors/*.php") as $filename) {
+	require_once($filename);
+}
+
+// SK-ADDRESSBOOK
+foreach(glob(SK_ROOTDIR ."/sk-addressbook/*.php") as $filename) {
 	require_once($filename);
 }
 

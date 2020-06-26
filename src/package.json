@@ -20,6 +20,7 @@
     "browser-sync": "latest",
     "debug": "latest",
     "gulp": "^4.x.x",
+    "gulp-cached": "^1.1.1",
     "gulp-concat": "latest",
     "gulp-image": "latest",
     "gulp-newer": "latest",

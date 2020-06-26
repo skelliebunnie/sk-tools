@@ -1,5 +1,13 @@
 @import "settings";
+// ===============================
+//	SK-COLOR-PALETTES VARIABLES
+// ===============================
+$sk-color-block--height: 4rem;
+$sk-color-block--min-height: 1rem;
 
+// ===============================
+//	SK-COLOR-PALETTES STYLES
+// ===============================
 .sk-palette--container {
 	display: flex;
 	flex-flow: row wrap;

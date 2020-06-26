@@ -3,6 +3,9 @@ if( !defined( 'ABSPATH' ) ) { exit; }
 
 // menu items
 function sk_tools_admin_menu() {
+	require_once SK_ROOTDIR .'/admin/sk.admin.addressbook.php';
+	$addressbook = new SKTools_AddressBook();
+
 	// MAIN MENU ITEM: Shortcode samples & list of categories
 	add_menu_page(
 		'SK Tools', // $page_title
@@ -13,14 +16,15 @@ function sk_tools_admin_menu() {
 		'dashicons-carrot' // $icon_url, $position
 	);
 
-	// SLIDERS SUBMENU PAGE
-	// add_submenu_page(
-	// 	'sk_admin', // $parent_slug
-	// 	'Sliders', // $page_title
-	// 	'Sliders', // $menu_title
-	// 	'manage_options', // $capability
-	// 	'edit.php?post_type=sk_slider' // $callback
-	// );
+	// SUBMENU PAGE
+	add_submenu_page(
+		'sk_admin', // $parent_slug
+		'Address Book', // $page_title
+		'Address Book', // $menu_title
+		'manage_options', // $capability
+		'sk_admin_addressbook', // $menu_slug
+		array($addressbook, 'create_page') // callback
+	);
 
 	// SKB-TOOLS SETTINGS
 	add_submenu_page(
@@ -41,6 +45,16 @@ function sk_admin_enqueue() {
 	wp_register_script('sk-misha-script', $script_misha, array('jquery'), null, true);
 }
 add_action( 'admin_enqueue_scripts', 'sk_admin_enqueue', 50 );
+
+function sk_addressbook_enqueue($hook) {
+
+	if( $hook != 'sk-tools_page_sk_admin_addressbook' )
+		return;
+
+	wp_enqueue_style('sk-admin-styles', SK_ROOTURL ."/includes/css/sk.admin.styles.css");
+	wp_enqueue_script('sk-addressbook-script', SK_ROOTURL ."/admin/js/admin.js", array('jquery'), null, true);
+}
+add_action('admin_enqueue_scripts', 'sk_addressbook_enqueue');
 
 // Keeps parent page (st_admin_documentation) hilighted when Custom Post Type page is selected
 function sk_menu_hilight( $parent_file ) {

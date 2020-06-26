@@ -1,4 +1,6 @@
 <?php
+if( !defined( 'ABSPATH' ) ) { exit; }
+
 // create options page content
 function sk_admin_settings() {
 	global $sk_options;
@@ -15,7 +17,7 @@ function sk_admin_settings() {
 	ob_start();
 ?>
 	<div class="sk-wrap">
-		<h1><?php _e("SKB Tools Settings", "sk_domain"); ?></h1>
+		<h1><?php _e("SK Tools Settings", "sk_domain"); ?></h1>
 		<!-- <p><?php //_e("Settings for the SKB Tools Plugin", "sk_domain"); ?></p> -->
 		<!-- form action MUST be options.php, so that WP-Options handles all this -->
 		<form action="options.php" method="post">
@@ -28,6 +30,23 @@ function sk_admin_settings() {
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>
 							<h3 class='no-pad no-margin'>Enable / Disable Tools</h3>
 						</th>
+					</tr>
+					<!-- enable sk-addressbook -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="sk_settings[sk_enable_addressbook]"><?php _e('Enable AddressBook', 'sk_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="sk_settings[sk_enable_addressbook]" value="false">
+							<input type="checkbox" name="sk_settings[sk_enable_addressbook]" value="true" <?php if ($sk_options['sk_enable_addressbook'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SK-Tools AddressBook be available? If the AddressBook is enabled, please enter the information on the AddressBook page.", "sk_domain"); ?>
+							</p>
+						</td>
 					</tr>
 					<!-- enable sk-breadcrumbs -->
 					<tr class='no-pad'>
@@ -206,27 +225,27 @@ function sk_admin_settings() {
 						</td>
 					</tr>
 					<!-- author for Butterflies virtual pages -->
-					<tr class="no-pad">
+					<!-- <tr class="no-pad">
 						<th scope="row">
-							<label for="sk_settings[sk-btf-author]"><?php _e('Butterflies Virtual Pages Author', 'sk_domain'); ?></label>
+							<label for="sk_settings[sk-btf-author]"><?php //_e('Butterflies Virtual Pages Author', 'sk_domain'); ?></label>
 						</th>
 						<td>
-							<select name="sk_settings[sk-btf-author]" id="sk_settings[sk-btf-author]">
+							<select name="sk_settings[sk-btf-author]" id="sk_settings[sk-btf-author]"> -->
 							<?php
-								$users = get_users(); 
-							  foreach ($users as $user) {
-							  	$option = "<option value='{$user->ID}'>";
-							  	if( $sk_options['sk-btf-author'] == $user->ID ) {
-							  		$option = "<option value='{$user->ID}' selected>";
-							  	}
-							    $option .= $user->display_name;
-							    $option .= "</option>";
-							    echo $option;
-							  }
+								// $users = get_users(); 
+							 //  foreach ($users as $user) {
+							 //  	$option = "<option value='{$user->ID}'>";
+							 //  	if( $sk_options['sk-btf-author'] == $user->ID ) {
+							 //  		$option = "<option value='{$user->ID}' selected>";
+							 //  	}
+							 //    $option .= $user->display_name;
+							 //    $option .= "</option>";
+							 //    echo $option;
+							 //  }
 							?>
-							</select>
+							<!-- </select>
 						</td>
-					</tr>
+					</tr> -->
 					<!-- NOTICES OPTIONS -->
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>

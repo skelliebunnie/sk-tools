@@ -1,5 +1,32 @@
 @import "settings";
+// ===============================
+//	SK-FILTER VARIABLES
+// ===============================
+$sk-filter-container--color: getColor('neutral-900');
+$sk-filter-title--bg-color: getColor('secondary-700');
+$sk-filter-title-hover--bg-color: getColor('accent-400');
+$sk-filter-title--color: getContrast( $sk-filter-title--bg-color );
+$sk-filter-title-hover--color: getContrast( $sk-filter-title-hover--bg-color );
+$sk-filter-list--box-shadow-color: getColor('neutral-400');
+$sk-filter-list--bg-color: getColor('neutral-100');
 
+$sk-filter-hover--bg-color: getColor('accent-400');
+$sk-filter-hover--color: getContrast($sk-filter-hover--bg-color);
+
+$sk-active-filter--bg-color: getColor('active-400');
+$sk-active-filter--color: getContrast(getColor('active-400'));
+$sk-filter-count--bg-color: getColor('neutral-200');
+$sk-filter-count--color: getContrast( getColor('neutral-200') );
+
+$sk-filter-notice--bg-color: getColor('alert-100');
+$sk-filter-notice--color: getContrast($sk-filter-notice--bg-color);
+$sk-filter-notice--border-color: getColor('alert-400');
+
+$sk-remove-filter--color: getColor('alert-400');
+
+// ===============================
+//	SK-FILTER STYLES
+// ===============================
 #sk-filter-container {
 	display: flex;
 	flex-flow: column nowrap;

@@ -1,5 +1,31 @@
 @import "settings";
+// ===============================
+//	SK-NOTICES VARIABLES
+// ===============================
+$sk-notice-info--border-color: getColor('info-400');
+$sk-notice-info--bg-color: getColor('info-50');
 
+$sk-notice-success--border-color: getColor('success-400');
+$sk-notice-success--bg-color: getColor('success-50');
+
+$sk-notice-success--border-color: getColor('success-400');
+$sk-notice-success--bg-color: getColor('success-50');
+
+$sk-notice-alert--border-color: getColor('alert-400');
+$sk-notice-alert--bg-color: getColor('alert-50');
+
+$sk-notice-hi-alert--border-color: getColor('hi-alert-400');
+$sk-notice-hi-alert--bg-color: getColor('hi-alert-50');
+
+$sk-notice-warn--border-color: getColor('warn-400');
+$sk-notice-warn--bg-color: getColor('warn-50');
+
+$sk-notice-neutral--border-color: getColor('neutral-400');
+$sk-notice-neutral--bg-color: getColor('neutral-50');
+
+// ===============================
+//	SK-NOTICES STYLES
+// ===============================
 .sk-notice {
 	width: 100%;
 	margin: 1rem 0.2rem 0.5rem 0.2rem;

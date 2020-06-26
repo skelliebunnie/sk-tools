@@ -20,21 +20,22 @@ function nthIndex(str, search, n) {
 }
 
 // requires
-var gulp = require('gulp'),
-		sass = require('gulp-sass'),
-		postcss = require('gulp-postcss'),
-		autoprefixer = require('autoprefixer'),
-		sourcemaps = require('gulp-sourcemaps'),
-		wait = require('gulp-wait'),
-		jshint = require('gulp-jshint'),
-		concat = require('gulp-concat'),
-		rename = require('gulp-rename'),
-		uglify = require('gulp-uglify'),
-		image = require('gulp-image'),
-		newer = require('gulp-newer'),
-		browserSync = require('browser-sync');
+var gulp 					= require('gulp'),
+		cached 				= require('gulp-cached'),
+		sass 					= require('gulp-sass'),
+		postcss 			= require('gulp-postcss'),
+		autoprefixer 	= require('autoprefixer'),
+		sourcemaps 		= require('gulp-sourcemaps'),
+		wait 					= require('gulp-wait'),
+		jshint 				= require('gulp-jshint'),
+		concat 				= require('gulp-concat'),
+		rename 				= require('gulp-rename'),
+		uglify 				= require('gulp-uglify'),
+		image 				= require('gulp-image'),
+		newer 				= require('gulp-newer'),
+		browserSync 	= require('browser-sync');
 
-const server = browserSync.create();
+const server 			= browserSync.create();
 
 const paths = {
 	styles: {
@@ -57,7 +58,7 @@ console.log(paths.styles.src);
 // SCSS => CSS task
 gulp.task('styles', function() {
 	var styles = gulp.src( paths.styles.src )
-		//.pipe( wait(25) )
+		.pipe(cached('cached files')) // exclude files that haven't changed
 		.pipe( sourcemaps.init() )
 		.pipe( sourcemaps.identityMap() )
 		.pipe( sass({

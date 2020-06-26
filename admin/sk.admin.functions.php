@@ -1,4 +1,5 @@
 <?php
+if( !defined( 'ABSPATH' ) ) { exit; }
 
 function sk_image_upload($target, $url='', $setting = false) {
 	global $sk_options;

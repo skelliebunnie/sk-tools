@@ -1,3 +1,13 @@
+@import "settings";
+// ===============================
+//	ADMIN:ADDRESSBOOK VARIABLES
+// ===============================
+$add-btn--color: getColor('success-500');
+$delete-btn--color: getColor('warn-400');
+
+// ===============================
+//	ADMIN:GENERAL STYLES
+// ===============================
 .no-pad {
 	padding: 0;
 
@@ -25,4 +35,36 @@ tr.no-pad-right > td { padding-right: 0; }
 #sk-d_default_photo_image-upload img {
 	max-height: 100px;
 	margin-left: 3.25rem;
+}
+
+// ===============================
+//	ADMIN:ADDRESSBOOK STYLES
+// ===============================
+#sk_addressbook_form form-table tbody {
+	display: flex;
+	flex-flow: row nowrap;
+
+	& > tr {
+		flex: 1;
+		min-width: 50%;
+	}
+}
+
+.sk-contact-container {
+	& + & {
+		margin-top: 0.5rem;
+		padding: 0.5rem;
+	}
+
+	& input { margin-right: 1rem; }
+
+	&:nth-child(even) { background-color: #ddd; }
+
+	&:first-child { padding-left: 2.65rem; }
+}
+
+.sk-contact {
+	&--add, &--delete { margin: 0 0.5rem; }
+	&--add { color: $add-btn--color; background-color: getContrast($add-btn--color); }
+	&--delete { color: $delete-btn--color; background-color: getContrast($delete-btn--color); }
 }
