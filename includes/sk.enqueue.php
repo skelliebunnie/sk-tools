@@ -37,6 +37,8 @@ function sk_styles() {
 	// COLOR CLASSES (enqueue here, so they're available any time)
 	wp_enqueue_style('sk-color-classes', SK_ROOTURL .'/includes/css/sk.colors.classes.css');
 
+	wp_enqueue_style('sk-psc-color-classes', SK_ROOTURL .'/includes/css/sk.psc-colors.styles.css');
+
 	// ADDRESSBOOK STYLES
 	wp_enqueue_style('sk-addressbook-styles', SK_ROOTURL .'/includes/css/sk.addressbook.styles.css');
 

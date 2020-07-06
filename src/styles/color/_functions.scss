@@ -256,7 +256,7 @@
 		$color: nth($values,$i);
 		$name: nth($names,$i);
 
-		$name: str-replace($name, " ", "-");
+		//$name: str-replace($name, " ", "-");
 
 		$l: luminance($color);
 
@@ -352,7 +352,7 @@
 		$l: luminance($color);
 		$name: nth($names,$i);
 
-		$name: str-replace($name, " ", "-");
+		//$name: str-replace($name, " ", "-");
 
 		// make sure colors don't "duplicate"
 		@for $n from 2 through 6 {
@@ -482,7 +482,7 @@
 		$color: nth($values,$i);
 		$name: nth($names,$i);
 
-		$name: str-replace($name, " ", "-");
+		//$name: str-replace($name, " ", "-");
 
 		$min: 5%;
 		$min: 50%;
@@ -590,7 +590,7 @@
 		$l: luminance($color);
 		$name: nth($names,$i);
 
-		$name: str-replace($name, " ", "-");
+		//$name: str-replace($name, " ", "-");
 
 		// make sure colors don't "duplicate"
 		@for $n from 2 through 6 {
