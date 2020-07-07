@@ -93,7 +93,8 @@ $demoColors: $SKColors;
 
 
 #palette-base {
-	@include palette($color: $targetColor, $include-complement: false, $rangeType: $type, $harmony: 'none', $rangeDepth: $depth, $colorMap: $demoColors);
+	@include palette($color: $targetColor, $include-complement: false, $rangeType: 'static', $harmony: 'none', $rangeDepth: 9, $colorMap: $demoColors);
+	@debug $palette;
 
 	$w: 1; $i: 1;
 	@each $name,$color in $palette {
@@ -116,6 +117,10 @@ $demoColors: $SKColors;
 
 		$i: $i + 1;
 		@if $i % 11 == 0 { $w: $w + 1; $i: 1; }
+	}
+
+	&.include-original-colors--false .color-original {
+		@extend .hidden;
 	}
 }
 

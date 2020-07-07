@@ -1,9 +1,9 @@
-@mixin palette($color: #777, $colorMap: $coreColors, $colorName: $color, $harmony: 'analogous', $include-complement: false, $complement-name: "#{$color}-complement", $rangeType: 'range', $scaleColors: 17, $rangeDepth: 7, $include-original: true) {
+@mixin palette($color: #777, $colorMap: $coreColors, $colorName: $color, $harmony: 'analogous', $include-complement: false, $complement-name: "#{$color}-complement", $rangeType: 'range', $scaleColors: 17, $rangeDepth: 7) {
 	
 	$palette: (); // final palette
 	$primaryColor: getColor($color, $colorMap);
 
-	$colors: ();
+	$colors: (); // colors to run through either harmony() or <rangeX> function
 	$primaryHarmonyRange: null;
 	$mapRange: null;
 
@@ -26,6 +26,7 @@
 	} @else if $rangeType == 'rangeStatic' or $rangeType == 'static' {
 		$primaryHarmonyRange: rangeStatic($map: $colors, $depth: $rangeDepth);
 		$mapRange: rangeStatic($map: $colorMap, $depth: $rangeDepth);
+
 	} @else {
 		$primaryHarmonyRange: rangeDefault($map: $colors, $scaleColors: $scaleColors, $depth: $rangeDepth);
 		$mapRange: rangeDefault($map: $colorMap, $scaleColors: $scaleColors, $depth: $rangeDepth);
@@ -49,18 +50,19 @@
 
 		$rangeMaps: map-merge($mapRange, $originalRange);
 
-		@if $include-original {
-			$rangeMaps: map-merge($rangeMaps, $colorMap);
-		}
+		// @if $include-original and $harmony != 'none' {
+		// 	$rangeMaps: map-merge($colorMap, $rangeMaps);
+		// }
 
 		$palette: map-merge($rangeMaps, $primaryHarmonyRange) !global;
+	
 	// otherwise (no harmony generated) just merge the mapRange since that *is* the coreColors
 	} @else {
-		@if $include-original {
-			$mapRange: map-merge($mapRange, $colorMap);
-		}
+		// @if $include-original and $harmony != 'none' {
+		// 	$mapRange: map-merge($colorMap, $mapRange);
+		// }
 
-		$palette: map-merge($mapRange, $primaryHarmonyRange) !global;
+		$palette: map-merge($primaryHarmonyRange, $mapRange) !global;
 	}
 }
 

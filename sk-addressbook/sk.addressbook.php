@@ -26,19 +26,73 @@ function sk_addressbook_shortcode($atts) {
     	}
     }
 
+    // var_dump($contacts);
+
 		$a = shortcode_atts( array(
 			'target'			=> 'default',
 			'mailto'			=> 'true',
-			'show_title'	=> 'false'
+			'show_title'	=> 'false',
+			'format'			=> 'block', // ALT: inline
+			'show_email'	=> 'false',
+			'title_first'	=> 'true'
 		), $atts );
 
-		$info = "";
-		if( $a['target'] == 'default' ) {
-			$info = "{$main_admin['name']}";
-		} else {
-			// foreach( $contacts as $contact ) {
+		$info = $main_admin;
+		if( $a['target'] !== 'default' ) {
+			foreach($contacts as $contact) {
+				$vals = array_values($contact);
+				if( in_array(strtolower($a['target']), array_map('strtolower', $vals)) ) {
+					$info = $contact;
+				}
+			}
+		}
 
-			// }
+		if( empty($info) || (is_string($info) && $info == "") ) {
+			$site_url = get_site_url();
+			$url = substr($site_url, strpos($site_url, "//") + 2);
+			$url = str_replace("/", "", $url);
+			echo "<a href='mailto:info@{$url}'>info@{$url}</a>";
+
+		} else {
+
+			if($a['format'] == 'block') {
+				$text = "<div class='sk-addressbook--block'>";
+				
+				if($a['title_first'] == 'true') {
+					$text .= "<span class='sk-contact--name'>{$info['name']}</span><br/>";
+					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>";
+				} else {
+					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>";
+					$text .= "<span class='sk-contact--name'>{$info['name']}</span><br/>";
+				}
+
+				$text .= "<span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
+				$text .= "</div>";
+
+			} else {
+				$text = "<span class='sk-addressbook--inline'>";
+				if($a['title_first'] == 'true')
+					$text .= "<span class='sk-contact--title'>{$info['title']}</span>, ";
+
+				if( $a['show_email'] !== 'true' ) {
+					$text .= "<span class='sk-contact--name'><a href='mailto:{$info['email']}'>{$info['name']}</a></span>";
+
+					if($a['title_first'] != 'true')
+						$text .= ", <span class='sk-contact--title'>{$info['title']}</span>";
+
+				} else {
+					$text .= "<span class='sk-contact--name'>{$info['name']}</span>";
+					if($a['title_first'] != 'true')
+						$text .= ", <span class='sk-contact--title'>{$info['title']}</span>, ";
+					$text .= " at <span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
+				}
+
+				$text .= "</span>";
+
+			}
+
+			echo $text;
+
 		}
 
 	} else {
