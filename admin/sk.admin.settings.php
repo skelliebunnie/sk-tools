@@ -25,6 +25,23 @@ function sk_admin_settings() {
 			<?php settings_fields('sk_settings_group'); ?>
 			<table class="form-table">
 				<tbody>
+					<!-- enable sk-addressbook -->
+					<tr class='no-pad'>
+						<th scope="row">
+							<label for="sk_settings[sk_clear_options_on_deactivation]"><?php _e('Clear Options on Deactivation', 'sk_domain'); ?></label>
+						</th>
+						<td>
+							<input type="hidden" name="sk_settings[sk_clear_options_on_deactivation]" value="false">
+							<input type="checkbox" name="sk_settings[sk_clear_options_on_deactivation]" value="true" <?php if ($sk_options['sk_clear_options_on_deactivation'] == "true" ) { echo "checked"; } ?> >
+						</td>
+					</tr>
+					<tr class="no-pad-top">
+						<td colspan="2">
+							<p class="description">
+								<?php _e("Should the SK-Tools options be cleared on deactivation?", "sk_domain"); ?>
+							</p>
+						</td>
+					</tr>
 					<!-- ENABLE / DISABLE TOOLS -->
 					<tr>
 						<th scope="row" colspan="2" style='border-top: 1px solid gainsboro; border-bottom: 1px solid gainsboro; padding: 0'>

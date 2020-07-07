@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.3.3
+ * Version: 4.4.1
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
@@ -20,6 +20,7 @@ define( 'SK_SITE_ADMIN_URL', get_site_url() .'/wp-admin' );
 
 // global options variable; note SINGULAR get_option!
 $defaults = array(
+	'sk_clear_options_on_deactivation' => 'true',
 	'sk_enable_addressbook'			=> 'true',
 	'sk_enable_breadcrumbs'			=> 'true',
 	'sk_enable_notices'					=> 'true',
@@ -37,7 +38,7 @@ $defaults = array(
 	'sk-n-default_message_type' => 'simple',
 	'sk-n-default_weekdays'			=> array('mon','tue','wed','thu','fri'),
 	'sk-dt-default_date_format' => 'l, F j, Y', // e.g. Monday, November 18, 2019
-	'sk-dt-default_time_format' => 'h:i A', // e.g. 07:12 AM; g/G no leading 0, h/H leading 0 (12/24)
+	'sk-dt-default_time_format' => 'h:i A' // e.g. 07:12 AM; g/G no leading 0, h/H leading 0 (12/24)
 );
 // wp_parse_args is REQUIRED when assigning an ARRAY of default values
 // Also, $defaults is in wp_parse_args(), NOT get_option() ...
@@ -97,6 +98,11 @@ function sk_tools_activation() {
 register_activation_hook( __FILE__, 'sk_tools_activation' );
 
 function sk_tools_deactivation() {
-	//flush_rewrite_rules();
+	global $sk_options;
+
+	if( $sk_options['sk_clear_options_on_deactivation'] == 'true' ) {
+		delete_option('sk_addressbook');
+		delete_option('sk_settings');
+	}
 }
 register_deactivation_hook( __FILE__, 'sk_tools_deactivation' );
