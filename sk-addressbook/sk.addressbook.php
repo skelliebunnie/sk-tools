@@ -57,16 +57,22 @@ function sk_addressbook_shortcode($atts) {
 
 			if($a['format'] == 'block') {
 				$text = "<div class='sk-addressbook--block'>";
+
+				$name = "<span class='sk-contact--name'>{$info['name']}</span><br/>";
+
+				if($a['show_email'] == 'false')
+					$name = "<span class='sk-contact--name'><a href='mailto:{$info['email']}'>{$info['name']}</a></span><br/>";
 				
 				if($a['title_first'] == 'true') {
-					$text .= "<span class='sk-contact--name'>{$info['name']}</span><br/>";
-					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>";
+					$text .= $name ."<span class='sk-contact--title'>{$info['title']}</span><br/>";
+
 				} else {
-					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>";
-					$text .= "<span class='sk-contact--name'>{$info['name']}</span><br/>";
+					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>". $name;
 				}
 
-				$text .= "<span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
+				if($a['show_email'] == 'true')
+					$text .= "<span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
+				
 				$text .= "</div>";
 
 			} else {

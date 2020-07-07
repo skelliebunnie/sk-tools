@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SK Tools
  * Description: A collection of small tools
- * Version: 4.4.1
+ * Version: 4.4.2
  * Author: Angel Knight
  * Author URI: https://curiousexplorations.com
  * Prefix: sk
