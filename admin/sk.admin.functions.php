@@ -30,6 +30,7 @@ function sk_image_upload($target, $url='', $setting = false) {
   return "<div id='{$target}_image-upload'>". $image_link ."</div>";
 }
 
+// by wpsmith @ https://gist.github.com/wpsmith/4541a05954aef58a59c5
 function sk_sanitize_phone_number( $phone ) {
 	$format = "/(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/";
 	
@@ -59,6 +60,15 @@ function sk_sanitize_phone_number( $phone ) {
   }
 
   return '';
+}
 
-	//return preg_replace( '/[^\d+()-.]/', '', $phone );
+function sk_format_tel($phone) {
+  if($phone !== '') {
+    // replace all spaces with a dash
+    $phone = preg_replace( '/\s/', '-', $phone );
+    // remove everything except digits and dashes
+    return preg_replace( '/[^\d-]/', '', $phone );
+  }
+
+  return null;
 }

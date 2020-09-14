@@ -1,1 +1,23 @@
 @import "settings";
+
+.sk-addressbook--block span {
+	display: block;
+}
+
+.sk-addressbook--block > .sk-contact--contact-info.contact-info-inline > * {
+	display: inline-block;
+}
+
+.sk-addressbook--inline > span {
+	display: inline-block;
+
+	&:first-child.sk-contact--title:after,
+	&:first-child.sk-contact--name:after {
+		content: ",\00A0";
+	}
+
+	&:nth-child(2).sk-contact--title:after,
+	&:nth-child(2).sk-contact--name:after {
+		content: "\00A0";
+	}
+}

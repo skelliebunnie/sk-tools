@@ -26,80 +26,108 @@ function sk_addressbook_shortcode($atts) {
     	}
     }
 
-    // var_dump($contacts);
+    /**
+     * 'target' = (string) name, email, title, or phone number; what info to find
+     * 'mailto' = (bool); whether or not to make name/email a mailto link
+     * 'show_title' = (bool)
+     * 'show_name' = (bool)
+     * 'show_phone' = (bool)
+     * 'show_email' = (bool)
+     * 'title_first' = (bool); display title before name [true], default TRUE
+     * 'format' = (string) block, inline; only 2 options, default BLOCK
+     * 'contact_info_inline' = (string) false / true / email, phone / phone, email
+     * 		ignored if format is inline
+     * 		TRUE / phone, email: (123) 456-7890, name@email.com
+     * 		email, phone: name@email.com, (123) 456-7890
+     * 		FALSE: name@email.com \n (123) 456-7890
+     */
 
 		$a = shortcode_atts( array(
-			'target'			=> 'default',
-			'mailto'			=> 'true',
-			'show_title'	=> 'false',
-			'format'			=> 'block', // ALT: inline
-			'show_email'	=> 'false',
-			'title_first'	=> 'true'
+			'target'							=> 'default',
+			'mailto'							=> 'true',
+			'show_title'					=> 'false',
+			'show_name'						=> 'true',
+			'show_phone'					=> 'false',
+			'show_email'					=> 'false',
+			'title_first'					=> 'true',
+			'format'							=> 'block',
+			'contact_info_inline'	=> 'false',
 		), $atts );
 
-		$info = $main_admin;
+		$contact = $main_admin;
 		if( $a['target'] !== 'default' ) {
-			foreach($contacts as $contact) {
-				$vals = array_values($contact);
+			foreach($contacts as $item) {
+				$vals = array_values($item);
 				if( in_array(strtolower($a['target']), array_map('strtolower', $vals)) ) {
-					$info = $contact;
+					$contact = $item;
 				}
 			}
 		}
 
-		if( empty($info) || (is_string($info) && $info == "") ) {
+		if( empty($contact) || (is_string($contact) && $contact == "") ) {
 			$site_url = get_site_url();
 			$url = substr($site_url, strpos($site_url, "//") + 2);
 			$url = str_replace("/", "", $url);
 			echo "<a href='mailto:info@{$url}'>info@{$url}</a>";
 
 		} else {
+			$name = "<span class='sk-contact--name'>{$contact['name']}</span>";
+			$title = "<span class='sk-contact--title'>{$contact['title']}</span>";
+			$at = $a['format'] == 'inline' ? 'at ' : '';
+			$email = "<span class='sk-contact--email'>{$contact['email']}</span>";
+			$tel = sk_format_tel($contact['phone']);
+			$call = $a['format'] == 'inline' ? 'call ' : '';
+			$phone = $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
 
-			if($a['format'] == 'block') {
-				$text = "<div class='sk-addressbook--block'>";
+			$contact_info = array(); // email & telephone only
+			$inline = $a['contact_info_inline'] == 'false' ? '' : 'contact-info-inline';
 
-				$name = "<span class='sk-contact--name'>{$info['name']}</span><br/>";
+			$info = "<div class='sk-addressbook--block'>"; // all info; by default, block
 
-				if($a['show_email'] == 'false')
-					$name = "<span class='sk-contact--name'><a href='mailto:{$info['email']}'>{$info['name']}</a></span><br/>";
-				
-				if($a['title_first'] == 'true') {
-					$text .= $name ."<span class='sk-contact--title'>{$info['title']}</span><br/>";
+			if($a['mailto'] == 'true') {
+				$name = $a['show_email'] == 'true' ? "<span class='sk-contact--name'>{$contact['name']}</span>" : "<span class='sk-contact--name'><a href='mailto:{$contact['email']}'>{$contact['name']}</a></span>";
 
-				} else {
-					$text .= "<span class='sk-contact--title'>{$info['title']}</span><br/>". $name;
-				}
-
-				if($a['show_email'] == 'true')
-					$text .= "<span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
-				
-				$text .= "</div>";
-
-			} else {
-				$text = "<span class='sk-addressbook--inline'>";
-				if($a['title_first'] == 'true')
-					$text .= "<span class='sk-contact--title'>{$info['title']}</span>, ";
-
-				if( $a['show_email'] !== 'true' ) {
-					$text .= "<span class='sk-contact--name'><a href='mailto:{$info['email']}'>{$info['name']}</a></span>";
-
-					if($a['title_first'] != 'true')
-						$text .= ", <span class='sk-contact--title'>{$info['title']}</span>";
-
-				} else {
-					$text .= "<span class='sk-contact--name'>{$info['name']}</span>";
-					if($a['title_first'] != 'true')
-						$text .= ", <span class='sk-contact--title'>{$info['title']}</span>, ";
-					$text .= " at <span class='sk-contact--email'><a href='mailto:{$info['email']}'>{$info['email']}</a></span>";
-				}
-
-				$text .= "</span>";
-
+				$email = $a['show_email'] == 'true' ? "<span class='sk-contact--email'>$at<a href='mailto:{$contact['email']}'>{$contact['email']}</a></span>" : null;
 			}
 
-			echo $text;
+			if( $a['contact_info_inline'] == 'true' || str_replace(' ', '', $a['contact_info_inline']) == 'email,phone' ) {
+				$contact_info = array($email, $phone);
+
+			} elseif( str_replace(' ', '', $a['contact_info_inline']) == 'phone,email' ) {
+				$contact_info = array($phone, $email);
+
+			} elseif( $a['contact_info_inline'] == 'false' ) {
+				if($a['show_email'] == 'true')
+					array_push($contact_info, $email);
+
+				if($a['show_phone'] == 'true')
+					array_push($contact_info, $phone);
+			}
+
+			$contact_info_block = "<span class='sk-contact--contact-info $inline'>";
+			if( $a['format'] == 'block' && $a['contact_info_inline'] == 'false' ) {
+				$contact_info_block .= implode("", $contact_info);
+
+			} elseif( $a['format'] == 'block' && $a['contact_info_inline'] !== 'false' ) {
+				$contact_info_block .= implode(", ", $contact_info);
+
+			} else {
+				$contact_info_block .= implode(" or ", $contact_info);
+			}
+
+			$contact_info_block .= "</span>";
+
+			// updating opening div class if format is 'inline'
+			if($a['format'] == 'inline')
+				$info = "<div class='sk-addressbook--inline'>";
+
+			$info .= $a['title_first'] == 'true' ? $title . $name . $contact_info_block : $name . $title . $contact_info_block;
+
+			$info .= "</div>"; // closing div
 
 		}
+
+		echo $info;
 
 	} else {
 		echo "<p>sk_addressbook shortcode not enabled</p>";
