@@ -16,24 +16,24 @@
   },
   "homepage": "https://github.com/skelliebunnie/skb-tools#readme",
   "dependencies": {
-    "autoprefixer": "^9.1.2",
-    "browser-sync": "latest",
+    "autoprefixer": "^9.8.6",
+    "browser-sync": "^2.26.12",
     "debug": "latest",
     "gulp": "^4.x.x",
     "gulp-cached": "^1.1.1",
     "gulp-concat": "latest",
-    "gulp-image": "latest",
+    "gulp-image": "^6.2.1",
     "gulp-newer": "latest",
     "gulp-postcss": "latest",
-    "gulp-rename": "latest",
-    "gulp-sass": "latest",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
     "gulp-wait": "latest"
   },
   "devDependencies": {
     "gulp-jshint": "latest",
-    "jshint": "latest"
+    "jshint": "^2.12.0"
   },
   "description": ""
 }
