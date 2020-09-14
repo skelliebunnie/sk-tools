@@ -27,13 +27,20 @@ jQuery(document).ready(function($) {
 	}
 
 	// .live("click", function() {}) required for elements added dynamically
-	$(".sk-contact--add").live("click", function() {
+	// or $("body").on('event', '.sk-contact--add', function() {})
+	$("body").on('click', '.sk-contact--add', function() {
 		add_input( $(this).parent(".sk-contact-container") );
 	});
+	// $(".sk-contact--add").live("click", function() {
+	// 	add_input( $(this).parent(".sk-contact-container") );
+	// });
 
-	$(".sk-contact--delete").live("click", function() {
-		delete_input( $(this) );	
+	$("body").on('click', '.sk-contact--delete', function() {
+		delete_input( $(this) );
 	});
+	// $(".sk-contact--delete").live("click", function() {
+	// 	delete_input( $(this) );	
+	// });
 
 
 	function add_input( item ) {
@@ -69,7 +76,6 @@ jQuery(document).ready(function($) {
 
 		var this_index = parseInt(parent.prop("id").substring(6));
 		var prev_index = parseInt(parent.prev(".sk-contact-container").prop("id").substring(6));
-		console.log(prev_index);
 
 		if( parent.prop("id") === "index_" + this_index ) {
 			parent.remove();
@@ -79,7 +85,8 @@ jQuery(document).ready(function($) {
 		var last_item = $(".sk-contact-container").last();
 
 		if( $("#index_"+prev_index).prop("id") === last_item.prop("id") ) {
-			$(this).children(".sk-contact--add").removeClass("hidden");
+			//console.log('show add button at #index_' + prev_index);
+			$("#index_"+prev_index).children(".sk-contact--add").removeClass("hidden");
 		}
 
 		// $(".sk-contact-container").each(function() {

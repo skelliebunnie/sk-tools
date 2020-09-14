@@ -29,6 +29,7 @@ class SKTools_AddressBook {
     $this->addressbook = get_option( 'sk_addressbook', array() ); // my_option_name
 
     wp_enqueue_style('sk-admin-styles');
+    wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
     ?>
     <form id="sk_addressbook_form" method="post" action="options.php">
         <input type="hidden" name="sk_addressbook_nonce" value="<?php echo wp_create_nonce(); ?>" />

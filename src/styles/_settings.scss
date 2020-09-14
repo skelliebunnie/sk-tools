@@ -71,3 +71,6 @@ $sk-note--color: getColor('neutral-700');
 //	are defined & $palette created!
 // ===============================			
 @import "global/helper-classes";
+
+.fas { font-family: 'Font Awesome 5 Free' !important; }
+.fab { font-family: 'Font Awesome 5 Brands' !important; }
