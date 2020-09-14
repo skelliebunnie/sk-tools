@@ -42,6 +42,10 @@ function sk_styles() {
 	// ADDRESSBOOK STYLES
 	wp_enqueue_style('sk-addressbook-styles', SK_ROOTURL .'/includes/css/sk.addressbook.styles.css');
 
+	// Gutenberg Color classes for PSC Colors
+	wp_enqueue_style('sk-psc-gutenberg-colors', SK_ROOTURL .'/includes/css/sk.psc-theme-classes.css');
+
+
 	// CHECKLIST STYLES
 	// wp_register_style('sk-checklists-styles', SK_ROOTURL ."/includes/css/sk.checklists.styles.css");
 	// if($sk_options['sk_enable_checklists'] === 'true') {
