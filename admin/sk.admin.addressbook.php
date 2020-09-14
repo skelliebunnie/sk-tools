@@ -125,13 +125,14 @@ class SKTools_AddressBook {
         $title = array_key_exists('title', $contact) ? $contact['title'] : '';
         $phone = array_key_exists('phone', $contact) ? $contact['phone'] : '';
 
-  			printf('<div id="index_%1$s" class="sk-contact-container">%2$s'.
-					'Name: <input class="sk-input" type="text" name="sk_addressbook[%3$s][name]" value="%4$s">'.
-					' Email: <input class="sk-input" type="text" name="sk_addressbook[%5$s][email]" value="%6$s">'.
-					' Title: <input class="sk-input" type="text" name="sk_addressbook[%7$s][title]" value="%8$s">'.
-          ' Phone: <input class="sk-input" type="text" name="sk_addressbook[%9$s][phone]" value="%10$s">'.
-					'%11$s</div>',
-					$index, // for container id
+  			printf('<div id="index_%1$s" class="sk-contact-container"><span class="sk-contact--id">[%2$s]</span> %3$s'.
+					'Name: <input class="sk-input" type="text" name="sk_addressbook[%4$s][name]" value="%5$s"> '.
+					'Email: <input class="sk-input" type="text" name="sk_addressbook[%6$s][email]" value="%7$s"> '.
+					'Title: <input class="sk-input" type="text" name="sk_addressbook[%8$s][title]" value="%9$s"> '.
+          'Phone: <input class="sk-input" type="text" name="sk_addressbook[%10$s][phone]" value="%11$s"> '.
+					'%12$s</div>',
+          $index, // for container id
+					$index, // for displaying ID in addressbook (for targeting)
 					$this->deleteRowBtn,
 					$index, // for name input
           $name,
