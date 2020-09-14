@@ -72,9 +72,9 @@ class SKTools_AddressBook {
     );
 
     add_settings_field(
-      'sk_contact_name', // ID
+      'sk_contact_info', // ID
       'Contacts', // Title 
-      array( $this, 'sk_contact_name_callback' ), // Callback
+      array( $this, 'sk_contact_info_callback' ), // Callback
       'sk-addressbook', // Page
       'sk_addressbook_section' // Section       
     );
@@ -85,7 +85,7 @@ class SKTools_AddressBook {
    */
   public function print_section_info() {
     // print 'Enter your settings below:';
-    // $this->list_options();
+    $this->list_options();
   }
 
   /**
@@ -96,7 +96,16 @@ class SKTools_AddressBook {
   public function sanitize_addressbook( $input ) {
     $new_input = array();
 
-    $new_input = $input;
+    foreach($input as $new) {
+      $contact['name']  = sanitize_text_field($new['name']);
+      $contact['email'] = sanitize_email($new['email']);
+      $contact['title'] = sanitize_text_field($new['title']);
+      $contact['phone'] = sk_sanitize_phone_number($new['phone']);
+
+      array_push($new_input, $contact);
+    }
+
+    // $new_input = $input;
 
     return $new_input;
   }
@@ -104,25 +113,33 @@ class SKTools_AddressBook {
   /**
    * ADDRESSBOOK ADD CONTACT
    */
-  public function sk_contact_name_callback() {
+  public function sk_contact_info_callback() {
   	$contacts = is_array( get_option('sk_addressbook') ) ? get_option('sk_addressbook') : explode(",", get_option('sk_addressbook'));
 
   	if( !empty($contacts) && $contacts !== NULL ) {
       $index = 0;
   		foreach($contacts as $contact) {
+        $name = array_key_exists('name', $contact) ? $contact['name'] : '';
+        $email = array_key_exists('email', $contact) ? $contact['email'] : '';
+        $title = array_key_exists('title', $contact) ? $contact['title'] : '';
+        $phone = array_key_exists('phone', $contact) ? $contact['phone'] : '';
+
   			printf('<div id="index_%1$s" class="sk-contact-container">%2$s'.
 					'Name: <input class="sk-input" type="text" name="sk_addressbook[%3$s][name]" value="%4$s">'.
 					' Email: <input class="sk-input" type="text" name="sk_addressbook[%5$s][email]" value="%6$s">'.
 					' Title: <input class="sk-input" type="text" name="sk_addressbook[%7$s][title]" value="%8$s">'.
-					'%9$s</div>',
+          ' Phone: <input class="sk-input" type="text" name="sk_addressbook[%9$s][phone]" value="%10$s">'.
+					'%11$s</div>',
 					$index, // for container id
 					$this->deleteRowBtn,
 					$index, // for name input
-          $contact['name'],
+          $name,
           $index, // for email input
-          $contact['email'], // email
+          $email,
           $index, // for title input
-          $contact['title'], // title
+          $title,
+          $index, // for the phone input
+          $phone,
 					$this->addRowBtn
 				);
 
@@ -136,11 +153,13 @@ class SKTools_AddressBook {
         'Name: <input class="sk-input" type="text" name="sk_addressbook[0][name]" value="">'.
         ' Email: <input class="sk-input" type="text" name="sk_addressbook[0][email]" value="">'.
         ' Title: <input class="sk-input" type="text" name="sk_addressbook[0][title]" value="">'.
+        ' Phone: <input class="sk-input" type="text" name="sk_addressbook[0][phone]" value="">'.
         '%1$s</div>'.
         '<div id="index_1" class="sk-contact-container">%2$s'.
         'Name: <input class="sk-input" type="text" name="sk_addressbook[1][name]" placeholder="Name">'.
         ' Email: <input class="sk-input" type="text" name="sk_addressbook[1][email]" placeholder="Email">'.
         ' Title: <input class="sk-input" type="text" name="sk_addressbook[1][title]" placeholder="Title">'.
+        ' Phone: <input class="sk-input" type="text" name="sk_addressbook[1][phone]" placeholder="Phone">'.
         '%3$s</div>',
         $this->addRowBtn,
         $this->deleteRowBtn,
