@@ -446,7 +446,7 @@
 		$r3: (
 			unquote("#{$name}")-100: $c1,
 			unquote("#{$name}")-200: $c4,
-			unquote("#{$name}")-300: $c7
+			unquote("#{$name}")-300: $c6
 		);
 
 		@if $depth == 7 {
@@ -547,9 +547,9 @@
 
 		$r3: (
 			unquote("#{$name}")-50: $c50,
-			unquote("#{$name}")-100: $c1,
-			unquote("#{$name}")-200: change-color($color, $lightness: $c450),
-			unquote("#{$name}")-300: $c9
+			unquote("#{$name}")-100: $c2,
+			unquote("#{$name}")-200: change-color($color, $lightness: $c500),
+			unquote("#{$name}")-300: $c7
 		);
 	
 		@if $depth == 9 {

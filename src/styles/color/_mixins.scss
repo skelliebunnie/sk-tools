@@ -61,7 +61,7 @@
 		// @if $include-original and $harmony != 'none' {
 		// 	$mapRange: map-merge($colorMap, $mapRange);
 		// }
-
+		$mapRange: map-merge($colorMap, $mapRange); // include original colors
 		$palette: map-merge($primaryHarmonyRange, $mapRange) !global;
 	}
 }

@@ -1,0 +1,49 @@
+// ===============================
+//	COLOR PALETTES
+// ===============================
+
+$coreColors: (
+	'primary': 	 #E2DDD1,
+	'secondary': #003A5D,
+	'tertiary':  #F6BD60,
+	'accent': 	 #00a0e0,
+	'active': 	 #B4D12B,
+	'neutral': 	 #414150,
+	// message colors
+	default: 		 #5D576B,
+	info: 			 #41D3BD,
+	success: 		 #A9E190,
+	alert: 			 #F4F1BB,
+	hi-alert: 	 #fe7f2d,
+	warn: 			 #ED6A5A
+) !default;
+
+$PacSciBrandColors: (
+	'light-blue': #00A0E0,
+	'dark-blue': 	#003A5D,
+	'grey': 			#D2D2D2,
+	// secondary colors
+	'acid': 		#c6ca53,
+	'eggplant': #75485E,
+	'coyote': 	#885a3a,
+	'flame':		#E44001,
+	'olive': 		#858503,
+	'keppel': 	#58AF9E,
+	'manatee': 	#8E96A1,
+);
+
+$SKColors: (
+	'tea': 				#e1f0c4, // fab3a9
+	'pewter': 		#8da7be, // 70ae6e
+	'lavender': 	#efbdeb, // 157a6e
+	'infrared': 	#ef476f, // 5f24bf
+	'neutral': 		#424c55, // 30343f
+) !default;
+
+$targetColor: 'pewter' !default;
+$depth: 9 !default;
+$type: 'static' !default;
+
+// MUST be imported AFTER defining $coreColors!
+@import "color/functions";
+@import "color/mixins";
