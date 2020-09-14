@@ -45,7 +45,7 @@ function sk_addressbook_shortcode($atts) {
 		$a = shortcode_atts( array(
 			'target'							=> 'default',
 			'mailto'							=> 'true',
-			'show_title'					=> 'false',
+			'show_title'					=> 'true',
 			'show_name'						=> 'true',
 			'show_phone'					=> 'false',
 			'show_email'					=> 'false',
@@ -137,12 +137,12 @@ add_shortcode('sk_addressbook', 'sk_addressbook_shortcode');
 
 function sk_format_contact_info($options, $contact) {
 	$name 	= "<span class='sk-contact--name'>{$contact['name']}</span>";
-	$title 	= "<span class='sk-contact--title'>{$contact['title']}</span>";
+	$title 	= $options['show_title'] === 'true' ? "<span class='sk-contact--title'>{$contact['title']}</span>" : '';
 	$at 		= $options['format'] == 'inline' ? 'at ' : '';
-	$email 	= "<span class='sk-contact--email'>{$contact['email']}</span>";
+	$email 	= $options['show_email'] === 'true' ? "<span class='sk-contact--email'>{$contact['email']}</span>" : '';
 	$tel 		= array_key_exists('phone', $contact) ? sk_format_tel($contact['phone']) : null;
 	$call 	= $options['format'] == 'inline' ? 'call ' : '';
-	$phone 	= array_key_exists('phone', $contact) && $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
+	$phone 	= $options['show_phone'] === 'true' && array_key_exists('phone', $contact) && $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
 
 	$contact_info = array(); // email & telephone only
 	$inline = $options['contact_info_inline'] == 'false' ? '' : 'contact-info-inline';

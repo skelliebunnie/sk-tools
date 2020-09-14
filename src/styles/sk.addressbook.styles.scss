@@ -1,5 +1,10 @@
 @import "settings";
 
+.sk-addressbook--block span:empty,
+.sk-addressbook--inline span:empty {
+	display: none;
+}
+
 .sk-addressbook--block span {
 	display: block;
 }
@@ -12,7 +17,7 @@
 	display: inline-block;
 
 	&:first-child.sk-contact--title:after,
-	&:first-child.sk-contact--name:after {
+	&:first-child.sk-contact--name + .sk-contact--title:before {
 		content: ",\00A0";
 	}
 
