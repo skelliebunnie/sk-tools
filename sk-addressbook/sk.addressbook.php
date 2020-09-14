@@ -52,10 +52,11 @@ function sk_addressbook_shortcode($atts) {
 			'title_first'					=> 'true',
 			'format'							=> 'block',
 			'contact_info_inline'	=> 'false',
+			'order'								=> 'default'
 		), $atts );
 
-		$contact = $main_admin;
 		$contact_list = array();
+		$info = null;
 
 		if( $a['target'] !== 'default' ) {
 			foreach($contacts as $index=>$item) {
@@ -63,15 +64,32 @@ function sk_addressbook_shortcode($atts) {
 
 				$target = strtolower($a['target']);
 				$target_id = null;
-				if( preg_match('~[0-9]~', $a['target']) === 1 ) {
-					// remove all digits & square brackets
-					$target = preg_replace('/\d*\[\]/', '', $a['target']);
+
+				if( preg_match('~[0-9]~', $target) === 1 ) {
+					// remove all digits & PARENTHESES
+					// CANNOT use square brackets in shortcode option
+					if( preg_match('~:[0-9]~', $target) === 1 ) {
+						// echo "found :<br>";
+						$target = preg_replace('/\:\d/', '', $target);
+
+					} elseif( preg_match('~\([0-9]\)~', $target) === 1 ) {
+						// echo "found ()<br>";
+						$target = preg_replace('/\(\d*\)/', '', $target);
+
+					}
+
 					// remove everything *except* digits
 					$target_id = preg_replace('/[^\d]/', '', $a['target']);
 				}
+				
+				$target = strtolower(trim($target));
 
 				if( in_array($target, array_map('strtolower', $vals)) ) {
+
 					if( $target_id === null )
+						array_push($contact_list, $item);
+
+					if( $target_id !== null && (int)$target_id === $index )
 						array_push($contact_list, $item);
 
 					if( $target_id !== null && $target_id === $index )
@@ -79,26 +97,30 @@ function sk_addressbook_shortcode($atts) {
 				}
 
 			}
-
-			if( count($contact_list) > 1 ) {
-				$contact = $contact_list[0];
-			}
+		} else {
+			array_push($contact_list, $main_admin);
 		}
 
-		if( empty($contact) || (is_string($contact) && $contact == "") ) {
+		if( empty($contact_list) || (is_string($contact_list[0]) && $contact_list[0] == "") ) {
 			$site_url = get_site_url();
 			$url = substr($site_url, strpos($site_url, "//") + 2);
 			$url = str_replace("/", "", $url);
 			echo "<a href='mailto:info@{$url}'>info@{$url}</a>";
 
-		} elseif( count($contact_list) === 1 ) {
-			$info = sk_format_contact_info( $contact );
+		} else {
+			// ASC == Z-A, DESC == A-Z; order == none / false / default / '', no sort
+			if(strtoupper($a['order']) === 'ASC') {
+				usort($contact_list, function($a, $b) { return strcmp( strtolower($a['name']), strtolower($b['name']) ); });
 
-		} elseif( count($contact_list) > 1 ) {
+				$contact_list = array_reverse($contact_list);
+
+			} elseif(strtoupper($a['order']) === 'DESC') {
+				 usort($contact_list, function($a, $b) { return strcmp( strtolower($a['name']), strtolower($b['name']) ); });
+
+			}
 
 			foreach($contact_list as $contact) {
-				$contact_info = sk_format_contact_info( $contact );
-
+				$info .= sk_format_contact_info( $a, $contact );
 			}
 
 		}
@@ -113,45 +135,45 @@ function sk_addressbook_shortcode($atts) {
 }
 add_shortcode('sk_addressbook', 'sk_addressbook_shortcode');
 
-function sk_format_contact_info($contact) {
-	$name = "<span class='sk-contact--name'>{$contact['name']}</span>";
-	$title = "<span class='sk-contact--title'>{$contact['title']}</span>";
-	$at = $a['format'] == 'inline' ? 'at ' : '';
-	$email = "<span class='sk-contact--email'>{$contact['email']}</span>";
-	$tel = sk_format_tel($contact['phone']);
-	$call = $a['format'] == 'inline' ? 'call ' : '';
-	$phone = $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
+function sk_format_contact_info($options, $contact) {
+	$name 	= "<span class='sk-contact--name'>{$contact['name']}</span>";
+	$title 	= "<span class='sk-contact--title'>{$contact['title']}</span>";
+	$at 		= $options['format'] == 'inline' ? 'at ' : '';
+	$email 	= "<span class='sk-contact--email'>{$contact['email']}</span>";
+	$tel 		= array_key_exists('phone', $contact) ? sk_format_tel($contact['phone']) : null;
+	$call 	= $options['format'] == 'inline' ? 'call ' : '';
+	$phone 	= array_key_exists('phone', $contact) && $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
 
 	$contact_info = array(); // email & telephone only
-	$inline = $a['contact_info_inline'] == 'false' ? '' : 'contact-info-inline';
+	$inline = $options['contact_info_inline'] == 'false' ? '' : 'contact-info-inline';
 
 	$info = "<div class='sk-addressbook--block'>"; // all info; by default, block
 
-	if($a['mailto'] == 'true') {
-		$name = $a['show_email'] == 'true' ? "<span class='sk-contact--name'>{$contact['name']}</span>" : "<span class='sk-contact--name'><a href='mailto:{$contact['email']}'>{$contact['name']}</a></span>";
+	if($options['mailto'] == 'true') {
+		$name = $options['show_email'] == 'true' ? "<span class='sk-contact--name'>{$contact['name']}</span>" : "<span class='sk-contact--name'><a href='mailto:{$contact['email']}'>{$contact['name']}</a></span>";
 
-		$email = $a['show_email'] == 'true' ? "<span class='sk-contact--email'>$at<a href='mailto:{$contact['email']}'>{$contact['email']}</a></span>" : null;
+		$email = $options['show_email'] == 'true' ? "<span class='sk-contact--email'>$at<a href='mailto:{$contact['email']}'>{$contact['email']}</a></span>" : null;
 	}
 
-	if( $a['contact_info_inline'] == 'true' || str_replace(' ', '', $a['contact_info_inline']) == 'email,phone' ) {
+	if( $options['contact_info_inline'] == 'true' || str_replace(' ', '', $options['contact_info_inline']) == 'email,phone' ) {
 		$contact_info = array($email, $phone);
 
-	} elseif( str_replace(' ', '', $a['contact_info_inline']) == 'phone,email' ) {
+	} elseif( str_replace(' ', '', $options['contact_info_inline']) == 'phone,email' ) {
 		$contact_info = array($phone, $email);
 
-	} elseif( $a['contact_info_inline'] == 'false' ) {
-		if($a['show_email'] == 'true')
+	} elseif( $options['contact_info_inline'] == 'false' ) {
+		if($options['show_email'] == 'true')
 			array_push($contact_info, $email);
 
-		if($a['show_phone'] == 'true')
+		if($options['show_phone'] == 'true')
 			array_push($contact_info, $phone);
 	}
 
 	$contact_info_block = "<span class='sk-contact--contact-info $inline'>";
-	if( $a['format'] == 'block' && $a['contact_info_inline'] == 'false' ) {
+	if( $options['format'] == 'block' && $options['contact_info_inline'] == 'false' ) {
 		$contact_info_block .= implode("", $contact_info);
 
-	} elseif( $a['format'] == 'block' && $a['contact_info_inline'] !== 'false' ) {
+	} elseif( $options['format'] == 'block' && $options['contact_info_inline'] !== 'false' ) {
 		$contact_info_block .= implode(", ", $contact_info);
 
 	} else {
@@ -161,10 +183,10 @@ function sk_format_contact_info($contact) {
 	$contact_info_block .= "</span>";
 
 	// updating opening div class if format is 'inline'
-	if($a['format'] == 'inline')
+	if($options['format'] == 'inline')
 		$info = "<div class='sk-addressbook--inline'>";
 
-	$info .= $a['title_first'] == 'true' ? $title . $name . $contact_info_block : $name . $title . $contact_info_block;
+	$info .= $options['title_first'] == 'true' ? $title . $name . $contact_info_block : $name . $title . $contact_info_block;
 
 	$info .= "</div>"; // closing div
 

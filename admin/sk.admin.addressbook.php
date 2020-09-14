@@ -101,6 +101,7 @@ class SKTools_AddressBook {
       $contact['name']  = sanitize_text_field($new['name']);
       $contact['email'] = sanitize_email($new['email']);
       $contact['title'] = sanitize_text_field($new['title']);
+      $contact['department'] = sanitize_text_field($new['department']);
       $contact['phone'] = sk_sanitize_phone_number($new['phone']);
 
       array_push($new_input, $contact);
@@ -123,14 +124,16 @@ class SKTools_AddressBook {
         $name = array_key_exists('name', $contact) ? $contact['name'] : '';
         $email = array_key_exists('email', $contact) ? $contact['email'] : '';
         $title = array_key_exists('title', $contact) ? $contact['title'] : '';
+        $department = array_key_exists('department', $contact) ? $contact['department'] : '';
         $phone = array_key_exists('phone', $contact) ? $contact['phone'] : '';
 
   			printf('<div id="index_%1$s" class="sk-contact-container"><span class="sk-contact--id">[%2$s]</span> %3$s'.
 					'Name: <input class="sk-input" type="text" name="sk_addressbook[%4$s][name]" value="%5$s"> '.
 					'Email: <input class="sk-input" type="text" name="sk_addressbook[%6$s][email]" value="%7$s"> '.
 					'Title: <input class="sk-input" type="text" name="sk_addressbook[%8$s][title]" value="%9$s"> '.
-          'Phone: <input class="sk-input" type="text" name="sk_addressbook[%10$s][phone]" value="%11$s"> '.
-					'%12$s</div>',
+          'Department: <input class="sk-input" type="text" name="sk_addressbook[%10$s][department]" value="%11$s"> '.
+          'Phone: <input class="sk-input" type="text" name="sk_addressbook[%12$s][phone]" value="%13$s"> '.
+					'%14$s</div>',
           $index, // for container id
 					$index, // for displaying ID in addressbook (for targeting)
 					$this->deleteRowBtn,
@@ -140,6 +143,8 @@ class SKTools_AddressBook {
           $email,
           $index, // for title input
           $title,
+          $index, // for the department input
+          $department,
           $index, // for the phone input
           $phone,
 					$this->addRowBtn
@@ -155,12 +160,14 @@ class SKTools_AddressBook {
         'Name: <input class="sk-input" type="text" name="sk_addressbook[0][name]" value="">'.
         ' Email: <input class="sk-input" type="text" name="sk_addressbook[0][email]" value="">'.
         ' Title: <input class="sk-input" type="text" name="sk_addressbook[0][title]" value="">'.
+        ' Department: <input class="sk-input" type="text" name="sk_addressbook[0][department]" value="">'.
         ' Phone: <input class="sk-input" type="text" name="sk_addressbook[0][phone]" value="">'.
         '%1$s</div>'.
         '<div id="index_1" class="sk-contact-container">%2$s'.
         'Name: <input class="sk-input" type="text" name="sk_addressbook[1][name]" placeholder="Name">'.
         ' Email: <input class="sk-input" type="text" name="sk_addressbook[1][email]" placeholder="Email">'.
         ' Title: <input class="sk-input" type="text" name="sk_addressbook[1][title]" placeholder="Title">'.
+        ' Department: <input class="sk-input" type="text" name="sk_addressbook[1][department]" value="">'.
         ' Phone: <input class="sk-input" type="text" name="sk_addressbook[1][phone]" placeholder="Phone">'.
         '%3$s</div>',
         $this->addRowBtn,
