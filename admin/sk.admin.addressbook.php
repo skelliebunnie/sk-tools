@@ -85,7 +85,7 @@ class SKTools_AddressBook {
    */
   public function print_section_info() {
     // print 'Enter your settings below:';
-    $this->list_options();
+    // $this->list_options();
   }
 
   /**
