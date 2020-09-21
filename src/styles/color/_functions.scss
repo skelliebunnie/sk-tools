@@ -650,8 +650,9 @@
 @function harmony($color, $colorName: "primary", $harmony: "analogous", $include-complement: false, $complement-name: "#{$colorName}-complement") {
 	$colors: ();
 
-	$main: $color; $complement: complement($main);
-	
+	$main: $color;
+	$complement: $color;
+		
 	$palette: ();
 
 	// tetrad = rectangular tetradic harmony
@@ -664,16 +665,18 @@
 		$harmony: 'tetrad';
 	}
 
-	$c1: adjust-hue($main, 35deg);
-	$c2: adjust-hue($main, 195deg);
+	$cmpd1: adjust-hue($main, 30deg);
+	$cmpd2: adjust-hue($main, 35deg);
+	$cmpd3: adjust-hue($main, 175deg);
+	$cmpd4: adjust-hue($main, 185deg);
 
-	$compound1: change-color($c1, $saturation: clamp(saturation($main) + 40, $min: 0, $max: 100), $lightness: clamp(lightness($main) + 40, $min: 0, $max: 8));
+	$compound1: change-color($cmpd1, $saturation: clamp(saturation($main) + 20, $min: 0, $max: 70), $lightness: clamp(lightness($main) + 25, $min: 0, $max: 12));
 
-	$compound2: change-color($c1, $saturation: clamp(saturation($main) + 10, $min: 0, $max: 80), $lightness: clamp(lightness($main) + 10, $min: 30, $max: 70));
+	$compound2: change-color($cmpd2, $saturation: clamp(saturation($main) - 10, $min: 0, $max: 80), $lightness: clamp(lightness($main) + 5, $min: 10, $max: 70));
 
-	$compound3: change-color($c2, $saturation: clamp(saturation($main) - 25, $min: 0, $max: 55), $lightness: clamp(lightness($main) + 5, $min: 85, $max: 95));
+	$compound3: change-color($cmpd3, $saturation: clamp(saturation($main) - 25, $min: 0, $max: 55), $lightness: clamp(lightness($main) + 5, $min: 85, $max: 95));
 
-	$compound4: change-color($c2, $saturation: clamp(saturation($main) + 10, $min: 30, $max: 90), $lightness: clamp(lightness($main) + 20, $min: 25, $max: 65));
+	$compound4: change-color($cmpd4, $saturation: clamp(saturation($main) + 10, $min: 30, $max: 90), $lightness: clamp(lightness($main) + 20, $min: 25, $max: 65));
 
 	
 	$harmonyPalettes: (
@@ -706,7 +709,7 @@
 	
 	$colors: map-get($harmonyPalettes, $harmony);
 
-	@if($include-complement == true or $include-complement == 'true') and $harmony != 'tetrad' { 
+	@if($include-complement == true or $include-complement == 'true') and $harmony != 'tetrad' and $complement-name != false { 
 		$colors: map-merge($colors, (unquote("#{$complement-name}"): $complement));
 	}
 

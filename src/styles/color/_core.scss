@@ -9,7 +9,7 @@ $coreColors: (
 	'primary': 	 #F4EEB4,
 	'secondary': #942668,
 	'tertiary':  #E2DDD1,
-	'accent': 	 #B4D12B,
+	'accent': 	 #B4D12B, 
 	'active': 	 #00a0e0,
 	'neutral': 	 #414150,
 	// message colors
@@ -26,4 +26,4 @@ $coreColors: (
 
 // quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
 // rangeType = adaptive | static | tintshade | default
-@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9);
+// @include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 3);

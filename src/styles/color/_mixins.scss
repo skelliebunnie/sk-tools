@@ -3,6 +3,10 @@
 	$palette: (); // final palette
 	$primaryColor: getColor($color, $colorMap);
 
+	@if $primaryColor == null {
+		$primaryColor: getColor('primary', $coreColors);
+	}
+
 	$colors: (); // colors to run through either harmony() or <rangeX> function
 	$primaryHarmonyRange: null;
 	$mapRange: null;
@@ -12,7 +16,12 @@
 		$colors: $colorMap;
 
 	} @else {
-		$colors: harmony($color: $primaryColor, $colorName: quote($colorName), $harmony: $harmony, $include-complement: $include-complement, $complement-name: $complement-name);
+		@if($include-complement == false) {
+			$colors: harmony($color: $primaryColor, $colorName: quote($colorName), $harmony: $harmony, $complement-name: false);
+
+		} @else {
+			$colors: harmony($color: $primaryColor, $colorName: quote($colorName), $harmony: $harmony, $complement-name: $complement-name);
+		}
 	}
 
 	@if $rangeType == 'tintshade' {

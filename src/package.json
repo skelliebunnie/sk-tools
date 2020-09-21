@@ -1,6 +1,6 @@
 {
-  "name": "skb-tools",
-  "version": "1.0.0",
+  "name": "sk-tools",
+  "version": "2.0.0",
   "main": "gulp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

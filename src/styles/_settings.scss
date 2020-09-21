@@ -1,10 +1,8 @@
 // ===============================
 //	SETTINGS
 // ===============================
-
-@import "global/functions",
-				"global/grid",
-				"global/sass-mq";
+@import "global/functions";
+// grid imports are now in a separate file
 
 //* ====================================
 //		COLOR SETTINGS
@@ -12,14 +10,11 @@
 //* ====================================
 @import "color/palettes";
 
-// quad/quadratic = square tetrad harmony; tetrad/tetradic = rectangular tetrad
-// rangeType = adaptive | static | tintshade | default
-@include palette($color: 'primary', $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 9);
-
 // ===============================
 //	GENERAL VARIABLES
 // ===============================
-$sk-note--color: getColor('neutral-700');
+@include palette($color: 'primary', $colorMap: $coreColors, $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 3);
+$sk-note--color: getColor('neutral-300');
 
 // ===============================
 //	GLOBAL HELPER CLASSES
