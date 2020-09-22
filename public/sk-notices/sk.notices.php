@@ -35,6 +35,25 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 
 		$output = "";
 
+		$allowed_html = array(
+	    'a' => array(
+	        'href' => array(),
+	        'title' => array(),
+	        'target' => array()
+	    ),
+	    'br' => array(),
+	    'em' => array(),
+	    'strong' => array(),
+	    'h1' => array(),
+	    'h2' => array(),
+	    'h3' => array(),
+	    'h4' => array(),
+	    'h5' => array(),
+	    'h6' => array(),
+	    'p' => array(),
+	    'span' => array(),
+		);
+
 		if($a['date_location'] == 'first') { $a['date_location'] = 'before'; }
 		if($a['date_location'] == 'last') { $a['date_location'] = 'after'; }
 		if($a['center_text'] != 'false') { $a['center'] = $a['center_text']; }
@@ -183,7 +202,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 				if($a['new_line'] == 'true') { $output .= "<br/>"; } else { $output .= "&nbsp;"; }
 			}
 
-			$output .= "<span class='sk-notice--message'>". esc_html( $content ) ."</span>";
+			$output .= "<span class='sk-notice--message'>". wp_kses( $content, $allowed_html ) ."</span>";
 
 			if($a['show_date'] == "true" && $a['date_location'] === "after") {
 				if($a['new_line'] == 'true') { $echo .= "<br/>"; } else { $echo .= "&nbsp;"; } 
