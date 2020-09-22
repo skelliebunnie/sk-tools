@@ -53,6 +53,7 @@ class Sk_Tools_Public {
 		$this->version = $version;
 
 		require_once(SK_PATHS['root_dir'] ."/includes/sk.functions.php");
+		$SK_Functions = new SK_Functions();
 
 		// SK-FILTER
 		foreach(glob(SK_PATHS['root_dir'] ."/public/sk-filter/*.php") as $filename) {

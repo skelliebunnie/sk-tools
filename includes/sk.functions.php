@@ -147,7 +147,7 @@ class SK_Functions {
   public function getColorLightness($hex) {
     $hex = strpos($hex, "#") === 0 ? str_replace("#", "", $hex) : $hex;
     
-    $rgb = hexToRGB($hex, true);
+    $rgb = $this->hexToRGB($hex, true);
     $r = $rgb['red']; $g = $rgb['green']; $b = $rgb['blue'];
 
     return (max($r, $g, $b) + min($r, $g, $b)) / 510.0; // HSL algorithm
@@ -156,7 +156,7 @@ class SK_Functions {
   public function getLuma($hex) {
     $hex = strpos($hex, "#") === 0 ? str_replace("#", "", $hex) : $hex;
     
-    $rgb = hexToRGB($hex, true);
+    $rgb = $this->hexToRGB($hex, true);
 
     return (0.2126 * $rgb['red'] + 0.7152 * $rgb['green'] + 0.0722 * $rgb['blue']) / 255;
   }
@@ -223,7 +223,7 @@ class SK_Functions {
   }
 
   public function hexToHSL($hex) {
-    $RGB = hexToRGB($hex);
+    $RGB = $this->hexToRGB($hex);
 
     $r = 0xFF & ($RGB >> 0x10);
     $g = 0xFF & ($RGB >> 0x8);
@@ -337,7 +337,7 @@ class SK_Functions {
 
   // https://stackoverflow.com/a/8468448
   public function readableColor($hex) {
-      $rgb = hexToRGB($hex, true);
+      $rgb = $this->hexToRGB($hex, true);
 
       $r = $rgb['red'];
       $g = $rgb['green'];

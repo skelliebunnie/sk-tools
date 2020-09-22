@@ -4,7 +4,7 @@ class SK_FilterAdvanced {
 	public $functions;
 	
 	public function __construct() {
-		$this->functions = new SK_Functions;
+		$this->functions = new SK_Functions();
 
 		add_shortcode( 'sk_filter_advanced', array( $this, 'sk_filter_advanced_shortcode' ) );
 	}

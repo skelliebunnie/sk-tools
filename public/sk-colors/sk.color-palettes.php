@@ -1,6 +1,7 @@
 <?php
 
 if( !defined( 'ABSPATH' ) ) { exit; }
+
 /**
  * USING THE SHORTCODE
  * 'colors' can be an array of colors - colors MUST be hexadecimal format
@@ -51,6 +52,9 @@ function sk_color_palettes_shortcode($atts) {
 		$types = array('default', 'static', 'adaptive');
 		$ranges = array(0, 3, 5, 7, 9);
 
+		// clean list of colors, in case weird quotes got in
+		$a['colors'] = preg_replace("/(”|″|\"\')/", "", $a['colors']);
+
 		$colors = explode(",", $a['colors']);
 
 		if($a['colors'] !== '' && !in_array($colors[0], $palettes) ) {
@@ -93,7 +97,7 @@ function sk_color_palettes_shortcode($atts) {
 add_shortcode('sk_color_palette', 'sk_color_palettes_shortcode');
 
 function sk_color_palette($args) {
-	$colors = $args['colors'];
+	$colors = preg_replace("//", "", $args['colors']);
 	$effect = getEffects(strtolower($args['effect']));
 	$gutter = is_numeric($args['gutter']) ? $args['gutter'] : '1';
 	$show_color = explode(",", strtolower($args['show_color_as']));
@@ -265,8 +269,11 @@ function getEffects($effect) {
 
 // returns string
 function buildBlock($show_color, $color, $name, $break="<br>") {
-	$rgb = hexToRGB($color, true);
-	$hsl = hexToHSL($color);
+	// require_once(SK_PATHS['root_dir'] ."/includes/sk.functions.php");
+	$SK_Functions = new SK_Functions();
+
+	$rgb = $SK_Functions->hexToRGB($color, true);
+	$hsl = $SK_Functions->hexToHSL($color);
 
 	$list = array();
 	$list['rgb'] = "<span class='color-rgb'>rgb({$rgb['red']},{$rgb['green']},{$rgb['blue']})</span>";
@@ -300,7 +307,7 @@ function buildBlock($show_color, $color, $name, $break="<br>") {
 
 	}
 
-	$txt_clr = readableColor($color);
+	$txt_clr = $SK_Functions->readableColor($color);
 
 	return "<div class='sk-color-block--wrapper'><div class='sk-color-block' data-color='#{$color}' style='background-color: #{$color}'><span class='sk-color-content' style='color: #{$txt_clr}'>{$show_this}</span></div></div>";
 }
