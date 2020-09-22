@@ -183,7 +183,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 				if($a['new_line'] == 'true') { $output .= "<br/>"; } else { $output .= "&nbsp;"; }
 			}
 
-			$output .= "<span class='sk-notice--message'>". esc_attr( $content ) ."</span>";
+			$output .= "<span class='sk-notice--message'>". esc_html( $content ) ."</span>";
 
 			if($a['show_date'] == "true" && $a['date_location'] === "after") {
 				if($a['new_line'] == 'true') { $echo .= "<br/>"; } else { $echo .= "&nbsp;"; } 
