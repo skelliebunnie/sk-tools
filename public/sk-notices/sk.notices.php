@@ -15,7 +15,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 		$a = shortcode_atts( array(
 			'show_date'			=> 'true',
 			'date_location'	=> 'before',
-			'date_bold'			=> 'false',
+			'date_bold'			=> 'true',
 			'date_large'		=> 'false',
 			'center_text'		=> 'false',
 			'center'				=> 'false',
@@ -174,30 +174,29 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 		}
 
 		if($show_notice) {
-			$margin = $a['margin'] == 'true' ? '' : ' no-margin';
-			$transparent = $a['transparent'] == 'true' ? ' transparent' : '';
-
 			if($a['overlay'] == 'true')
 				$output .= "<div class='sk-notice--overlay'>";
 
-			$output .= "<div class='sk-notice sk-notice--'";
-			$output .= $a['type'];
+			$output .= "<div class='sk-notice sk-notice--{$a['type']}";
 
-			if($a['center'] == 'true') { 
-				$output .= " sk-notice--centered"; 
-			}
+			if($a['center'] == 'true') 
+				$output .= " sk-notice--centered";
+
+			if($a['margin'] == 'true')
+				$output .= " no-margin";
+
+			if($a['transparent'] == 'true')
+				$output .= " transparent";
+
 			$output .= " sk-notice--font-{$a['font_size']}";
-			$output .= $margin; 
-			$output .= $transparent;
 
-			$output .= ">"; // end opening div.sk-notice tag
+			$output .= "'>"; // end opening div.sk-notice tag, and closing class "'"
 
-			$bold = ""; $date_large = "";
-			if($a['date_bold'] == 'true') { $bold = "sk-notice--date-bold"; }
-			if($a['date_large'] == 'true') { $date_large = "sk-notice--date-large"; }
+			$date_bold = $a['date_bold'] == 'true' ? " sk-notice--date-bold" : "";
+			$date_large = $a['date_large'] == 'true' ? " sk-notice--date-lareg" : "";
 
 			if($a['show_date'] == "true" && $a['date_location'] === "before") {
-				$output .= "<span class='sk-notice--date $bold $date_large'>". date($a['date_format']) ."</span>";
+				$output .= "<span class='sk-notice--date {$date_bold} {$date_large}'>". date($a['date_format']) ."</span>";
 
 				if($a['new_line'] == 'true') { $output .= "<br/>"; } else { $output .= "&nbsp;"; }
 			}
@@ -205,9 +204,9 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 			$output .= "<span class='sk-notice--message'>". wp_kses( $content, $allowed_html ) ."</span>";
 
 			if($a['show_date'] == "true" && $a['date_location'] === "after") {
-				if($a['new_line'] == 'true') { $echo .= "<br/>"; } else { $echo .= "&nbsp;"; } 
+				if($a['new_line'] == 'true') { $output .= "<br/>"; } else { $output .= "&nbsp;"; } 
 
-				$output .= "<span class='sk-notice-date $bold $date_large'>". date($a['date_format']) ."</span>"; 
+				$output .= "<span class='sk-notice-date {$date_bold} {$date_large}'>". date($a['date_format']) ."</span>"; 
 			}
 	
 		$output .= "</div>";
