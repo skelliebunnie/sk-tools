@@ -8,7 +8,7 @@ function sk_breadcrumbs_shortcode($atts) {
 
 	ob_start();
 
-	if($sk_admin_options['sk_enable_breadcrumbs'] === 'true') {
+	if($sk_admin_options['enable_breadcrumbs'] === 'true') {
 		wp_enqueue_style('sk-breadcrumbs-styles');
 
 		// types are: 
@@ -17,10 +17,8 @@ function sk_breadcrumbs_shortcode($atts) {
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		$a = shortcode_atts( array(
 			'show_home'				=> $sk_breadcrumb_options['show_home'],
-			'home_icon'				=> $sk_breadcrumb_options['show_home_icon'],
 			'home_icon_only'	=> $sk_breadcrumb_options['home_icon_only'],
 			'show_current'		=> $sk_breadcrumb_options['show_current'],
-			'current_url'			=> $sk_breadcrumb_options['current_url'],
 			'current_title'		=> '',
 			'parent_url'			=> '',
 			'parent_title'		=> ''
@@ -89,8 +87,8 @@ function sk_breadcrumbs_shortcode($atts) {
 				echo "&raquo; ";
 			}
 			
-			if( $a['show_current'] === 'true' && $current['url'] !== $parent['url'] ) : ?>
-				<?php if ($a['current_url'] === "true") { ?>
+			if( ($a['show_current'] === 'true' || $a['show_current'] === 'url') && $current['url'] !== $parent['url'] ) : ?>
+				<?php if ($a['show_current'] === "url") { ?>
 					<a href="<?php echo $current['url']; ?>" class='sk-current-url'><?php echo $current['title']; ?></a>
 				<?php } else { ?>
 					<span class='sk-current'><?php echo $current['title']; ?></span>
