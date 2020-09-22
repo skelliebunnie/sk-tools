@@ -52,6 +52,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 	    'h6' => array(),
 	    'p' => array(),
 	    'span' => array(),
+	    'hr' => array()
 		);
 
 		if($a['date_location'] == 'first') { $a['date_location'] = 'before'; }
