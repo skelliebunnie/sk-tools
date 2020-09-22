@@ -161,7 +161,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 			if($a['overlay'] == 'true')
 				$output .= "<div class='sk-notice--overlay'>";
 
-			$output .= "<div class='sk-notice sk-notice--'>";
+			$output .= "<div class='sk-notice sk-notice--'";
 			$output .= $a['type'];
 
 			if($a['center'] == 'true') { 
@@ -170,6 +170,8 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 			$output .= " sk-notice--font-{$a['font_size']}";
 			$output .= $margin; 
 			$output .= $transparent;
+
+			$output .= ">"; // end opening div.sk-notice tag
 
 			$bold = ""; $date_large = "";
 			if($a['date_bold'] == 'true') { $bold = "sk-notice--date-bold"; }
