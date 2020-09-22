@@ -3,11 +3,12 @@
 if( !defined( 'ABSPATH' ) ) { exit; }
 
 function sk_breadcrumbs_shortcode($atts) {
-	global $sk_options;
+	$sk_admin_options = get_option('sk_admin_options');
+	$sk_breadcrumb_options = get_option('sk_breadcrumb_options');
 
 	ob_start();
 
-	if($sk_options['sk_enable_breadcrumbs'] === 'true') {
+	if($sk_admin_options['sk_enable_breadcrumbs'] === 'true') {
 		wp_enqueue_style('sk-breadcrumbs-styles');
 
 		// types are: 
@@ -15,11 +16,11 @@ function sk_breadcrumbs_shortcode($atts) {
 		//	* additive / add ( select 1+ filter, across lists; results are 1+ match )
 		// 	* subtractive / sub ( select 1+ filter; results must match ALL selected )
 		$a = shortcode_atts( array(
-			'show_home'				=> $sk_options['sk-bc-show_home'],
-			'home_icon'				=> $sk_options['sk-bc-show_home_icon'],
-			'home_icon_only'	=> $sk_options['sk-bc-home_icon_only'],
-			'show_current'		=> $sk_options['sk-bc-show_current'],
-			'current_url'			=> $sk_options['sk-bc-current_url'],
+			'show_home'				=> $sk_breadcrumb_options['show_home'],
+			'home_icon'				=> $sk_breadcrumb_options['show_home_icon'],
+			'home_icon_only'	=> $sk_breadcrumb_options['home_icon_only'],
+			'show_current'		=> $sk_breadcrumb_options['show_current'],
+			'current_url'			=> $sk_breadcrumb_options['current_url'],
 			'current_title'		=> '',
 			'parent_url'			=> '',
 			'parent_title'		=> ''
