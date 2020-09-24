@@ -53,6 +53,8 @@ class Sk_Tools_Admin {
 		$this->version = $version;
 
 		require_once SK_PATHS['root_dir'] .'admin/class-sk-tools-settings.php';
+		require_once SK_PATHS['root_dir'] .'admin/class-sk-tools-addressbook.php';
+		require_once SK_PATHS['root_dir'] .'includes/sk.functions.php';
 
 		add_action( 'admin_menu', array($this, 'create_menu') );
 
@@ -79,6 +81,9 @@ class Sk_Tools_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sk-tools-admin.css', array(), $this->version, 'all' );
 
+		wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
+
+		wp_enqueue_style( 'sk-addressbook-styles', SK_PATHS['root_url'] .'includes/css/sk.addressbook.styles.css' );
 	}
 
 	/**
@@ -107,23 +112,33 @@ class Sk_Tools_Admin {
 	public function create_menu() {
 		// this MUST be setup HERE or the settings won't save properly
 		$sk_settings = new SK_Settings();
+		$sk_addressbook = new SK_AddressBook();
 
 		add_menu_page(
-			__( 'SK Tools V2', 'sk_domain' ), // page title & domain (for translation)
-			'SK Tools V2', // menu title
+			__( 'SK Tools', 'sk_domain' ), // page title & domain (for translation)
+			'SK Tools', // menu title
 			'manage_options', // capability - who can access
-			'sk-tools2', // menu_slug
+			'sk-tools', // menu_slug
 			array( $this, 'create_main_page' ), // callback
 			'dashicons-star-filled' // icon, position
 		);
 
 		add_submenu_page(
-			'sk-tools2', // parent_slug
-			__( 'SK Tools V2: Settings', 'sk_domain' ), // page title
+			'sk-tools', // parent_slug
+			__( 'SK Tools: Settings', 'sk_domain' ), // page title
 			'Settings', // menu_title
 			'manage_options',
 			'sk_settings',
 			array( $sk_settings, 'create_page' )
+		);
+
+		add_submenu_page(
+			'sk-tools', // parent_slug
+			__( 'SK Tools: AddressBook', 'sk_domain' ), // page title
+			'AddressBook', // menu_title
+			'manage_options',
+			'sk_addressbook',
+			array( $sk_addressbook, 'create_page' )
 		);
 	}
 

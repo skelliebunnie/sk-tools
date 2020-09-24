@@ -3,6 +3,10 @@
 // ===============================
 //	SK-ADDRESSBOOK VARIABLES
 // ===============================
+@include palette($color: 'info', $colorMap: $messageColors, $include-complement: false, $complement-name: null, $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 3);
+
+$add-contact--color: getColor('success-200');
+$delete-contact--color: getColor('warn-200');
 
 // ===============================
 //	SK-ADDRESSBOOK STYLES
@@ -32,4 +36,29 @@
 	&:nth-child(2).sk-contact--name:after {
 		content: "\00A0";
 	}
+}
+
+
+#index_0 {
+	& > span:first-child { margin-right: 2.5rem; }
+
+	& > .sk-contact--delete {
+		display: none;
+	}
+}
+
+.sk-contact-container {
+	span:first-child { margin-right: 0.4rem; }
+
+	& + & { margin-top: 1rem; }
+}
+
+.sk-contact--delete {
+	color: $delete-contact--color;
+	margin-right: 1rem;
+}
+
+.sk-contact--add {
+	color: $add-contact--color;
+	margin-left: 1rem;
 }

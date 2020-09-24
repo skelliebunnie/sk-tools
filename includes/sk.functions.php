@@ -357,4 +357,12 @@ class SK_Functions {
 
       }
   }
+
+  public function sk_sanitize_phone_number( $phone ) {
+    return preg_replace( '/[^\d+]/', '', $phone );
+  }
+
+  public function sk_format_tel( $phone ) {
+    return preg_replace( '/\d{3}/', '$0-', str_replace( '-', null, trim( $phone ) ), 2 );
+  }
 }

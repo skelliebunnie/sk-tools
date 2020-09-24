@@ -2,12 +2,14 @@
 
 if( !defined( 'ABSPATH' ) ) { exit; }
 
+require_once SK_PATHS['root_dir'] .'includes/sk.functions.php';
+
 function sk_addressbook_shortcode($atts) {
-	global $sk_options;
+	$sk_admin_options = get_option("sk_admin_options");
 
 	ob_start();
 
-	if($sk_options['sk_enable_addressbook'] === 'true') {
+	if($sk_admin_options['enable_addressbook'] === 'true') {
 		wp_enqueue_style('sk-addressbook-styles');
 
 		$contacts = is_array( get_option('sk_addressbook') ) ? get_option('sk_addressbook') : explode(",", get_option('sk_addressbook'));
@@ -136,13 +138,15 @@ function sk_addressbook_shortcode($atts) {
 add_shortcode('sk_addressbook', 'sk_addressbook_shortcode');
 
 function sk_format_contact_info($options, $contact) {
+	$SK_Functions = new SK_Functions();
+
 	$name 	= "<span class='sk-contact--name'>{$contact['name']}</span>";
 	$title 	= $options['show_title'] === 'true' ? "<span class='sk-contact--title'>{$contact['title']}</span>" : '';
 	$at 		= $options['format'] == 'inline' ? 'at ' : '';
-	$email 	= $options['show_email'] === 'true' ? "<span class='sk-contact--email'>{$contact['email']}</span>" : '';
-	$tel 		= array_key_exists('phone', $contact) ? sk_format_tel($contact['phone']) : null;
-	$call 	= $options['format'] == 'inline' ? 'call ' : '';
-	$phone 	= $options['show_phone'] === 'true' && array_key_exists('phone', $contact) && $contact['phone'] !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
+	$email 	= $options['show_email'] === 'true' && $contact['email'] !== '' ? "<span class='sk-contact--email'>{$contact['email']}</span>" : null;
+	$tel 		= array_key_exists('phone', $contact) && $contact['phone'] !== '' ? $SK_Functions->sk_format_tel($contact['phone']) : null;
+	$call 	= $options['format'] == 'inline' && $tel !== null ? 'call ' : null;
+	$phone 	= $options['show_phone'] === 'true' && $tel !== null ? "<span class='sk-contact--phone'>$call<a href='tel:{$tel}'>{$contact['phone']}</a></span>" : null;
 
 	$contact_info = array(); // email & telephone only
 	$inline = $options['contact_info_inline'] == 'false' ? '' : 'contact-info-inline';
@@ -156,29 +160,43 @@ function sk_format_contact_info($options, $contact) {
 	}
 
 	if( $options['contact_info_inline'] == 'true' || str_replace(' ', '', $options['contact_info_inline']) == 'email,phone' ) {
-		$contact_info = array($email, $phone);
-
-	} elseif( str_replace(' ', '', $options['contact_info_inline']) == 'phone,email' ) {
-		$contact_info = array($phone, $email);
-
-	} elseif( $options['contact_info_inline'] == 'false' ) {
-		if($options['show_email'] == 'true')
+		$contact_info = array();
+		if($email !== '' && $email !== null)
 			array_push($contact_info, $email);
 
-		if($options['show_phone'] == 'true')
+		if($phone !== '' && $phone !== null)
+			array_push($contact_info, $phone);
+
+	} elseif( str_replace(' ', '', $options['contact_info_inline']) == 'phone,email' ) {
+		$contact_info = array();
+		if($email !== '' && $email !== null)
+			array_push($contact_info, $email);
+		if($phone !== '' && $phone !== null)
+			array_push($contact_info, $phone);
+
+	} elseif( $options['contact_info_inline'] == 'false' ) {
+		if($options['show_email'] == 'true' && $email !== '' && $email !== null)
+			array_push($contact_info, $email);
+
+		if($options['show_phone'] == 'true' && $phone !== '' && $phone !== null)
 			array_push($contact_info, $phone);
 	}
 
 	$contact_info_block = "<span class='sk-contact--contact-info $inline'>";
-	if( $options['format'] == 'block' && $options['contact_info_inline'] == 'false' ) {
+	if( $options['format'] == 'block' && $options['contact_info_inline'] == 'false' || count($contact_info) === 1 ) {
 		$contact_info_block .= implode("", $contact_info);
 
-	} elseif( $options['format'] == 'block' && $options['contact_info_inline'] !== 'false' ) {
-		$contact_info_block .= implode(", ", $contact_info);
+	} elseif( $options['format'] == 'block' && $options['contact_info_inline'] !== 'false' && count($contact_info) > 1 ) {
+			$contact_info_block .= implode(", ", $contact_info);
 
 	} else {
-		$contact_info_block .= implode(" or ", $contact_info);
-	}
+		if( count($contact_info) > 1 ) {
+			$contact_info_block .= implode(", ", $contact_info);
+		} else {
+			$contact_info_block .= implode("", $contact_info);
+		}
+
+	} 
 
 	$contact_info_block .= "</span>";
 

@@ -124,7 +124,7 @@ jQuery(document).ready(function($) {
 				this.name = this.name.replace(`[${current_index}]`, `[${next_index}]`);
 			});
 
-			$new_container.find(".sk-contact--id").html('[x]'); // `[${next_index}]`
+			$new_container.find(".sk-contact--id").html(`[${next_index}]`);
 
 			$new_container.children(".sk-contact--delete").removeClass("hidden");
 			$new_container.children(".sk-contact--add").removeClass("hidden");
