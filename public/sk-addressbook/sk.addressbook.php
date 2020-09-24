@@ -142,7 +142,7 @@ function sk_format_contact_info($options, $contact) {
 
 	$name 	= "<span class='sk-contact--name'>{$contact['name']}</span>";
 	$title 	= $options['show_title'] === 'true' ? "<span class='sk-contact--title'>{$contact['title']}</span>" : '';
-	$at 		= $options['format'] == 'inline' ? ' at ' : '';
+	$at 		= $options['format'] == 'inline' ? '&nbsp;at&nbsp;' : '';
 	$email 	= $options['show_email'] === 'true' && $contact['email'] !== '' ? "<span class='sk-contact--email'>{$contact['email']}</span>" : null;
 	$tel 		= array_key_exists('phone', $contact) && $contact['phone'] !== '' ? $SK_Functions->sk_format_tel($contact['phone']) : null;
 	$call 	= $options['format'] == 'inline' && $tel !== null ? 'call ' : null;
