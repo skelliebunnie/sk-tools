@@ -28,15 +28,19 @@ jQuery(document).ready(function($) {
 
 	// .live("click", function() {}) required for elements added dynamically
 	// or $("body").on('event', '.sk-contact--add', function() {})
-	$("body").on('click', '.sk-contact--add', function() {
-		add_input( $(this).parent(".sk-contact-container") );
+	$("body:not(.wp-admin)").on('click', '.sk-contact--add', function() {
+		console.log( $(this).parent("body") );
+		if($(this).hasClass('sk-contact--add'))
+			add_input( $(this).parent(".sk-contact-container") );
 	});
 	// $(".sk-contact--add").live("click", function() {
 	// 	add_input( $(this).parent(".sk-contact-container") );
 	// });
 
-	$("body").on('click', '.sk-contact--delete', function() {
-		delete_input( $(this) );
+	$("body:not(.wp-admin)").on('click', '.sk-contact--delete', function() {
+		console.log( $(this).parent("body") );
+		if($(this).hasClass('sk-contact--delete'))
+			delete_input( $(this) );
 	});
 	// $(".sk-contact--delete").live("click", function() {
 	// 	delete_input( $(this) );	
