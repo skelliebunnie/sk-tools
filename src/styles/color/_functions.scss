@@ -651,7 +651,7 @@
 	$colors: ();
 
 	$main: $color;
-	$complement: $color;
+	$complement: complement($color);
 		
 	$palette: ();
 

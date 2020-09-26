@@ -16,7 +16,7 @@
  * Plugin Name:       SK-Tools
  * Plugin URI:        https://curiousexplorations.com/sk-tools
  * Description:       A collection of useful shortcode tools.
- * Version:           5.1.1
+ * Version:           5.1.2
  * Author:            Angel Knight
  * Author URI:        angel@curiousexplorations.com/about
  * License:           GPL-2.0+
