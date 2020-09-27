@@ -3,7 +3,7 @@
 // ===============================
 //	SK-NOTICES VARIABLES
 // ===============================
-@include palette($color: 'default', $colorMap: $messageColors, $complement-name: 'complement', $rangeType: 'static', $harmony: 'analogous', $rangeDepth: 3);
+@include palette($color: 'default', $colorMap: $messageColors, $include-complement: false, $complement-name: null, $rangeType: 'static', $harmony: 'none', $rangeDepth: 3);
 // @debug $palette;
 
 $sk-notice-info--border-color: getColor('info-200');
@@ -26,6 +26,8 @@ $sk-notice-warn--bg-color: getColor('warn-50');
 
 $sk-notice-neutral--border-color: getColor('neutral-200');
 $sk-notice-neutral--bg-color: getColor('neutral-50');
+
+// @debug $sk-notice-warn--border-color;
 
 // ===============================
 //	SK-NOTICES STYLES
