@@ -113,7 +113,7 @@ class Sk_Tools_Public {
 
 		wp_register_style('sk-filter-styles', SK_PATHS['root_url'] ."includes/css/sk.filter.styles.css");
 
-		wp_register_style('sk-breadcrumbs-styles', SK_PATHS['root_url'] ."includes/css/sk.breadcrumbs.styles.css");
+		// wp_register_style('sk-breadcrumbs-styles', SK_PATHS['root_url'] ."includes/css/sk.breadcrumbs.styles.css");
 
 		wp_register_style('sk-notices-styles', SK_PATHS['root_url'] ."includes/css/sk.notices.styles.css");
 
