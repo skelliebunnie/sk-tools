@@ -111,21 +111,21 @@ class Sk_Tools_Public {
 		// FONT AWESOME
 		wp_enqueue_style('font-awesome', 'https://use.fontawesome.com/releases/v5.8.1/css/all.css');
 
-		wp_register_style('sk-filter-styles', SK_PATHS['root_url'] ."/includes/css/sk.filter.styles.css");
+		wp_register_style('sk-filter-styles', SK_PATHS['root_url'] ."includes/css/sk.filter.styles.css");
 
-		wp_register_style('sk-breadcrumbs-styles', SK_PATHS['root_url'] ."/includes/css/sk.breadcrumbs.styles.css");
+		wp_register_style('sk-breadcrumbs-styles', SK_PATHS['root_url'] ."includes/css/sk.breadcrumbs.styles.css");
 
-		wp_register_style('sk-notices-styles', SK_PATHS['root_url'] ."/includes/css/sk.notices.styles.css");
+		wp_register_style('sk-notices-styles', SK_PATHS['root_url'] ."includes/css/sk.notices.styles.css");
 
-		wp_register_style('sk-defaultpalettes-styles', SK_PATHS['root_url'] ."/includes/css/sk.defaultpalettes.styles.css");
+		wp_register_style('sk-defaultpalettes-styles', SK_PATHS['root_url'] ."includes/css/sk.defaultpalettes.styles.css");
 
-		wp_register_style('sk-colorpalettes-styles', SK_PATHS['root_url'] ."/includes/css/sk.colorpalettes.styles.css");
+		wp_register_style('sk-colorpalettes-styles', SK_PATHS['root_url'] ."includes/css/sk.colorpalettes.styles.css");
 
-		wp_register_style('sk-color-styles', SK_PATHS['root_url'] ."/includes/css/sk.colors.styles.css");
+		wp_register_style('sk-color-styles', SK_PATHS['root_url'] ."includes/css/sk.colors.styles.css");
 
-		wp_register_style('sk-color-classes', SK_PATHS['root_url'] ."/includes/css/sk.colors.classes.css");
+		wp_register_style('sk-color-classes', SK_PATHS['root_url'] ."includes/css/sk.colors.classes.css");
 
-		wp_register_style('sk-addressbook-styles', SK_PATHS['root_url'] ."/includes/css/sk.addressbook.styles.css");
+		wp_register_style('sk-addressbook-styles', SK_PATHS['root_url'] ."includes/css/sk.addressbook.styles.css");
 
 	}
 
@@ -150,10 +150,10 @@ class Sk_Tools_Public {
 
 		//wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sk-tools-public.js', array( 'jquery' ), $this->version, false );
 
-		wp_register_script( 'sk-functions-script', SK_PATHS['root_url'] ."/public/js/sk.functions.js", array('jquery'), null, true );
+		wp_register_script( 'sk-functions-script', SK_PATHS['root_url'] ."public/js/sk.functions.js", array('jquery'), null, true );
 
-		wp_register_script( 'sk-filter-script', SK_PATHS['root_url'] ."/public/sk-filter/sk.filter.js", array('sk-functions-script'), null, true );
-		wp_register_script( 'sk-filter-color-script', SK_PATHS['root_url'] ."/public/sk-filter/sk.filter-colors.js", array('sk-functions-script'), null, true );
+		wp_register_script( 'sk-filter-script', SK_PATHS['root_url'] ."public/sk-filter/sk.filter.js", array('sk-functions-script'), null, true );
+		wp_register_script( 'sk-filter-color-script', SK_PATHS['root_url'] ."public/sk-filter/sk.filter-colors.js", array('sk-functions-script'), null, true );
 
 	}
 
