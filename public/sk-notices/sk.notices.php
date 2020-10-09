@@ -183,7 +183,7 @@ function sk_notices_shortcode($atts, $content = null, $tag = '') {
 			if($a['center'] == 'true') 
 				$output .= " sk-notice--centered";
 
-			if($a['margin'] == 'true')
+			if($a['margin'] !== 'true')
 				$output .= " no-margin";
 
 			if($a['transparent'] == 'true')
