@@ -60,7 +60,9 @@ $sk-color-block--min-height: 1rem;
 				.sk-color-block { min-height: $sk-color-block--min-height; max-height: auto; }
 
 				.sk-color-block--wrapper:hover,
-				.sk-color-block:hover {
+				.sk-color-block:hover,
+				.sk-color-block--wrapper:focus,
+				.sk-color-block:focus {
 					max-height: stretch;
 					min-height: $sk-color-block--height;
 				}
@@ -86,7 +88,9 @@ $sk-color-block--min-height: 1rem;
 	}
 
 	&.slide-blocks.colors--#{$i} .sk-color-block--wrapper:hover,
-	&.slide-blocks.colors--#{$i} .sk-color-block:hover {
+	&.slide-blocks.colors--#{$i} .sk-color-block:hover,
+	&.slide-blocks.colors--#{$i} .sk-color-block--wrapper:focus,
+	&.slide-blocks.colors--#{$i} .sk-color-block:focus {
 		max-height: stretch;
 		flex: 1 1 ($i / 12 * 100%) / 2;
 	}
@@ -106,7 +110,8 @@ $sk-color-block--min-height: 1rem;
 
 	&.individual-blocks .sk-color-block,
 	&.static-blocks .sk-color-block,
-	&:hover .sk-color-block {
+	&:hover .sk-color-block,
+	&:focus .sk-color-block {
 		height: $sk-color-block--height;
 	}
 
@@ -142,7 +147,11 @@ $sk-color-block--min-height: 1rem;
 	&.slide-blocks .sk-color-block--wrapper:hover,
 	&.slide-blocks .sk-color-block:hover,
 	&:hover .sk-color-block--wrapper,
-	&:hover .sk-color-block {
+	&:hover .sk-color-block,
+	&.slide-blocks .sk-color-block--wrapper:focus,
+	&.slide-blocks .sk-color-block:focus,
+	&:focus .sk-color-block--wrapper,
+	&:focus .sk-color-block {
 		min-height: 5.25rem;
 	}
 }
@@ -153,7 +162,11 @@ $sk-color-block--min-height: 1rem;
 	&.static-blocks .sk-color-block--wrapper:hover,
 	&.slide-blocks .sk-color-block:hover,
 	&:hover .sk-color-block--wrapper,
-	&:hover .sk-color-block {
+	&:hover .sk-color-block,
+	&.static-blocks .sk-color-block--wrapper:focus,
+	&.slide-blocks .sk-color-block:focus,
+	&:focus .sk-color-block--wrapper,
+	&:focus .sk-color-block {
 		min-height: 7rem;
 	}
 }
@@ -165,7 +178,8 @@ $sk-color-block--min-height: 1rem;
 		min-height: $sk-color-block--min-height;
 	}
 
-	.sk-color-block:hover {
+	.sk-color-block:hover,
+	.sk-color-block:focus {
 		max-width: stretch;
 		min-height: stretch;
 	}
@@ -173,7 +187,8 @@ $sk-color-block--min-height: 1rem;
 
 .slide-text,
 .fade-text {
-	.sk-color-block:hover .sk-color-content {
+	.sk-color-block:hover .sk-color-content,
+	.sk-color-block:focus .sk-color-content {
 		opacity: 1;
 	}
 }
@@ -181,16 +196,20 @@ $sk-color-block--min-height: 1rem;
 .slide-text {
 
 	&.text-up .sk-color-content { bottom: -10%; }
-	&.text-up .sk-color-block:hover .sk-color-content { bottom: 0; }
+	&.text-up .sk-color-block:hover .sk-color-content,
+	&.text-up .sk-color-block:focus .sk-color-content { bottom: 0; }
 
 	&.text-down .sk-color-content { top: -10%; }
-	&.text-down .sk-color-block:hover .sk-color-content { top: 0; }
+	&.text-down .sk-color-block:hover .sk-color-content,
+	&.text-down .sk-color-block:focus .sk-color-content { top: 0; }
 
 	&.text-right .sk-color-content { left: -100%; }
-	&.text-right .sk-color-block:hover .sk-color-content { left: 0; right: auto; }
+	&.text-right .sk-color-block:hover .sk-color-content,
+	&.text-right .sk-color-block:focus .sk-color-content { left: 0; right: auto; }
 
 	&.text-left .sk-color-content { right: -100%; }
-	&.text-left .sk-color-block:hover .sk-color-content { right: 0; left: auto; }
+	&.text-left .sk-color-block:hover .sk-color-content,
+	&.text-left .sk-color-block:focus .sk-color-content { right: 0; left: auto; }
 }
 
 .hover {
@@ -221,17 +240,20 @@ $sk-color-block--min-height: 1rem;
 				z-index: -2;
 			}
 		}
-		.sk-color-block:hover .sk-color-content { opacity: 1; }
+		.sk-color-block:hover .sk-color-content,
+		.sk-color-block:focus .sk-color-content { opacity: 1; }
 	}
 
 	&-text, &-text.text-right {
 		.sk-color-content { left: 0; }
-		.sk-color-block:hover .sk-color-content { left: 4rem; }
+		.sk-color-block:hover .sk-color-content,
+		.sk-color-block:focus .sk-color-content { left: 4rem; }
 	}
 
 	&-text.text-left {
 		.sk-color-content { left: -3rem; }
-		.sk-color-block:hover .sk-color-content { left: -7rem; }
+		.sk-color-block:hover .sk-color-content,
+		.sk-color-block:focus .sk-color-content { left: -7rem; }
 	}
 }
 
