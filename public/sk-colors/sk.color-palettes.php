@@ -86,6 +86,27 @@ function sk_color_palettes_shortcode($atts) {
 			}
 
 		}
+?>
+
+<script>
+	jQuery(document).ready(function($) {
+		$("body").click(function() {
+			$(".sk-color-block").each(function() {
+				$(this).removeClass("focus");
+			});
+		});
+
+		$(".sk-color-block").click(function() {
+			$(this).parent(".sk-color-block--wrapper").siblings().children(".sk-color-block").each(function() {
+				$(this).removeClass('focus');
+			});
+			$(this).toggleClass('focus');
+			event.stopPropagation(); // prevents parent elements from being notified of event
+		});
+	});
+</script>
+
+<?php
 
 	} else {
 		echo "<p>sk_color_palette shortcode not enabled</p>";
@@ -93,6 +114,7 @@ function sk_color_palettes_shortcode($atts) {
 	}
 
 	return ob_get_clean();
+
 }
 add_shortcode('sk_color_palette', 'sk_color_palettes_shortcode');
 

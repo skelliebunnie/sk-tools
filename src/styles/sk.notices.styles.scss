@@ -132,3 +132,20 @@ $sk-notice-neutral--bg-color: getColor('neutral-50');
 	font-style: italic;
 	color: $sk-note--color;
 }
+
+.sk-notice--message,
+.sk-notice-date {
+	display: inline-block;
+}
+
+.sk-notice--message > hr {
+	margin-bottom: 0;
+}
+
+.sk-notice .sk-notice--message + br {
+	display: none;
+}
+
+.sk-notice > .sk-notice-date {
+	margin-top: 1rem;
+}
