@@ -16,7 +16,7 @@
  * Plugin Name:       SK-Tools
  * Plugin URI:        https://curiousexplorations.com/sk-tools
  * Description:       A collection of useful shortcode tools.
- * Version:           5.1.7
+ * Version:           5.1.8
  * Author:            Angel Knight
  * Author URI:        angel@curiousexplorations.com/about
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SK_TOOLS_VERSION', '5.1.7' );
+define( 'SK_TOOLS_VERSION', '5.1.8' );
 
 // global variables for more easily defining dir / file paths
 $upload_dir = wp_upload_dir()['basedir'] ."/sk-tools";
